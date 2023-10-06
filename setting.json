@@ -1,0 +1,31 @@
+{
+  "__set camera__": "__comment__",
+  "cap1": 0,
+  "cap2": 1,
+
+
+  "__set frames__": "__comment__",
+  "frames": "setting_frames.json",
+
+
+
+  "__path__": "__comment__",
+  "img_full_path": "..\\img_full",
+  "img_frame_path": "..\\img_frame",
+  "models_path": "models",
+
+
+  "__save_img_full__": "__comment__",
+  "status_list": [    "ok",    "nopart",    "wrongpart",    "wrongpolarity"  ],
+  "status_short_list": [    "ok",    "no",    "w_part",    "w_po"  ],
+  
+  
+  "__img_full2shift_img__": "__comment__",
+  "comment img_path4": "img",
+  "comment img_path2": "\\\\D2\\tt\\MLforAutoInspection\\img",
+  "comment models_path": "\\\\D2\\tt\\MLforAutoInspection\\models",
+  
+  
+  "__program stats__": "__comment__,security,bugfix,error",
+  "program_stats": "bugfix"
+}

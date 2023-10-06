@@ -1,0 +1,84 @@
+{
+  "Show name": [
+    280,
+    100,
+    298,
+    118
+  ],
+  "Show results from predictions": [
+    280,
+    130,
+    298,
+    148
+  ],
+  "Show %results from predictions": [
+    280,
+    160,
+    298,
+    178
+  ],
+  "Show list class name": [
+    280,
+    190,
+    298,
+    208
+  ],
+
+  "Change color frame": [
+    280,
+    280,
+    298,
+    298
+  ],
+  "Change color name": [
+    280,
+    310,
+    298,
+    328
+  ],
+  "Change color results from predictions": [
+    280,
+    340,
+    298,
+    358
+  ],
+  "Change color %results from predictions": [
+    280,
+    370,
+    298,
+    388
+  ],
+  "Change color list class name": [
+    280,
+    400,
+    298,
+    418
+  ],
+
+
+
+  "Reconnect Camera": [
+    45,
+    70,
+    205,
+    98
+  ],
+  "OK": [
+    810,
+    691,
+    886,
+    719
+  ],
+  "Cancel": [
+    894,
+    691,
+    970,
+    719
+  ],
+  "x": [
+    951,
+    0,
+    984,
+    40
+  ]
+}
