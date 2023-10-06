@@ -215,10 +215,11 @@ def main(img, stop_event, reconnect_cam):
                             e.y_shift = 300
                             for i, (name, model) in enumerate(framesmodel.models.items()):
                                 print(model)
-                                try:
-                                    model.load_model()
-                                except:
-                                    have_model = False
+                                # try:
+                                model.load_model(modelname)
+                                # except:
+                                #     print('name have_model = False')
+                                have_model = False
 
                                 mouse_pos = pygame.mouse.get_pos()
                                 windows_img, res = e.update(mouse_pos, pygame.event.get())
@@ -296,7 +297,7 @@ def main(img, stop_event, reconnect_cam):
                     e.x_shift = 700
                     e.y_shift = 300
                     for name, frame in framesmodel.frames.items():
-                        r = predict(frame)
+                        r = predict(frame,framesmodel)
                         print(r)
                         mouse_pos = pygame.mouse.get_pos()
                         windows_img, res = e.update(mouse_pos, pygame.event.get())

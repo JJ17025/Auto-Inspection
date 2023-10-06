@@ -133,9 +133,9 @@ class Model:
         return (f'{BLUE}Model '
                 f'{GREEN}{self.name}{ENDC}')
 
-    def load_model(self):
-        self.model = models.load_model(fr'data/ac/model/{self.name}.h5')
-        self.status_list = json.loads(open(fr'data/ac/model/{self.name}.json').read())
+    def load_model(self,modelname):
+        self.model = models.load_model(fr'data/{modelname}/model/{self.name}.h5')
+        self.status_list = json.loads(open(fr'data/{modelname}/model/{self.name}.json').read())
         print('------------------------>', self.status_list)
 
 
@@ -246,6 +246,7 @@ class Frames:
                     TextRectlist.append(d)
                 if textdata.get('Show results from predictions'):
                     d = f'{frame.highest_score_name}'
+                    d = Abbreviation[d] if (d in Abbreviation.keys()) else d
                     if textdata.get('Change color results from predictions'):
                         d = (d, frame.color_text)
                     TextRectlist.append(d)
@@ -263,16 +264,17 @@ class Frames:
         return img
 
 
-def predict(frame):
+def predict(frame, Frames):
+    model = Frames.models[frame.model_used]
     img_array = frame.img[np.newaxis, :]
-    predictions = frame.model.predict_on_batch(img_array)
+    predictions = model.model.predict_on_batch(img_array)
 
     frame.predictions_score_list = predictions[0]  # [ -6.520611   8.118368 -21.86103   22.21528 ]
     exp_x = [1.2 ** x for x in frame.predictions_score_list]
     frame.percent_score_list = [round(x * 100 / sum(exp_x)) for x in exp_x]
     frame.highest_score_number = np.argmax(frame.predictions_score_list)  # 3
 
-    frame.highest_score_name = frame.status_list[frame.highest_score_number]
+    frame.highest_score_name = model.status_list[frame.highest_score_number]
     frame.highest_score_percent = frame.percent_score_list[frame.highest_score_number]
 
     # if frame.highest_score_name:
