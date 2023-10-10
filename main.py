@@ -261,7 +261,6 @@ def main(img, stop_event, reconnect_cam):
 
             if res == 'adj image':
                 img_for_ref = cv2.imread('m.png')
-
                 e = Wait()
                 e.set_val('Wait', 'Adjusting image')
                 e.x_shift = 700
@@ -290,6 +289,34 @@ def main(img, stop_event, reconnect_cam):
                             break
 
             if res == 'perdict':
+                img_for_ref = cv2.imread('m.png')
+                e = Wait()
+                e.set_val('Wait', 'Adjusting image')
+                e.x_shift = 700
+                e.y_shift = 300
+                mouse_pos = pygame.mouse.get_pos()
+                windows_img, res = e.update(mouse_pos, pygame.event.get(), count_time=False)
+                surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
+                show()
+
+                res = adj_image(img_form_cam, img_for_ref, framesmodel)
+                if res is not None:
+                    img_form_cam = res
+                else:
+                    e = Confirm()
+                    e.set_val('Error', "don't have mark")
+                    e.x_shift = 700
+                    e.y_shift = 300
+                    while True:
+                        mouse_pos = pygame.mouse.get_pos()
+                        windows_img, res = e.update(mouse_pos, pygame.event.get())
+                        surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
+                        show()
+                        if res:
+                            print(res)
+                        if res in ['OK', 'Cancel', 'x']:
+                            break
+
                 if modelname and '(no model)' not in modelname:
                     framesmodel.crop_img(img_form_cam)
                     e = Wait()

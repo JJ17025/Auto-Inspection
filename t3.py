@@ -11,10 +11,7 @@ ITALICIZED = '\033[3m'
 UNDERLINE = '\033[4m'
 
 
-def p(*args, sep=' ', end='\n',**kwargs):
-    for arg in args:
-        print(f'{PINK}{arg}{ENDC}', sep, sep='', end='')
-    print(end='\n')
+print('hgfhcfgjh',color=GREEN)
+print('hgfhcfgjh',color=PINK)
 
-
-
+print('fdgdf')

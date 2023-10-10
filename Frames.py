@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 from keras import models
 from func.about_image import putTextRect, putTextRectlist
+import sys
 
 BLACK = '\033[90m'
 FAIL = '\033[91m'
@@ -134,8 +135,26 @@ class Model:
                 f'{GREEN}{self.name}{ENDC}')
 
     def load_model(self,modelname):
-        self.model = models.load_model(fr'data/{modelname}/model/{self.name}.h5')
-        self.status_list = json.loads(open(fr'data/{modelname}/model/{self.name}.json').read())
+        try:
+            self.model = models.load_model(fr'data/{modelname}/model/{self.name}.h5')
+        except Exception as e:
+            print(f'{WARNING}function "load_model" error.\n'
+                  f'file error data/{modelname}/model/{self.name}.h5{ENDC}'
+                  f'{str(e)}')
+            # sys.exit()
+        try:
+
+            status_list = json.loads(open(fr'data/{modelname}/model/{self.name}.json').read())
+            if status_list != self.status_list:
+                print(f'{WARNING}status_list model != self.status_list')
+                print(f'status_list from model = {status_list}')
+                print(f'self.status_list       = {self.status_list}{ENDC}')
+
+        except Exception as e:
+            print(f'{WARNING}function "load_model" error.\n'
+                  f'file error data/{modelname}/model/{self.name}.json{ENDC}'
+                  f'{str(e)}')
+            # sys.exit()
         print('------------------------>', self.status_list)
 
 
@@ -173,7 +192,7 @@ class Frames:
             model_used = v['model_used']
             self.frames[name] = Frame(name, x, y, dx, dy, model_used)
         for name, v in data_all['models'].items():
-            status_list = v['status_list']
+            status_list = sorted(v['status_list'])
             self.models[name] = Model(name, status_list)
         if data_all.get('marks'):
             for name, v in data_all['marks'].items():

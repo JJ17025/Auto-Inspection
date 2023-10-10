@@ -1,7 +1,4 @@
-from t3 import p
+ENDC = '\033[0m'
 
-print(
-    'jglkjljkl\
-    lkjhljh\
-    kj;lk\\'
-)
+def p(txt,color=''):
+    print(f'{color}{txt}{ENDC}')

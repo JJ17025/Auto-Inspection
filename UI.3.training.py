@@ -105,7 +105,7 @@ def corp_img(model_name, frames):
                 x1, x2 = int((x - dx / 2) * pixels_X), int((x + dx / 2) * pixels_X)
                 y1, y2 = int((y - dy / 2) * pixels_Y), int((y + dy / 2) * pixels_Y)
 
-                img_crop_namefile = f'{frame_name} {status} {file_name}.png'
+                img_crop_namefile = f'{status} {frame_name} {file_name}.png'
                 mkdir(fr"{IMG_FRAME_PATH}\{model_name}")
                 mkdir(fr"{IMG_FRAME_PATH}\{model_name}\{status}")
                 mkdir(fr"{IMG_FRAME_LOG_PATH}\{model_name}")
