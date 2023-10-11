@@ -439,8 +439,7 @@
     "c4": {
       "status_list": [
         "ok",
-        "nopart",
-        "wrongpart"
+        "nopart"
       ]
     },
     "c5": {
