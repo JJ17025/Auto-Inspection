@@ -1195,3 +1195,89 @@
 [94mModel [92mc14[0m MODEL_SET=1 | img_height_width=180, 180
 1011-133610| 
 [94mModel [92mc15[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165206| model_list (ที่มี) 18 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+1011-165206| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165206| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165206| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165206| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165206| 
+[94mModel [92mCap123[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165206| --------  >>> corp_img <<<  ---------
+1011-165211| 
+[94mModel [92mCap45[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165211| 
+[94mModel [92mc127[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165211| 
+[94mModel [92mc3[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165211| 
+[94mModel [92mc4[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165211| 
+[94mModel [92mc5[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165211| 
+[94mModel [92mc6[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165211| 
+[94mModel [92mc8[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165211| 
+[94mModel [92mc9[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165211| 
+[94mModel [92mc10[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165211| 
+[94mModel [92mc11[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165211| 
+[94mModel [92mc12[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165211| 
+[94mModel [92mc13[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165211| 
+[94mModel [92mc14[0m MODEL_SET=1 | img_height_width=180, 180
+1011-165211| 
+[94mModel [92mc15[0m MODEL_SET=1 | img_height_width=180, 180
+1011-173631| model_list (ที่มี) 18 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+1011-173631| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+1011-173631| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+1011-173631| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+1011-173631| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+1011-173631| 
+[94mModel [92mCap123[0m MODEL_SET=1 | img_height_width=180, 180
+1011-173631| --------  >>> corp_img <<<  ---------
+1011-174044| 0:04:13.636803 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1011-174044| ------- >>> training... <<< ---------
+1011-174046| image_count = {image_count}
+1011-215135| 0:04:13.636803 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1011-215135| 4:10:50.699394 เวลาที่ใช้ในการ training 
+1011-215135| 4:15:04.336197 เวลาที่ใช้ทั้งหมด
+1011-215135| 
+[94mModel [92mCap45[0m MODEL_SET=1 | img_height_width=180, 180
+1011-215135| 
+[94mModel [92mc127[0m MODEL_SET=1 | img_height_width=180, 180
+1011-215135| 
+[94mModel [92mc3[0m MODEL_SET=1 | img_height_width=180, 180
+1011-215135| 
+[94mModel [92mc4[0m MODEL_SET=1 | img_height_width=180, 180
+1011-215135| 
+[94mModel [92mc5[0m MODEL_SET=1 | img_height_width=180, 180
+1011-215135| 
+[94mModel [92mc6[0m MODEL_SET=1 | img_height_width=180, 180
+1011-215135| 
+[94mModel [92mc8[0m MODEL_SET=1 | img_height_width=180, 180
+1011-215135| 
+[94mModel [92mc9[0m MODEL_SET=1 | img_height_width=180, 180
+1011-215135| 
+[94mModel [92mc10[0m MODEL_SET=1 | img_height_width=180, 180
+1011-215135| 
+[94mModel [92mc11[0m MODEL_SET=1 | img_height_width=180, 180
+1011-215135| 
+[94mModel [92mc12[0m MODEL_SET=1 | img_height_width=180, 180
+1011-215135| 
+[94mModel [92mc13[0m MODEL_SET=1 | img_height_width=180, 180
+1011-215135| 
+[94mModel [92mc14[0m MODEL_SET=1 | img_height_width=180, 180
+1011-215135| 
+[94mModel [92mc15[0m MODEL_SET=1 | img_height_width=180, 180

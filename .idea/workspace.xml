@@ -6,18 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="5ec5628d-1abb-4103-8dc7-88277ad0e0ce" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/D07/frames pos.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/D07/frames pos.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/D07/model/Cap123.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/D07/model/Cap123.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/D07/model/Cap123graf.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/D07/model/Cap123graf.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/D07/model/c127.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/D07/model/c127.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/D07/model/c127graf.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/D07/model/c127graf.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/D07/model/c6.h5" beforeDir="false" afterPath="$PROJECT_DIR$/data/D07/model/c6.h5" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/D07/model/c6.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/D07/model/c6.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/D07/model/c6.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/D07/model/c6.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/D07/model/c6graf.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/D07/model/c6graf.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/img_form_cam.png" beforeDir="false" afterPath="$PROJECT_DIR$/img_form_cam.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/windows_Setting/check box.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/windows_Setting/check box.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/t3.py" beforeDir="false" afterPath="$PROJECT_DIR$/t3.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +51,7 @@
       <recent name="C:\Python_Project\Auto Inspection" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.UI.3.training">
+  <component name="RunManager" selected="Python.t3">
     <configuration name="Frames" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Auto Inspection" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -167,10 +159,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.UI.3.training" />
-        <item itemvalue="Python.main" />
-        <item itemvalue="Python.Frames" />
         <item itemvalue="Python.t3" />
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.UI.3.training" />
+        <item itemvalue="Python.Frames" />
         <item itemvalue="Python.test" />
       </list>
     </recent_temporary>

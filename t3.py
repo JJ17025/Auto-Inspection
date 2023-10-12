@@ -1,17 +1,9 @@
-BLACK = '\033[90m'
-FAIL = '\033[91m'
-GREEN = '\033[92m'
-WARNING = '\033[93m'
-BLUE = '\033[94m'
-PINK = '\033[95m'
-CYAN = '\033[96m'
-ENDC = '\033[0m'
-BOLD = '\033[1m'
-ITALICIZED = '\033[3m'
-UNDERLINE = '\033[4m'
+import numpy as np
 
+e = np.array(1.0, dtype=np.float16)
 
-print('hgfhcfgjh',color=GREEN)
-print('hgfhcfgjh',color=PINK)
+while e + 1 != 1:
+    e = e / 2
 
-print('fdgdf')
+print(e)  # 1.1102230246251565e-16
+print(type(e))  # <class 'numpy.float64'>
