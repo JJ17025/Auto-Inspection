@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ec5628d-1abb-4103-8dc7-88277ad0e0ce" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frames.py" beforeDir="false" afterPath="$PROJECT_DIR$/Frames.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI.3.training.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI.3.training.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/D07/frames pos.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/D07/frames pos.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/D07/model/c127.h5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/D07/model/c127.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/D07/model/c127.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/D07/model/c127graf.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img_form_cam.png" beforeDir="false" afterPath="$PROJECT_DIR$/img_form_cam.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/windows_Setting/check box.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/windows_Setting/check box.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,7 +48,28 @@
       <recent name="C:\Python_Project\Auto Inspection" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.UI.3.training">
+  <component name="RunManager" selected="Python.main">
+    <configuration name="CV_UI" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Auto Inspection" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/CV_UI.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Frames" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Auto Inspection" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -141,34 +154,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Auto Inspection" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.UI.3.training" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.CV_UI" />
+        <item itemvalue="Python.UI.3.training" />
         <item itemvalue="Python.t3" />
         <item itemvalue="Python.Frames" />
-        <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>

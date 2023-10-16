@@ -1300,3 +1300,30 @@
 1016-113305| 0:04:22.424529 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
 1016-113305| ------- >>> training... <<< ---------
 1016-113307| image_count = {image_count}
+1016-161353| 0:04:22.424529 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1016-161353| 4:40:47.279074 เวลาที่ใช้ในการ training 
+1016-161353| 4:45:09.703603 เวลาที่ใช้ทั้งหมด
+1016-161353| 
+[94mModel [92mc3[0m MODEL_SET=1 | img_height_width=180, 180
+1016-161353| 
+[94mModel [92mc4[0m MODEL_SET=1 | img_height_width=180, 180
+1016-161353| 
+[94mModel [92mc5[0m MODEL_SET=1 | img_height_width=180, 180
+1016-161353| 
+[94mModel [92mc6[0m MODEL_SET=1 | img_height_width=180, 180
+1016-161353| 
+[94mModel [92mc8[0m MODEL_SET=1 | img_height_width=180, 180
+1016-161353| 
+[94mModel [92mc9[0m MODEL_SET=1 | img_height_width=180, 180
+1016-161353| 
+[94mModel [92mc10[0m MODEL_SET=1 | img_height_width=180, 180
+1016-161353| 
+[94mModel [92mc11[0m MODEL_SET=1 | img_height_width=180, 180
+1016-161353| 
+[94mModel [92mc12[0m MODEL_SET=1 | img_height_width=180, 180
+1016-161353| 
+[94mModel [92mc13[0m MODEL_SET=1 | img_height_width=180, 180
+1016-161353| 
+[94mModel [92mc14[0m MODEL_SET=1 | img_height_width=180, 180
+1016-161353| 
+[94mModel [92mc15[0m MODEL_SET=1 | img_height_width=180, 180
