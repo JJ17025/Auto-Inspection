@@ -87,13 +87,14 @@ def drawrect(img, pt1, pt2, color, thickness=1):
 
 
 class Frame:
-    def __init__(self, name, x, y, dx, dy, model_used):
+    def __init__(self, name, x, y, dx, dy, model_used, res_ok):
         self.name = name
         self.x = x
         self.y = y
         self.dx = dx
         self.dy = dy
         self.model_used = model_used
+        self.res_ok = res_ok
         self.x1 = x - dx / 2
         self.y1 = y - dy / 2
         self.x2 = x + dx / 2
@@ -134,7 +135,7 @@ class Model:
         return (f'{BLUE}Model '
                 f'{GREEN}{self.name}{ENDC}')
 
-    def load_model(self,modelname):
+    def load_model(self, modelname):
         try:
             self.model = models.load_model(fr'data/{modelname}/model/{self.name}.h5')
         except Exception as e:
@@ -190,7 +191,8 @@ class Frames:
             dx = v['dx']
             dy = v['dy']
             model_used = v['model_used']
-            self.frames[name] = Frame(name, x, y, dx, dy, model_used)
+            res_ok = v['res_ok']
+            self.frames[name] = Frame(name, x, y, dx, dy, model_used, res_ok)
         for name, v in data_all['models'].items():
             status_list = sorted(v['status_list'])
             self.models[name] = Model(name, status_list)
@@ -298,11 +300,10 @@ def predict(frame, Frames):
 
     # if frame.highest_score_name:
     #     frame.color_frame = frame.color_text = frame.K_color[frame.highest_score_name]
-
-    if frame.highest_score_name in ['nopart', 'wrongpart', 'wrongpolarity']:
-        frame.color_frame = frame.color_text = frame.K_color['nopart']
-    if frame.highest_score_name == 'ok':
-        frame.color_frame = frame.color_text = frame.K_color['ok']
+    if frame.highest_score_name in frame.res_ok:
+        frame.color_frame = frame.color_text = (0, 255, 0)
+    else:
+        frame.color_frame = frame.color_text = (0, 0, 255)
 
     return frame.percent_score_list, predictions[0]
 

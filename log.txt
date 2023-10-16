@@ -1281,3 +1281,22 @@
 [94mModel [92mc14[0m MODEL_SET=1 | img_height_width=180, 180
 1011-215135| 
 [94mModel [92mc15[0m MODEL_SET=1 | img_height_width=180, 180
+1016-112843| model_list (ที่มี) 18 ['c10', 'c11', 'c12', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap123', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+1016-112843| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+1016-112843| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+1016-112843| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+1016-112843| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+1016-112843| 
+[94mModel [92mCap123[0m MODEL_SET=1 | img_height_width=180, 180
+1016-112843| 
+[94mModel [92mCap45[0m MODEL_SET=1 | img_height_width=180, 180
+1016-112843| 
+[94mModel [92mc127[0m MODEL_SET=1 | img_height_width=180, 180
+1016-112843| --------  >>> corp_img <<<  ---------
+1016-113305| 0:04:22.424529 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1016-113305| ------- >>> training... <<< ---------
+1016-113307| image_count = {image_count}

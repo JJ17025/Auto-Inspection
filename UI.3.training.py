@@ -80,7 +80,7 @@ def corp_img(model_name, frames):
     for i in range(len(img_full_namefile_list)):
         file_name = img_full_namefile_list[i]  # txt and png
         # file_name is 0807 143021, ...
-        frames_list = open(fr"{IMG_FULL_PATH}\{file_name}.txt").readlines()
+        frames_list = open(fr"{IMG_FULL_PATH}/{file_name}.txt").readlines()
         print(f'{i}/{len(img_full_namefile_list)} {file_name}')
         for data_text in frames_list:
             data_list = data_text.strip().split(':')
@@ -95,23 +95,22 @@ def corp_img(model_name, frames):
             dx = frames.frames[frame_name].dx
             dy = frames.frames[frame_name].dy
 
-
             if frames.frames[frame_name].model_used == model_name:
-                print(model_name, frame_name, status, x, y, dx, dy)
+                print('    ', model_name, frame_name, status, x, y, dx, dy)
 
-                img = cv2.imread(fr"{IMG_FULL_PATH}\{file_name}.png")
+                img = cv2.imread(fr"{IMG_FULL_PATH}/{file_name}.png")
                 pixels_Y, pixels_X, _ = img.shape
 
                 x1, x2 = int((x - dx / 2) * pixels_X), int((x + dx / 2) * pixels_X)
                 y1, y2 = int((y - dy / 2) * pixels_Y), int((y + dy / 2) * pixels_Y)
 
                 img_crop_namefile = f'{status} {frame_name} {file_name}.png'
-                mkdir(fr"{IMG_FRAME_PATH}\{model_name}")
-                mkdir(fr"{IMG_FRAME_PATH}\{model_name}\{status}")
-                mkdir(fr"{IMG_FRAME_LOG_PATH}\{model_name}")
+                mkdir(fr"{IMG_FRAME_PATH}/{model_name}")
+                mkdir(fr"{IMG_FRAME_PATH}/{model_name}/{status}")
+                mkdir(fr"{IMG_FRAME_LOG_PATH}/{model_name}")
 
                 img_crop = img[y1:y2, x1:x2]
-                cv2.imwrite(fr"{IMG_FRAME_LOG_PATH}\{model_name}\{img_crop_namefile}", img_crop)
+                cv2.imwrite(fr"{IMG_FRAME_LOG_PATH}/{model_name}/{img_crop_namefile}", img_crop)
 
                 for shift_y in range(-4, 4 + 1):
                     for shift_x in range(-4, 4 + 1):
@@ -128,10 +127,10 @@ def corp_img(model_name, frames):
                                 # features.append(img_crop_BC)
                                 # labels.append(class_names.index(status))
                                 img_crop_namefile = f'{file_name} {frame_name} {status} {shift_y} {shift_x} {b} {c}.png'
-                                cv2.imwrite(fr"{IMG_FRAME_PATH}\{model_name}\{status}\{img_crop_namefile}", img_crop_BC)
+                                cv2.imwrite(fr"{IMG_FRAME_PATH}/{model_name}/{status}/{img_crop_namefile}", img_crop_BC)
 
                 # # เมื่อcrop img เสร็จ ให้จดชื่อ ภาพที่ crop ไปแล้วไว้
-                # with open(fr"{IMG_FRAME_PATH}\{k} Name of the cropped image file.txt", 'a') as file:
+                # with open(fr"{IMG_FRAME_PATH}/{k} Name of the cropped image file.txt", 'a') as file:
                 #     file.write(f'{file_name}\n')
 
 
@@ -139,7 +138,7 @@ def corp_img(model_name, frames):
 
 
 def create_model(model_name):
-    data_dir = pathlib.Path(rf'{IMG_FRAME_PATH}\{model_name}')
+    data_dir = pathlib.Path(rf'{IMG_FRAME_PATH}/{model_name}')
 
     image_count = len(list(data_dir.glob('*/*.png')))
     plog('image_count = {image_count}')
@@ -155,7 +154,7 @@ def create_model(model_name):
 
     class_names = train_ds.class_names
     print('class_names =', class_names)
-    with open(fr'{MODEL_PATH}\{model_name}.json', 'w') as file:
+    with open(fr'{MODEL_PATH}/{model_name}.json', 'w') as file:
         file.write(json.dumps(class_names, indent=4))
 
     # Visualize the data
@@ -265,10 +264,10 @@ def create_model(model_name):
     plt.title(model_name)
 
     # plt.show()
-    plt.savefig(fr'{MODEL_PATH}\{model_name}graf.png')
+    plt.savefig(fr'{MODEL_PATH}/{model_name}graf.png')
     model.save(os.path.join(MODEL_PATH, f'{model_name}.h5'))
     # delete IMG_FRAME_PATH
-    shutil.rmtree(fr"{IMG_FRAME_PATH}\{model_name}")
+    shutil.rmtree(fr"{IMG_FRAME_PATH}/{model_name}")
 
 
 def plog(string):
@@ -277,7 +276,7 @@ def plog(string):
         file.write(f'{datetime.now().strftime("%m%d-%H%M%S")}| {string}\n')
 
 
-def f(model_name,model, frames):
+def f(model_name, model, frames):
     try:
         t1 = datetime.now()
         plog('--------  >>> corp_img <<<  ---------')
@@ -295,7 +294,7 @@ def f(model_name,model, frames):
         print(f'{WARNING}model_name error{ENDC}')
 
 
-frames = Frames(rf"data\D07\frames pos.json")
+frames = Frames(rf"data/D07/frames pos.json")
 print(frames)
 model_list = os.listdir(MODEL_PATH)
 model_list = [file.split('.')[0] for file in model_list if file.endswith('.h5')]

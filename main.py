@@ -443,10 +443,6 @@ def main(img, stop_event, reconnect_cam):
                         play = False
 
             if res == 'setting':
-                try:
-                    cv2.imwrite('img_form_cam.png', img_form_cam)
-                except:
-                    pass
                 esetting = Setting()
                 esetting.x_shift = 400
                 esetting.y_shift = 200

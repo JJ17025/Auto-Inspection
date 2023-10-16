@@ -439,26 +439,3 @@ class Display:
                         return self.img_show, res
         return self.img_show, res
 
-
-if __name__ == '__main__':
-    mouse_pos = (0, 0)
-    mouse_event = [0]
-    cv2.namedWindow('display')
-
-    # manu = Windows()
-    # manu.set_val('Exit','ok : Confirm exit','cancel : cancel')
-    # res = manu.update()
-    # print(res)
-    ####################################################
-    # dis = Display()
-
-    ####################################################
-    e = Confirm()
-    e.set_val('Confirm', 'Are you sure', 'You want to Save Image?')
-    while True:
-        img_show, res = e.update(mouse_pos, mouse_event)
-        if res:
-            print(res)
-        cv2.imshow('display', img_show)
-        cv2.waitKey(1)
-    ####################################################
