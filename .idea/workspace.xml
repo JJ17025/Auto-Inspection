@@ -6,6 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="5ec5628d-1abb-4103-8dc7-88277ad0e0ce" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI.3.training.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI.3.training.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/D07/model/c127.h5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/D07/model/c127graf.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,7 +51,7 @@
       <recent name="C:\Python_Project\Auto Inspection" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.UI.3.training">
     <configuration name="CV_UI" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Auto Inspection" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -156,8 +159,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.UI.3.training" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.CV_UI" />
         <item itemvalue="Python.t3" />
         <item itemvalue="Python.Frames" />

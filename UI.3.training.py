@@ -12,6 +12,7 @@ import tensorflow as tf
 import keras
 from keras import layers, optimizers, models
 from keras.models import Sequential, load_model
+from keras.applications import VGG16
 import pathlib
 import matplotlib.pyplot as plt
 from Frames import Frames
@@ -46,7 +47,7 @@ epochs = 5
 # img_width = 250
 # epochs = 8
 MODEL_SET = 1  # 1,2,3
-
+MODEL_SET = 1.5
 
 def controller(img, brightness=255, contrast=127):
     brightness = int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))
@@ -188,7 +189,7 @@ def create_model(model_name):
 
     # Create the model
     num_classes = len(class_names)
-
+    cp = True
     if MODEL_SET == 1:
         model = Sequential([
             layers.Rescaling(1. / 255, input_shape=(img_height, img_width, 3)),
@@ -203,6 +204,30 @@ def create_model(model_name):
             layers.Dense(128, activation='relu'),
             layers.Dense(num_classes)
         ])
+    if MODEL_SET == 1.5:
+        base_model = tf.keras.applications.ResNet50(include_top=False, weights='imagenet',
+                                                    input_shape=(img_height, img_width, 3))
+
+        model = Sequential([
+            base_model,
+            layers.GlobalAveragePooling2D(),
+            layers.Dense(128, activation='relu'),
+            layers.Dense(num_classes, activation='softmax')
+        ])
+
+        initial_learning_rate = 0.001
+        lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+            initial_learning_rate, decay_steps=10000, decay_rate=0.9
+        )
+
+        model.compile(
+            optimizer=tf.keras.optimizers.Adam(learning_rate=lr_schedule),
+            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
+            metrics=['accuracy']
+        )
+        cp = False
+
+
 
     if MODEL_SET == 2:
         model = models.Sequential([
@@ -239,9 +264,11 @@ def create_model(model_name):
             layers.Dropout(0.5),
             layers.Dense(num_classes, activation='softmax')
         ])
-    model.compile(optimizer='adam',
-                  loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                  metrics=['accuracy'])
+
+    if cp:
+        model.compile(optimizer='adam',
+                      loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+                      metrics=['accuracy'])
     model.summary()
     history = model.fit(train_ds, validation_data=val_ds, epochs=epochs)
 
