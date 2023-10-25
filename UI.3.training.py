@@ -17,7 +17,7 @@ import pathlib
 import matplotlib.pyplot as plt
 from Frames import Frames
 from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
-
+from tensorflow.keras.applications import VGG16
 
 def mkdir(directory):
     if not os.path.exists(directory):
@@ -47,7 +47,7 @@ epochs = 5
 # img_width = 250
 # epochs = 8
 MODEL_SET = 1  # 1,2,3
-MODEL_SET = 1.5
+MODEL_SET = 1.4
 
 def controller(img, brightness=255, contrast=127):
     brightness = int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))
@@ -204,6 +204,19 @@ def create_model(model_name):
             layers.Dense(128, activation='relu'),
             layers.Dense(num_classes)
         ])
+    if MODEL_SET == 1.4:
+
+
+        base_model = VGG16(include_top=False, weights='imagenet', input_shape=(img_height, img_width, 3))
+        base_model.trainable = False
+
+        model = Sequential([
+            base_model,
+            layers.Flatten(),
+            layers.Dense(128, activation='relu'),
+            layers.Dense(num_classes, activation='softmax')
+        ])
+
     if MODEL_SET == 1.5:
         base_model = tf.keras.applications.ResNet50(include_top=False, weights='imagenet',
                                                     input_shape=(img_height, img_width, 3))
@@ -226,7 +239,6 @@ def create_model(model_name):
             metrics=['accuracy']
         )
         cp = False
-
 
 
     if MODEL_SET == 2:
@@ -307,7 +319,7 @@ def f(model_name, model, frames):
     try:
         t1 = datetime.now()
         plog('--------  >>> corp_img <<<  ---------')
-        corp_img(model_name, frames)
+        # corp_img(model_name, frames)
         t2 = datetime.now()
         plog(f'{t2 - t1} เวลาที่ใช้ในการเปลียน img_full เป็น shift_img ')
 

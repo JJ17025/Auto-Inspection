@@ -1,3 +1,5 @@
 venv/
 data/D07/img_frame/
 .idea/
+__pycache__/
+test.py

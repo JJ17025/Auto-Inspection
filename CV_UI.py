@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 import pygame
 from func.about_image import putTextRect, overlay
+import requests
 
 
 def mkdir(directory):
@@ -196,7 +197,11 @@ class TextInput:
 
 
 class Setting:
-    def __init__(self):
+    def __init__(self, img_BG=None):
+        if img_BG is not None:
+            self.img_BG = cv2.blur(img_BG, (20, 20))
+        else:
+            self.img_BG = np.zeros((1080, 1920, 3), np.uint8)
         self.x_shift = 0
         self.y_shift = 0
         self.img = cv2.imread('ui/windows_Setting/non.png')
@@ -206,8 +211,8 @@ class Setting:
         for k, v in pos.items():
             x1pix, y1pix, x2pix, y2pix = v
             self.buttons[k] = Button(k, x1pix=x1pix, y1pix=y1pix, x2pix=x2pix, y2pix=y2pix)
-        self.textinput = ''
         self.read_check_box_data()
+        self.ipIO = 'http://192.168.225.198:8080'
 
     def read_check_box_data(self):
         try:
@@ -232,7 +237,20 @@ class Setting:
         y -= self.y_shift
 
         self.img_show = self.img.copy()
-        cv2.putText(self.img_show, self.textinput, (40, 73), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
+
+        res = requests.get(f'{self.ipIO}/readpinall')
+        if res.status_code == 200:
+            data_dict = json.loads(res.text)
+            line = -1
+            for k, v in data_dict.items():
+                line += 1
+                cv2.putText(self.img_show, f'{v} = {k}',
+                            (40, 300 + line * 20), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
+
+        else:
+            cv2.putText(self.img_show, f'status code = {res.status_code}',
+                        (40, 300), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
+
         for k, v in self.buttons.items():
             # v.show_frame_for_debug(self.img_show)
             if k in self.check_box.keys() and self.check_box[k]:
@@ -252,13 +270,31 @@ class Setting:
                                 self.check_box[k] = False
                             else:
                                 self.check_box[k] = True
-                        return self.img_show, res
+                        if res in ['Button_LED 1 ON', 'Button_LED 1 OFF',
+                                   'Button_LED 2 ON', 'Button_LED 2 OFF',
+                                   'Solenoid 1 ON', 'Solenoid 1 OFF',
+                                   'Solenoid 2 ON', 'Solenoid 2 OFF']:
+                            O = {
+                                "Button_LED 1": 23,
+                                "Button_LED 2": 24,
+                                "Solenoid 1": 8,
+                                "Solenoid 2": 7,
+                            }
+                            pin = O[' '.join(res.split(' ')[:-1])]
+                            out = res.split(' ')[-1].lower()
+                            requests.get(f'{self.ipIO}/{pin}/{out}')
 
-        return self.img_show, res
+                        return res
+        self.img_BG = overlay(self.img_BG, self.img_show, (self.x_shift, self.y_shift))
+        return res
 
 
 class Wait:
-    def __init__(self):
+    def __init__(self, img_BG=None):
+        if img_BG is not None:
+            self.img_BG = cv2.blur(img_BG, (10, 10))
+        else:
+            self.img_BG = np.zeros((1080, 1920, 3), np.uint8)
         self.x_shift = 0
         self.y_shift = 0
         self.img = cv2.imread('ui/windows_wait/non.png')
@@ -275,7 +311,6 @@ class Wait:
         line = 0
         for txt in args:
             cv2.putText(self.img, txt, (68, int(63 + 20 * line)), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
-            print(line)
             line += 1
 
     def update(self, mouse_pos, events, count_time=True):
@@ -297,8 +332,9 @@ class Wait:
                 if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     if v.mouse_on_button(x, y):
                         res = k
-                        return self.img_show, res
-        return self.img_show, res
+                        return res
+        self.img_BG = overlay(self.img_BG, self.img_show, (self.x_shift, self.y_shift))
+        return res
 
 
 class Confirm:
@@ -318,7 +354,6 @@ class Confirm:
         line = 0
         for txt in args:
             cv2.putText(self.img, txt, (68, int(63 + 20 * line)), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
-            print(line)
             line += 1
 
     def update(self, mouse_pos, events):
@@ -413,7 +448,7 @@ class Display:
         for k, v in pos.items():
             x1pix, y1pix, x2pix, y2pix = v
             self.buttons[k] = Button(k, x1pix=x1pix, y1pix=y1pix, x2pix=x2pix, y2pix=y2pix)
-        self.mode = 'run'
+        self.mode = 'manual'
 
     def update(self, mouse_pos, events):
         x, y = mouse_pos
@@ -438,4 +473,3 @@ class Display:
                             self.mode = res.split('-')[2]
                         return self.img_show, res
         return self.img_show, res
-

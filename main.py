@@ -24,7 +24,7 @@ def main(img, stop_event, reconnect_cam):
     import json
     import statistics
     import numpy as np
-
+    import requests
     from CV_UI import Button, Display, Exit, TextInput, Select, Setting, Wait, Confirm
     from func.about_image import putTextRect, overlay, adj_image, rotate
     from Frames import Frame, Frames, predict
@@ -37,7 +37,7 @@ def main(img, stop_event, reconnect_cam):
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return pygame.image.frombuffer(image.tobytes(), image.shape[1::-1], "RGB")
 
-    def show():
+    def show(surfacenp):
         surface = cvimage_to_pygame(surfacenp)
         display.blit(surface, (0, 0))
         pygame.display.update()
@@ -77,7 +77,6 @@ def main(img, stop_event, reconnect_cam):
             for event in events:
                 if event.type == pygame.MOUSEBUTTONUP and event.button == 3:
                     for name, frame in framesmodel.frames.items():
-                        print(frame.name)
                         if frame.x1 < (x - 41) / 1344 < frame.x2 and \
                                 frame.y1 < (y - 41) / 1008 < frame.y2:
                             e = Select()
@@ -89,7 +88,7 @@ def main(img, stop_event, reconnect_cam):
                                 mouse_pos = pygame.mouse.get_pos()
                                 windows_img, res = e.update(mouse_pos, pygame.event.get())
                                 surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                                show()
+                                show(surfacenp)
 
                                 if res:
                                     if 'break' in res:
@@ -108,7 +107,7 @@ def main(img, stop_event, reconnect_cam):
                             mouse_pos = pygame.mouse.get_pos()
                             windows_img, res = e.update(mouse_pos, pygame.event.get())
                             surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                            show()
+                            show(surfacenp)
 
                             if res:
                                 if 'break' in res:
@@ -153,7 +152,7 @@ def main(img, stop_event, reconnect_cam):
                     mouse_pos = pygame.mouse.get_pos()
                     windows_img, res = e.update(mouse_pos, eventt)
                     surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                    show()
+                    show(surfacenp)
                     if res:
                         print(res)
                     if res in ['Cancel', 'x']:
@@ -175,7 +174,7 @@ def main(img, stop_event, reconnect_cam):
                     mouse_pos = pygame.mouse.get_pos()
                     windows_img, res = e.update(mouse_pos, pygame.event.get())
                     surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                    show()
+                    show(surfacenp)
 
                     if res:
                         if 'break' in res:
@@ -194,22 +193,8 @@ def main(img, stop_event, reconnect_cam):
 
                             if 'mark pos.json' in listdir:
                                 have_mark_pos = True
-                            # if not have_frames_pos:
-                            #     e = Confirm()
-                            #     e.set_val('Error', "don't have mark")
-                            #     e.x_shift = 700
-                            #     e.y_shift = 300
-                            #     while True:
-                            #         mouse_pos = pygame.mouse.get_pos()
-                            #         windows_img, res = e.update(mouse_pos, pygame.event.get())
-                            #         surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                            #         show()
-                            #         if res:
-                            #             print(res)
-                            #         if res in ['OK', 'Cancel', 'x']:
-                            #             break
-                            #     continue
-                            e = Wait()
+
+                            e = Wait(surfacenp.copy())
                             e.set_val('Wait', '')
                             e.x_shift = 700
                             e.y_shift = 300
@@ -222,9 +207,8 @@ def main(img, stop_event, reconnect_cam):
                                 have_model = False
 
                                 mouse_pos = pygame.mouse.get_pos()
-                                windows_img, res = e.update(mouse_pos, pygame.event.get())
-                                surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                                show()
+                                res = e.update(mouse_pos, pygame.event.get())
+                                show(e.img_BG)
                                 if res:
                                     print(res)
                                 if res == 'x':
@@ -242,16 +226,14 @@ def main(img, stop_event, reconnect_cam):
 
             if res == 'Take a photo' or autocap:
                 if len(img) == 0:
-                    print('img == []')
-                    e = Wait()
+                    e = Wait(surfacenp.copy())
                     e.set_val('Wait', '')
                     e.x_shift = 700
                     e.y_shift = 300
                     while len(img) == 0:
                         mouse_pos = pygame.mouse.get_pos()
-                        windows_img, res = e.update(mouse_pos, pygame.event.get())
-                        surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                        show()
+                        res = e.update(mouse_pos, pygame.event.get())
+                        show(e.img_BG)
                         if res:
                             print(res)
                         if res in ['OK', 'Cancel', 'x']:
@@ -261,14 +243,13 @@ def main(img, stop_event, reconnect_cam):
 
             if res == 'adj image':
                 img_for_ref = cv2.imread('m.png')
-                e = Wait()
+                e = Wait(surfacenp.copy())
                 e.set_val('Wait', 'Adjusting image')
                 e.x_shift = 700
                 e.y_shift = 300
                 mouse_pos = pygame.mouse.get_pos()
-                windows_img, res = e.update(mouse_pos, pygame.event.get(), count_time=False)
-                surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                show()
+                res = e.update(mouse_pos, pygame.event.get(), count_time=False)
+                show(e.img_BG)
 
                 res = adj_image(img_form_cam, img_for_ref, framesmodel)
                 if res is not None:
@@ -282,7 +263,7 @@ def main(img, stop_event, reconnect_cam):
                         mouse_pos = pygame.mouse.get_pos()
                         windows_img, res = e.update(mouse_pos, pygame.event.get())
                         surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                        show()
+                        show(surfacenp)
                         if res:
                             print(res)
                         if res in ['OK', 'Cancel', 'x']:
@@ -290,14 +271,13 @@ def main(img, stop_event, reconnect_cam):
 
             if res == 'perdict':
                 img_for_ref = cv2.imread('m.png')
-                e = Wait()
+                e = Wait(surfacenp.copy())
                 e.set_val('Wait', 'Adjusting image')
                 e.x_shift = 700
                 e.y_shift = 300
                 mouse_pos = pygame.mouse.get_pos()
-                windows_img, res = e.update(mouse_pos, pygame.event.get(), count_time=False)
-                surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                show()
+                res = e.update(mouse_pos, pygame.event.get(), count_time=False)
+                show(e.img_BG)
 
                 res = adj_image(img_form_cam, img_for_ref, framesmodel)
                 if res is not None:
@@ -311,7 +291,7 @@ def main(img, stop_event, reconnect_cam):
                         mouse_pos = pygame.mouse.get_pos()
                         windows_img, res = e.update(mouse_pos, pygame.event.get())
                         surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                        show()
+                        show(surfacenp)
                         if res:
                             print(res)
                         if res in ['OK', 'Cancel', 'x']:
@@ -319,17 +299,15 @@ def main(img, stop_event, reconnect_cam):
 
                 if modelname and '(no model)' not in modelname:
                     framesmodel.crop_img(img_form_cam)
-                    e = Wait()
+                    e = Wait(surfacenp.copy())
                     e.set_val('Wait', '')
                     e.x_shift = 700
                     e.y_shift = 300
                     for name, frame in framesmodel.frames.items():
-                        r = predict(frame,framesmodel)
-                        print(r)
+                        predict(frame, framesmodel)
                         mouse_pos = pygame.mouse.get_pos()
-                        windows_img, res = e.update(mouse_pos, pygame.event.get())
-                        surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                        show()
+                        res = e.update(mouse_pos, pygame.event.get())
+                        show(e.img_BG)
                 else:
                     e = Confirm()
                     e.set_val('Error', "don't have modelname", f"modelname = {modelname}")
@@ -339,7 +317,7 @@ def main(img, stop_event, reconnect_cam):
                         mouse_pos = pygame.mouse.get_pos()
                         windows_img, res = e.update(mouse_pos, pygame.event.get())
                         surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                        show()
+                        show(surfacenp)
                         if res:
                             print(res)
                         if res in ['OK', 'Cancel', 'x']:
@@ -357,11 +335,11 @@ def main(img, stop_event, reconnect_cam):
                     mouse_pos = pygame.mouse.get_pos()
                     windows_img, res = e.update(mouse_pos, pygame.event.get())
                     surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                    show()
+                    show(surfacenp)
                     if res:
                         print(res)
                     if res == 'OK':
-                        if dis.mode == 'run':
+                        if dis.mode in ['manual', 'run']:
                             namefile = datetime.now().strftime('Save Image/%y%m%d %H%M%S.png')
                             cv2.imwrite(namefile, img_form_cam)
                         if dis.mode == 'debug':
@@ -390,7 +368,7 @@ def main(img, stop_event, reconnect_cam):
                     mouse_pos = pygame.mouse.get_pos()
                     windows_img, res = e.update(mouse_pos, pygame.event.get())
                     surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                    show()
+                    show(surfacenp)
 
                     if res:
                         if 'break' in res:
@@ -411,7 +389,7 @@ def main(img, stop_event, reconnect_cam):
                                 mouse_pos = pygame.mouse.get_pos()
                                 windows_img, res = e.update(mouse_pos, pygame.event.get())
                                 surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                                show()
+                                show(surfacenp)
                                 if res:
                                     print(res)
                                 if res in ['OK']:
@@ -433,7 +411,7 @@ def main(img, stop_event, reconnect_cam):
                     mouse_pos = pygame.mouse.get_pos()
                     windows_img, res = e.update(mouse_pos, pygame.event.get())
                     surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                    show()
+                    show(surfacenp)
                     if res:
                         print(res)
                     if res in ['Cancel', 'x']:
@@ -443,15 +421,14 @@ def main(img, stop_event, reconnect_cam):
                         play = False
 
             if res == 'setting':
-                esetting = Setting()
+                esetting = Setting(surfacenp.copy())
                 esetting.x_shift = 400
                 esetting.y_shift = 200
-                surfacenpold = surfacenp.copy()
+
                 while True:
                     mouse_pos = pygame.mouse.get_pos()
-                    windows_img, res = esetting.update(mouse_pos, pygame.event.get())
-                    surfacenp = overlay(surfacenpold, windows_img, (esetting.x_shift, esetting.y_shift))
-                    show()
+                    res = esetting.update(mouse_pos, pygame.event.get())
+                    show(esetting.img_BG)
                     if res:
                         print(res)
                     if res in ['x', 'Cancel']:
@@ -463,15 +440,14 @@ def main(img, stop_event, reconnect_cam):
                         break
                     elif res == 'Reconnect Camera':
                         reconnect_cam.set()
-                        e = Wait()
+                        e = Wait(surfacenp.copy())
                         e.set_val('Wait', '')
                         e.x_shift = 700
                         e.y_shift = 300
                         while True:
                             mouse_pos = pygame.mouse.get_pos()
-                            windows_img, res = e.update(mouse_pos, pygame.event.get())
-                            surfacenp = overlay(surfacenp, windows_img, (e.x_shift, e.y_shift))
-                            show()
+                            res = e.update(mouse_pos, pygame.event.get())
+                            show(e.img_BG)
                             if res:
                                 print(res)
                             if res == 'x':
@@ -497,7 +473,7 @@ def main(img, stop_event, reconnect_cam):
 
         cv2.putText(surfacenp, f'{datetime.now().strftime("%d/%m/%y %H:%M:%S")}',
                     (1750, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
-        show()
+        show(surfacenp)
     pygame.quit()
     sys.exit()
 

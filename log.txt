@@ -1495,3 +1495,62 @@
 [94mModel [92mc127[0m MODEL_SET=1.5 | img_height_width=180, 180
 1017-103821| ------- >>> training... <<< ---------
 1017-103822| image_count = {image_count}
+1017-195814| model_list (ที่มี) 18 ['c10', 'c11', 'c12', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap123', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+1017-195814| 
+[94mModel [92musb[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195814| 
+[94mModel [92mRJ45[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195814| 
+[94mModel [92mcrys[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195814| 
+[94mModel [92mL[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195814| 
+[94mModel [92mCap123[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195814| 
+[94mModel [92mCap45[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195814| 
+[94mModel [92mc127[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195814| --------  >>> corp_img <<<  ---------
+1017-195836| 
+[94mModel [92mc3[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195836| 
+[94mModel [92mc4[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195836| 
+[94mModel [92mc5[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195836| 
+[94mModel [92mc6[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195836| 
+[94mModel [92mc8[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195836| 
+[94mModel [92mc9[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195836| 
+[94mModel [92mc10[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195836| 
+[94mModel [92mc11[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195836| 
+[94mModel [92mc12[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195836| 
+[94mModel [92mc13[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195836| 
+[94mModel [92mc14[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195836| 
+[94mModel [92mc15[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195842| model_list (ที่มี) 18 ['c10', 'c11', 'c12', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap123', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+1017-195842| 
+[94mModel [92musb[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195842| 
+[94mModel [92mRJ45[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195842| 
+[94mModel [92mcrys[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195842| 
+[94mModel [92mL[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195842| 
+[94mModel [92mCap123[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195842| 
+[94mModel [92mCap45[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195842| 
+[94mModel [92mc127[0m MODEL_SET=1.4 | img_height_width=180, 180
+1017-195842| --------  >>> corp_img <<<  ---------
+1017-195842| 0:00:00 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1017-195842| ------- >>> training... <<< ---------
+1017-195844| image_count = {image_count}
