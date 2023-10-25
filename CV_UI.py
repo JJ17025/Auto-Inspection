@@ -127,7 +127,11 @@ class Button:
 
 
 class Exit:
-    def __init__(self):
+    def __init__(self, img_BG=None):
+        if img_BG is not None:
+            self.img_BG = cv2.blur(img_BG, (20, 20))
+        else:
+            self.img_BG = np.zeros((1080, 1920, 3), np.uint8)
         self.x_shift = 0
         self.y_shift = 0
         self.img = cv2.imread('ui/windows_Exit/non.png')
@@ -156,13 +160,18 @@ class Exit:
                 if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     if v.mouse_on_button(x, y):
                         res = k
-                        return self.img_show, res
+                        return res
 
-        return self.img_show, res
+        self.img_BG = overlay(self.img_BG, self.img_show, (self.x_shift, self.y_shift))
+        return res
 
 
 class TextInput:
-    def __init__(self):
+    def __init__(self, img_BG=None):
+        if img_BG is not None:
+            self.img_BG = cv2.blur(img_BG, (10, 10))
+        else:
+            self.img_BG = np.zeros((1080, 1920, 3), np.uint8)
         self.x_shift = 0
         self.y_shift = 0
         self.img = cv2.imread('ui/windows_Text/non.png')
@@ -191,9 +200,10 @@ class TextInput:
                 if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     if v.mouse_on_button(x, y):
                         res = k
-                        return self.img_show, res
+                        return res
 
-        return self.img_show, res
+        self.img_BG = overlay(self.img_BG, self.img_show, (self.x_shift, self.y_shift))
+        return res
 
 
 class Setting:
@@ -338,7 +348,11 @@ class Wait:
 
 
 class Confirm:
-    def __init__(self):
+    def __init__(self, img_BG=None):
+        if img_BG is not None:
+            self.img_BG = cv2.blur(img_BG, (10, 10))
+        else:
+            self.img_BG = np.zeros((1080, 1920, 3), np.uint8)
         self.x_shift = 0
         self.y_shift = 0
         self.img = cv2.imread('ui/windows_Confirm/non.png')
@@ -370,12 +384,17 @@ class Confirm:
                 if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     if v.mouse_on_button(x, y):
                         res = k
-                        return self.img_show, res
-        return self.img_show, res
+                        return res
+        self.img_BG = overlay(self.img_BG, self.img_show, (self.x_shift, self.y_shift))
+        return res
 
 
 class Select:
-    def __init__(self):
+    def __init__(self, img_BG=None):
+        if img_BG is not None:
+            self.img_BG = img_BG
+        else:
+            self.img_BG = np.zeros((1080, 1920, 3), np.uint8)
         self.x_shift = 0
         self.y_shift = 0
         self.img = cv2.imread('ui/select/non.png')
@@ -431,10 +450,11 @@ class Select:
                     res = 'break, Click the mouse on an empty space.'
                     if v.mouse_on_button(x, y):
                         res = k
-                        return self.img_show, res
+                        return res
                 if event.type == pygame.MOUSEBUTTONUP and event.button == 3:
                     res = 'break'
-        return self.img_show, res
+        self.img_BG = overlay(self.img_BG, self.img_show, (self.x_shift, self.y_shift))
+        return res
 
 
 class Display:
