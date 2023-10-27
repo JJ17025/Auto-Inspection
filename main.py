@@ -124,8 +124,6 @@ def main(img, stop_event, reconnect_cam):
                                 break
                         break
         if dis.mode == 'run' and modelname:
-            ''' read data "ให้ ถ่ายภาพ --> predict "'''
-
             txt = [
                 ['step 1                           ', ['color=y', 'step', ]],
                 ['  if senser0 and senser0 is low  ', ['']],
@@ -161,6 +159,7 @@ def main(img, stop_event, reconnect_cam):
                 line += 1
                 cv2.putText(surfacenp, t, (1440, round(200 + line * 24)), 16, 0.5, color, 1, cv2.LINE_AA)
 
+            ''' read data "ให้ ถ่ายภาพ --> predict "'''
 
 
 

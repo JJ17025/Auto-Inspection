@@ -512,10 +512,17 @@ class Display:
                         return self.img_show, res
 
         if self.mode == 'run':
-
-            res = requests.get(f'{self.ipIO}/Do you want me to predict')
-            if res.text == 'yes':
-                self.predict_auto = True
+            try:
+                res = requests.get(f'{self.ipIO}/Do you want me to predict', timeout=0.1)
+                if res.status_code == 200:
+                    if res.text == 'yes':
+                        self.predict_auto = True
+                else:
+                    print(f"Request failed with status code {res.status_code}")
+            except requests.exceptions.Timeout:
+                print(f"Request timed out. The request took longer than {0.1} second to complete.")
+            except requests.exceptions.RequestException as e:
+                print(f"An error occurred: {e}")
 
 
 
