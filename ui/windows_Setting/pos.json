@@ -62,50 +62,50 @@
     205,
     98
   ],
-  "Button_LED 1 ON": [
+  "Button_LED_1 ON": [
     141,
     110,
     180,
     138
   ],
-  "Button_LED 2 ON": [
+  "Button_LED_2 ON": [
     141,
     150,
     180,
     178
   ],
-  "Solenoid 1 ON": [
+  "Stopper_1 ON": [
     141,
     190,
     180,
     218
   ],
-  "Solenoid 2 ON": [
+  "Stopper_2 ON": [
     141,
     230,
     180,
     258
   ],
 
-  "Button_LED 1 OFF": [
+  "Button_LED_1 OFF": [
     182,
     110,
     221,
     138
   ],
-  "Button_LED 2 OFF": [
+  "Button_LED_2 OFF": [
     182,
     150,
     221,
     178
   ],
-  "Solenoid 1 OFF": [
+  "Stopper_1 OFF": [
     182,
     190,
     221,
     218
   ],
-  "Solenoid 2 OFF": [
+  "Stopper_2 OFF": [
     182,
     230,
     221,

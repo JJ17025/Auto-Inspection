@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from datetime import datetime
 import cv2
 import numpy as np
@@ -196,11 +197,20 @@ class TextInput:
 
         for k, v in self.buttons.items():
             res = None
+            print('---')
             for event in events:
+                print(events)
                 if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     if v.mouse_on_button(x, y):
                         res = k
                         return res
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_BACKSPACE:
+                        self.textinput = self.textinput[:-1]
+                    elif event.unicode in ('abcdefghijklmnopqrstuvwxyz 0123456789+-_=()[]{}'
+                                           'ABCDEFGHIJKLMNOPQRSTUVWXYZ `~!@#$%^&;.'
+                                           ):
+                        self.textinput += event.unicode
 
         self.img_BG = overlay(self.img_BG, self.img_show, (self.x_shift, self.y_shift))
         return res
@@ -248,9 +258,8 @@ class Setting:
 
         self.img_show = self.img.copy()
 
-        res = requests.get(f'{self.ipIO}/readpinall')
-        if res.status_code == 200:
-            data_dict = json.loads(res.text)
+        data_dict = self.readIO()
+        if type(data_dict) == dict:
             line = -1
             for k, v in data_dict.items():
                 line += 1
@@ -258,7 +267,7 @@ class Setting:
                             (40, 300 + line * 20), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
 
         else:
-            cv2.putText(self.img_show, f'status code = {res.status_code}',
+            cv2.putText(self.img_show, f'error',
                         (40, 300), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
 
         for k, v in self.buttons.items():
@@ -280,23 +289,27 @@ class Setting:
                                 self.check_box[k] = False
                             else:
                                 self.check_box[k] = True
-                        if res in ['Button_LED 1 ON', 'Button_LED 1 OFF',
-                                   'Button_LED 2 ON', 'Button_LED 2 OFF',
-                                   'Solenoid 1 ON', 'Solenoid 1 OFF',
-                                   'Solenoid 2 ON', 'Solenoid 2 OFF']:
-                            O = {
-                                "Button_LED 1": 23,
-                                "Button_LED 2": 24,
-                                "Solenoid 1": 8,
-                                "Solenoid 2": 7,
-                            }
-                            pin = O[' '.join(res.split(' ')[:-1])]
-                            out = res.split(' ')[-1].lower()
-                            requests.get(f'{self.ipIO}/{pin}/{out}')
+                        if res in ['Button_LED_1 ON', 'Button_LED_1 OFF',
+                                   'Button_LED_2 ON', 'Button_LED_2 OFF',
+                                   'Stopper_1 ON', 'Stopper_1 OFF',
+                                   'Stopper_2 ON', 'Stopper_2 OFF']:
+                            pin = res.split(' ')[0]
+                            out = res.split(' ')[1].lower()
+                            self.writeIO(pin, out)
 
                         return res
         self.img_BG = overlay(self.img_BG, self.img_show, (self.x_shift, self.y_shift))
         return res
+
+    def readIO(self):
+        res = requests.get(f'{self.ipIO}/readpinall')
+        if res.status_code == 200:
+            data_dict = json.loads(res.text)
+            return data_dict
+
+    def writeIO(self, pin, status):
+        print(f'{self.ipIO}/s/{pin}={status}')
+        requests.get(f'{self.ipIO}/s/{pin}={status}')
 
 
 class Wait:
@@ -468,7 +481,12 @@ class Display:
         for k, v in pos.items():
             x1pix, y1pix, x2pix, y2pix = v
             self.buttons[k] = Button(k, x1pix=x1pix, y1pix=y1pix, x2pix=x2pix, y2pix=y2pix)
-        self.mode = 'manual'
+        self.LOW = 0
+        self.HIGH = 1
+        self.ipIO = 'http://192.168.225.198:8080'
+        self.mode = 'manual'  # debug manual run
+        self.mode_run_step = 0
+        self.predict_auto = False
 
     def update(self, mouse_pos, events):
         x, y = mouse_pos
@@ -492,4 +510,81 @@ class Display:
                         if 'mode_menu' in res:
                             self.mode = res.split('-')[2]
                         return self.img_show, res
+
+        if self.mode == 'run':
+
+            res = requests.get(f'{self.ipIO}/Do you want me to predict')
+            if res.text == 'yes':
+                self.predict_auto = True
+
+
+
+            # self.update_mode_run()
+        else:
+            self.mode_run_step = 0
         return self.img_show, res
+
+    def update_mode_run(self):
+        print(f'self.mode_run_step = {self.mode_run_step}')
+        res = self.readIO()
+        if type(res) == int:
+            print(f'error {res}')
+            return
+
+        if self.mode_run_step >= 2:
+            if res["Senser Infrared 1"] == self.HIGH and res["Senser Infrared 2"] == self.HIGH:
+                # sen1 sen2 เจอ --> stop2 ลงมาเหยียบ
+                self.writeIO('Stopper_2', 'on')
+
+        if self.mode_run_step == 0:
+            self.writeIO('Stopper_1', 'off')
+            self.writeIO('Stopper_2', 'off')
+            self.mode_run_step = 1
+
+        elif self.mode_run_step == 1:
+            if res["Senser Infrared 0"] == self.LOW and res["Senser Infrared 1"] == self.LOW:
+                # sen0 sen1 ไม่เจอ --> stopper1 ลง  ### เพื่อรอ pcb มา
+                self.writeIO('Stopper_1', 'on')
+                self.mode_run_step = 2
+                self.datetime_fl = datetime.now()
+            else:
+                print('มีอะไรขวาง Senser Infrared')
+
+        elif self.mode_run_step == 2:
+            if res["Senser Infrared 1"] == self.HIGH:
+                # sen1 เจอ --> ___ ### ถ้าเจอ pcb มา delay รอถ่ายภาพ
+                self.mode_run_step = 3
+
+        elif self.mode_run_step == 3:
+            if (datetime.now() - self.datetime_fl).total_seconds() > 2:
+                # หน่วงเวลา predict
+                self.mode_run_step = 4
+
+        elif self.mode_run_step == 4:
+            # predict
+            self.predict_auto = True
+            self.mode_run_step = 5.1
+            # self.mode_run_step = 6.1
+
+        elif self.mode_run_step == 5.1:  # OK
+            self.writeIO('Stopper_1', 'off')
+            self.mode_run_step = 5.2
+        elif self.mode_run_step == 5.2:
+            # หน่วงเวลา
+            if (datetime.now() - self.datetime_fl).total_seconds() > 2:
+                self.writeIO('Stopper_2', 'off')
+                self.mode_run_step = 5.3
+        elif self.mode_run_step == 5.3:
+            self.mode_run_step = 1
+
+    def readIO(self):
+        res = requests.get(f'{self.ipIO}/readpinall')
+        if res.status_code == 200:
+            data_dict = json.loads(res.text)
+            return data_dict
+        else:
+            self.mode = 'manual'
+            return res.status_code
+
+    def writeIO(self, pin, status):
+        requests.get(f'{self.ipIO}/s/{pin}={status}')

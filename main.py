@@ -1,3 +1,6 @@
+import time
+
+
 def capture(img, stop_event, reconnect_cam):
     import cv2
 
@@ -24,7 +27,6 @@ def main(img, stop_event, reconnect_cam):
     import json
     import statistics
     import numpy as np
-    import requests
     from CV_UI import Button, Display, Exit, TextInput, Select, Setting, Wait, Confirm
     from func.about_image import putTextRect, overlay, adj_image, rotate
     from Frames import Frame, Frames, predict
@@ -59,7 +61,7 @@ def main(img, stop_event, reconnect_cam):
         mouse_pos = pygame.mouse.get_pos()
         keys = pygame.key.get_pressed()
         events = pygame.event.get()
-        surfacenp, res = dis.update(mouse_pos, events)  # _______________________________ layer 0 ฉากหลัง
+        surfacenp, res_dis = dis.update(mouse_pos, events)  # _______________________________ layer 0 ฉากหลัง
         if modelname:
             if dis.mode == 'debug':
                 dict_data = {}
@@ -121,34 +123,65 @@ def main(img, stop_event, reconnect_cam):
 
                                 break
                         break
+        if dis.mode == 'run' and modelname:
+            ''' read data "ให้ ถ่ายภาพ --> predict "'''
 
-        if res:
-            print(res)
+            txt = [
+                ['step 1                           ', ['color=y', 'step', ]],
+                ['  if senser0 and senser0 is low  ', ['']],
+                ['    y1 on                        ', ['']],
+                ['    step=2                       ', ['']],
+                ['step 2                           ', ['color=y', 'step', ]],
+                ['  if senser1 high                ', ['']],
+                ['    step=3                       ', ['']],
+                ['step 3                           ', ['color=y', 'step', ]],
+                ['  if delay > 2                   ', ['']],
+                ['    step=4                       ', ['']],
+                ['step 4                           ', ['color=y', 'step', ]],
+                ['  Predict Image                  ', ['']],
+                ['  if OK                          ', ['']],
+                ['    step = 5.1                   ', ['']],
+                ['    y1 off                       ', ['']],
+                ['  if NG                          ', ['']],
+                ['    step = 5.2                   ', ['']],
+                ['step 5.1                         ', ['color=y', 'step', ]],
+                ['  delay 4 s                      ', ['']],
+                ['  y2 off                         ', ['']],
+            ]
+            line = -1.5
+            for t, command in txt:
+                if 'step' in command:
+                    line += 0.8
 
-            if res == 'autocap':
+                if 'color' in command[0]:
+                    if command[0].split('=')[1] == 'y':
+                        color = (0, 255, 255)
+                else:
+                    color = (255, 255, 255)
+                line += 1
+                cv2.putText(surfacenp, t, (1440, round(200 + line * 24)), 16, 0.5, color, 1, cv2.LINE_AA)
+
+
+
+
+
+        if res_dis or dis.predict_auto:
+            print(dis.predict_auto,res_dis)
+            if res_dis == 'autocap':
                 if autocap:
                     autocap = False
                 else:
                     autocap = True
 
-            if res == 'New Project':
-                e = TextInput()
+            if res_dis == 'New Project':
+                e = TextInput(surfacenp.copy())
                 e.x_shift = 200
                 e.y_shift = 200
                 e.textinput = ''
                 while True:
-                    eventt = []
-                    for event in pygame.event.get():
-                        eventt.append(event.type)
-                        if event.type == pygame.KEYDOWN:
-                            if event.key == pygame.K_BACKSPACE:
-                                e.textinput = e.textinput[:-1]
-                            elif event.unicode in ('abcdefghijklmnopqrstuvwxyz 0123456789+-_=()[]{}'
-                                                   'ABCDEFGHIJKLMNOPQRSTUVWXYZ `~!@#$%^&;.'
-                                                   ):
-                                e.textinput += event.unicode
+                    time.sleep(0.1)
                     mouse_pos = pygame.mouse.get_pos()
-                    res = e.update(mouse_pos, eventt)
+                    res = e.update(mouse_pos, pygame.event.get())
                     show(e.img_BG)
                     if res:
                         print(res)
@@ -162,7 +195,7 @@ def main(img, stop_event, reconnect_cam):
                             os.mkdir(f'data/{output}')
                             break
 
-            if res == 'select model':
+            if res_dis == 'select model':
                 e = Select(surfacenp.copy())
                 e.add_data(*os.listdir('data'))
                 e.x_shift = 43
@@ -220,7 +253,7 @@ def main(img, stop_event, reconnect_cam):
                                     surfacenp = overlay(surfacenp, surface_img, (41, 41))
                             break
 
-            if res == 'Take a photo' or autocap:
+            if res_dis == 'Take a photo' or autocap or dis.predict_auto:
                 if len(img) == 0:
                     e = Wait(surfacenp.copy())
                     e.set_val('Wait', '')
@@ -236,8 +269,9 @@ def main(img, stop_event, reconnect_cam):
                             break
                 if len(img) == 1:
                     img_form_cam = img[0].copy()
+                    img_form_cam = cv2.imread('Save Image/231016 191324.png')
 
-            if res == 'adj image':
+            if res_dis == 'adj image' or res_dis == 'perdict' or dis.predict_auto:
                 img_for_ref = cv2.imread('m.png')
                 e = Wait(surfacenp.copy())
                 e.set_val('Wait', 'Adjusting image')
@@ -262,35 +296,11 @@ def main(img, stop_event, reconnect_cam):
                         if res:
                             print(res)
                         if res in ['OK', 'Cancel', 'x']:
+
                             break
 
-            if res == 'perdict':
-                img_for_ref = cv2.imread('m.png')
-                e = Wait(surfacenp.copy())
-                e.set_val('Wait', 'Adjusting image')
-                e.x_shift = 700
-                e.y_shift = 300
-                mouse_pos = pygame.mouse.get_pos()
-                res = e.update(mouse_pos, pygame.event.get(), count_time=False)
-                show(e.img_BG)
-
-                res = adj_image(img_form_cam, img_for_ref, framesmodel)
-                if res is not None:
-                    img_form_cam = res
-                else:
-                    e = Confirm(surfacenp.copy())
-                    e.set_val('Error', "don't have mark")
-                    e.x_shift = 700
-                    e.y_shift = 300
-                    while True:
-                        mouse_pos = pygame.mouse.get_pos()
-                        res = e.update(mouse_pos, pygame.event.get())
-                        show(e.img_BG)
-                        if res:
-                            print(res)
-                        if res in ['OK', 'Cancel', 'x']:
-                            break
-
+            if res_dis == 'perdict' or dis.predict_auto:
+                dis.predict_auto = False
                 if modelname and '(no model)' not in modelname:
                     framesmodel.crop_img(img_form_cam)
                     e = Wait(surfacenp.copy())
@@ -319,7 +329,7 @@ def main(img, stop_event, reconnect_cam):
                 surface_img = cv2.resize(img_form_cam_and_frame, (1344, 1008))
                 surfacenp = overlay(surfacenp, surface_img, (41, 41))
 
-            if res == 'Save Image':
+            if res_dis == 'Save Image':
                 e = Confirm(surfacenp.copy())
                 e.set_val('Confirm', 'Are you sure', 'You want to Save Image?')
                 e.x_shift = 1440
@@ -349,7 +359,7 @@ def main(img, stop_event, reconnect_cam):
                     if res in ['OK', 'Cancel', 'x']:
                         break
 
-            if res == 'Load Image':
+            if res_dis == 'Load Image':
                 e = Select(surfacenp.copy())
                 e.add_data(
                     *[f'{i}. {data}' for i, data in enumerate(os.listdir('Save Image'), start=1) if '.png' in data]
@@ -389,10 +399,10 @@ def main(img, stop_event, reconnect_cam):
                                     break
                         break
 
-            if res == 'minimize':
+            if res_dis == 'minimize':
                 pygame.display.iconify()
 
-            if res == 'Close':
+            if res_dis == 'Close':
                 e = Exit(surfacenp.copy())
                 e.x_shift = 700
                 e.y_shift = 400
@@ -409,7 +419,7 @@ def main(img, stop_event, reconnect_cam):
                         stop_event.set()
                         play = False
 
-            if res == 'setting':
+            if res_dis == 'setting':
                 esetting = Setting(surfacenp.copy())
                 esetting.x_shift = 400
                 esetting.y_shift = 200
