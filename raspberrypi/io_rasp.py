@@ -1,9 +1,7 @@
-import RPi.GPIO as GPIO
 from datetime import datetime
 import json
 
 
-GPIO.setmode(GPIO.BCM)
 datetime_old = datetime.now()
 run_step = 0
 HIGH = 1
@@ -30,10 +28,6 @@ IO = {}
 IO.update(I)
 IO.update(O)
 
-for k, v in I.items():
-    GPIO.setup(v, GPIO.IN)
-for k, v in O.items():
-    GPIO.setup(v, GPIO.OUT)
 
 
 
@@ -41,25 +35,23 @@ for k, v in O.items():
 def on(pin):
     if type(pin) == str:
         pin = O.get(pin)
-    GPIO.output(pin, GPIO.HIGH)
     print(f'{pin} is on')
 
 
 def off(pin):
     if type(pin) == str:
         pin = O.get(pin)
-    GPIO.output(pin, GPIO.LOW)
     print(f'{pin} is off')
 
 
-def read(pinstr):
-    if type(pinstr) == str:
-        pin = O.get(pinstr)
-    else:
-        pin = pinstr
-    res = GPIO.input(pin)
-    print(f'read {pinstr} == {res}')
-    return res
+# def read(pinstr):
+#     if type(pinstr) == str:
+#         pin = O.get(pinstr)
+#     else:
+#         pin = pinstr
+#     res = GPIO.input(pin)
+#     print(f'read {pinstr} == {res}')
+#     return res
 
 
 

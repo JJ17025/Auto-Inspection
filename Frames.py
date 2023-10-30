@@ -156,7 +156,6 @@ class Model:
                   f'file error data/{modelname}/model/{self.name}.json{ENDC}'
                   f'{str(e)}')
             # sys.exit()
-        print('------------------------>', self.status_list)
 
 
 class Mark:

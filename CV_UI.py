@@ -308,8 +308,8 @@ class Setting:
             return data_dict
 
     def writeIO(self, pin, status):
-        print(f'{self.ipIO}/s/{pin}={status}')
-        requests.get(f'{self.ipIO}/s/{pin}={status}')
+        print(f'{self.ipIO}/{status}/{pin}')
+        requests.get(f'{self.ipIO}/{status}/{pin}')
 
 
 class Wait:
@@ -487,6 +487,8 @@ class Display:
         self.mode = 'manual'  # debug manual run
         self.mode_run_step = 0
         self.predict_auto = False
+        self.predict_res = None
+        self.old_res = None
 
     def update(self, mouse_pos, events):
         x, y = mouse_pos
@@ -511,87 +513,4 @@ class Display:
                             self.mode = res.split('-')[2]
                         return self.img_show, res
 
-        if self.mode == 'run':
-            try:
-                res = requests.get(f'{self.ipIO}/Do you want me to predict', timeout=0.1)
-                if res.status_code == 200:
-                    if res.text == 'yes':
-                        self.predict_auto = True
-                else:
-                    print(f"Request failed with status code {res.status_code}")
-            except requests.exceptions.Timeout:
-                print(f"Request timed out. The request took longer than {0.1} second to complete.")
-            except requests.exceptions.RequestException as e:
-                print(f"An error occurred: {e}")
-
-
-
-            # self.update_mode_run()
-        else:
-            self.mode_run_step = 0
         return self.img_show, res
-
-    def update_mode_run(self):
-        print(f'self.mode_run_step = {self.mode_run_step}')
-        res = self.readIO()
-        if type(res) == int:
-            print(f'error {res}')
-            return
-
-        if self.mode_run_step >= 2:
-            if res["Senser Infrared 1"] == self.HIGH and res["Senser Infrared 2"] == self.HIGH:
-                # sen1 sen2 เจอ --> stop2 ลงมาเหยียบ
-                self.writeIO('Stopper_2', 'on')
-
-        if self.mode_run_step == 0:
-            self.writeIO('Stopper_1', 'off')
-            self.writeIO('Stopper_2', 'off')
-            self.mode_run_step = 1
-
-        elif self.mode_run_step == 1:
-            if res["Senser Infrared 0"] == self.LOW and res["Senser Infrared 1"] == self.LOW:
-                # sen0 sen1 ไม่เจอ --> stopper1 ลง  ### เพื่อรอ pcb มา
-                self.writeIO('Stopper_1', 'on')
-                self.mode_run_step = 2
-                self.datetime_fl = datetime.now()
-            else:
-                print('มีอะไรขวาง Senser Infrared')
-
-        elif self.mode_run_step == 2:
-            if res["Senser Infrared 1"] == self.HIGH:
-                # sen1 เจอ --> ___ ### ถ้าเจอ pcb มา delay รอถ่ายภาพ
-                self.mode_run_step = 3
-
-        elif self.mode_run_step == 3:
-            if (datetime.now() - self.datetime_fl).total_seconds() > 2:
-                # หน่วงเวลา predict
-                self.mode_run_step = 4
-
-        elif self.mode_run_step == 4:
-            # predict
-            self.predict_auto = True
-            self.mode_run_step = 5.1
-            # self.mode_run_step = 6.1
-
-        elif self.mode_run_step == 5.1:  # OK
-            self.writeIO('Stopper_1', 'off')
-            self.mode_run_step = 5.2
-        elif self.mode_run_step == 5.2:
-            # หน่วงเวลา
-            if (datetime.now() - self.datetime_fl).total_seconds() > 2:
-                self.writeIO('Stopper_2', 'off')
-                self.mode_run_step = 5.3
-        elif self.mode_run_step == 5.3:
-            self.mode_run_step = 1
-
-    def readIO(self):
-        res = requests.get(f'{self.ipIO}/readpinall')
-        if res.status_code == 200:
-            data_dict = json.loads(res.text)
-            return data_dict
-        else:
-            self.mode = 'manual'
-            return res.status_code
-
-    def writeIO(self, pin, status):
-        requests.get(f'{self.ipIO}/s/{pin}={status}')
