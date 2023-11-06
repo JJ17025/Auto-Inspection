@@ -258,17 +258,17 @@ class Setting:
 
         self.img_show = self.img.copy()
 
-        data_dict = self.readIO()
-        if type(data_dict) == dict:
-            line = -1
-            for k, v in data_dict.items():
-                line += 1
-                cv2.putText(self.img_show, f'{v} = {k}',
-                            (40, 300 + line * 20), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
+        # data_dict = self.readIO()
+        # if type(data_dict) == dict:
+        #     line = -1
+        #     for k, v in data_dict.items():
+        #         line += 1
+        #         cv2.putText(self.img_show, f'{v} = {k}',
+        #                     (40, 300 + line * 20), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
 
-        else:
-            cv2.putText(self.img_show, f'error',
-                        (40, 300), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
+        # else:
+        #     cv2.putText(self.img_show, f'error',
+        #                 (40, 300), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
 
         for k, v in self.buttons.items():
             # v.show_frame_for_debug(self.img_show)
@@ -484,7 +484,7 @@ class Display:
         self.LOW = 0
         self.HIGH = 1
         self.ipIO = 'http://192.168.225.198:8080'
-        self.mode = 'manual'  # debug manual run
+        self.mode = 'manual'  # debug, manual, run
         self.mode_run_step = 0
         self.predict_auto = False
         self.predict_res = None
@@ -498,7 +498,7 @@ class Display:
         self.img_show = self.img.copy()
         for k, v in self.buttons.items():
             # v.show_frame_for_debug(self.img_show)
-            if 'mode_menu' in k and self.mode == k.split('-')[2]:
+            if 'mode_menu' in k and self.mode == k.split('-')[1]:
                 self.img_show = v.change_status_img(self.img_show, self.img_ac[:, 40:])
             else:
                 self.img_show = v.show_button_ac(self.img_show, self.img_ac, (x, y))
@@ -506,11 +506,17 @@ class Display:
         for k, v in self.buttons.items():
             res = None
             for event in events:
-                if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-                    if v.mouse_on_button(x, y):
+                if v.mouse_on_button(x, y):
+                    if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                         res = k
                         if 'mode_menu' in res:
-                            self.mode = res.split('-')[2]
+                            self.mode = res.split('-')[1]
+                        print(f'{res}')
                         return self.img_show, res
+                    if event.type == pygame.MOUSEBUTTONUP and event.button == 3:
+                        res = f'm3:{k}'
+                        print(f'{res}')
+                        return self.img_show, res
+
 
         return self.img_show, res

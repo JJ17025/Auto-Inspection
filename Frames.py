@@ -159,26 +159,53 @@ class Model:
 
 
 class Mark:
-    def __init__(self, name, x1px, y1px, x2px, y2px, k):
+    def __init__(self, name, x, y, dx, dy, k):
         self.name = name
-        self.x1px = x1px
-        self.y1px = y1px
-        self.x2px = x2px
-        self.y2px = y2px
-        self.xpx = (x2px + x1px) // 2
-        self.ypx = (y2px + y1px) // 2
-        self.xypx = self.xpx, self.ypx
-        self.k = int(k * (x2px - x1px + y2px - y1px) / 2)
-        self.rec_m = (x1px, y1px), (x2px, y2px)
-        self.rec_a = (x1px - self.k, y1px - self.k), (x2px + self.k, y2px + self.k)
+        self.x = x
+        self.y = y
+        self.dx = dx
+        self.dy = dy
+        self.k = k
+
+        self.x1 = x - dx / 2
+        self.y1 = y - dy / 2
+        self.x2 = x + dx / 2
+        self.y2 = y + dy / 2
 
     def __str__(self):
         return (f'{CYAN}Mark '
                 f'{GREEN}{self.name}{ENDC}')
 
+    def rec_around(self, h, w):
+        x1px = int(self.x1 * w)
+        y1px = int(self.y1 * h)
+        x2px = int(self.x2 * w)
+        y2px = int(self.y2 * h)
+        kx = int((x2px - x1px) * self.k)
+        ky = int((y2px - y1px) * self.k)
+        return (x1px - kx, y1px - ky), (x2px + kx, y2px + ky)
+
+    def rec_mark(self, h, w):
+        x1px = int(self.x1 * w)
+        y1px = int(self.y1 * h)
+        x2px = int(self.x2 * w)
+        y2px = int(self.y2 * h)
+        return (x1px, y1px), (x2px, y2px)
+
+    def xpx(self, h, w):
+        return int(self.x * w)
+
+    def ypx(self, h, w):
+        return int(self.y * h)
+
+    def xypx(self, h, w):
+        return self.xpx(h, w), self.ypx(h, w)
+
 
 class Frames:
     def __init__(self, filename):
+        self.name = filename.split('/')[1]
+        # self.name = filename.split('\\')[1]
         data_all = json.loads(open(filename).read())
         self.frames = {}
         self.models = {}
@@ -197,12 +224,12 @@ class Frames:
             self.models[name] = Model(name, status_list)
         if data_all.get('marks'):
             for name, v in data_all['marks'].items():
-                x1 = v['x1']
-                y1 = v['y1']
-                x2 = v['x2']
-                y2 = v['y2']
+                x = v['x']
+                y = v['y']
+                dx = v['dx']
+                dy = v['dy']
                 k = v['k']
-                self.marks[name] = Mark(name, x1, y1, x2, y2, k)
+                self.marks[name] = Mark(name, x, y, dx, dy, k)
 
         self.len = len(self.frames)
         self.color_frame = (255, 255, 255)
@@ -233,8 +260,8 @@ class Frames:
     def draw_frame(self, img, textdata=None):
         h, w, _ = img.shape
         for name, mark in self.marks.items():
-            cv2.rectangle(img, *mark.rec_a, (0, 255, 255), 2)
-            cv2.rectangle(img, *mark.rec_m, (0, 2, 255), 2)
+            cv2.rectangle(img, *mark.rec_mark(h, w), (0, 255, 255), 2)
+            cv2.rectangle(img, *mark.rec_around(h, w), (0, 2, 255), 2)
 
         for name, frame in self.frames.items():
             start_point = int(frame.x1 * w), int(frame.y1 * h)
@@ -282,6 +309,21 @@ class Frames:
                     TextRectlist.append(d)
                 putTextRectlist(img, TextRectlist, 22, start_point, frame.font_size, 2, font=1, offset=1)
         return img
+
+    def save_mark(self, img):
+        h, w, _ = img.shape
+        for name, mark in self.marks.items():
+            x = mark.x
+            y = mark.y
+            dx = mark.dx
+            dy = mark.dy
+            x1 = int((x - dx / 2) * w)
+            y1 = int((y - dy / 2) * h)
+            x2 = int((x + dx / 2) * w)
+            y2 = int((y + dy / 2) * h)
+            print(f'{GREEN}save "data/{self.name}/{name}.png"{ENDC}')
+            cv2.imwrite(f'data/{self.name}/{name}.png', img[y1:y2, x1:x2])
+            cv2.imshow('img', img[y1:y2, x1:x2])
 
 
 def predict(frame, Frames):

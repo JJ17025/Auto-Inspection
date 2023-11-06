@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def capture(img, stop_event, reconnect_cam):
     import cv2
 
@@ -16,20 +19,33 @@ def capture(img, stop_event, reconnect_cam):
 
 
 def main(img, stop_event, reconnect_cam):
-    import os
-    import sys
-    import pygame
     import cv2
     import numpy as np
+    def show(text = None):
+        if text:
+            cv2.putText(img, text, (240, 160), 1, 3, (255, 255, 255), 3, -1)
+        cv2.imshow('auto inspection', img)
+        cv2.waitKey(1)
+    img = np.full((200, 700, 3), (150, 140, 150), np.uint8)
+    cv2.putText(img, 'Auto Inspection', (20, 90), 1, 5, (255, 255, 255), 5, -1)
+    show()
+    import os
+    import sys
+    show('Loading.')
+    import pygame
     import statistics
     import json
+    show('Loading..')
     from datetime import datetime
     import requests
     import time
-
     from CV_UI import Button, Display, Exit, TextInput, Select, Setting, Wait, Confirm
+    show('Loading...')
     from func.about_image import putTextRect, putTextRect_center, overlay, adj_image, rotate
     from Frames import Frame, Frames, predict
+    from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
+    cv2.destroyWindow('auto inspection')
+    url = "http://192.168.225.198:8080"
 
     def cvimage_to_pygame(image):
         """Convert cvimage into a pygame image"""
@@ -124,6 +140,16 @@ def main(img, stop_event, reconnect_cam):
                                 break
                         break
         if dis.mode == 'run' and modelname:
+            if res_dis == 'mode_menu-run':
+                try:
+                    res = requests.get(f'{url}/run/0', timeout=0.1)
+                    res = requests.get(f'{url}/run/1', timeout=0.1)
+                    print(f'{GREEN}status {res.status_code} ping to {url} run IO Raspberrypi')
+                except requests.exceptions.Timeout:
+                    print(f'{FAIL}Request timed out. The request took longer than 0.1 second to complete.')
+                except requests.exceptions.RequestException as e:
+                    print(f'{FAIL}An error occurred: {e}')
+                print(f'{ENDC}')
             txt = [
                 ['step 1                           ', ['color=y', 'step', ]],
                 ['  if senser0 and senser0 is low  ', ['']],
@@ -160,12 +186,10 @@ def main(img, stop_event, reconnect_cam):
                 cv2.putText(surfacenp, t, (1440, round(200 + line * 24)), 16, 0.5, color, 1, cv2.LINE_AA)
 
             ''' read data "ให้ ถ่ายภาพ --> predict "'''
-            url = "http://192.168.225.198:8080"
 
             error_text = ''
             try:
                 res = requests.get(f'{url}/data/read', timeout=0.1)
-                print(res.status_code)
                 if res.status_code == 200:
                     if res.text == 'predict':
                         dis.predict_auto = True
@@ -184,12 +208,12 @@ def main(img, stop_event, reconnect_cam):
                 putTextRect(surfacenp, error_text, (80, 160), 1.05, 2, (0, 0, 255), 5, cv2.LINE_AA)
 
         if res_dis or dis.predict_auto:
-            print(dis.predict_auto, res_dis)
             if res_dis == 'autocap':
-                if autocap:
-                    autocap = False
-                else:
-                    autocap = True
+                if res_dis == 'autocap':
+                    if autocap:
+                        autocap = False
+                    else:
+                        autocap = True
 
             if res_dis == 'New Project':
                 e = TextInput(surfacenp.copy())
@@ -228,14 +252,14 @@ def main(img, stop_event, reconnect_cam):
                             break
                         print(res)
                         res2 = res
-                        if res in ['ac', 'AC2', 'D07']:
+                        if res in ['ac', 'QM7-3473', 'D07']:
                             modelname = res
                             have_frames_pos_file = False
                             listdir = os.listdir(f'data/{res}')
                             print(listdir)
                             if 'frames pos.json' in listdir:
                                 have_frames_pos_file = True
-                                framesmodel = Frames(rf"data\{res}\frames pos.json")
+                                framesmodel = Frames(f"data/{res}/frames pos.json")
                                 print(framesmodel)
 
                             if 'mark pos.json' in listdir:
@@ -270,7 +294,20 @@ def main(img, stop_event, reconnect_cam):
                                     surface_img = cv2.resize(img_form_cam_and_frame, (1344, 1008))
                                     surfacenp = overlay(surfacenp, surface_img, (41, 41))
                             break
+            if res_dis == 'm3:mode_menu-debug':
+                e = Select(surfacenp.copy())
+                e.add_data('save mark')
+                e.x_shift, e.y_shift = mouse_pos
+                while True:
+                    mouse_pos = pygame.mouse.get_pos()
+                    res = e.update(mouse_pos, pygame.event.get())
+                    show(e.img_BG)
 
+                    if res:
+                        if 'save mark' in res:
+                            framesmodel.save_mark(img_form_cam)
+                            break
+                        break
             if res_dis == 'Take a photo' or autocap or dis.predict_auto:
                 if len(img) == 0:
                     e = Wait(surfacenp.copy())
@@ -287,10 +324,11 @@ def main(img, stop_event, reconnect_cam):
                             break
                 if len(img) == 1:
                     img_form_cam = img[0].copy()
+
                     # img_form_cam = cv2.imread('Save Image/231016 191324.png')
 
             if res_dis == 'adj image' or res_dis == 'perdict' or dis.predict_auto:
-                img_for_ref = cv2.imread('m.png')
+                # img_for_ref = cv2.imread('m.png')
                 e = Wait(surfacenp.copy())
                 e.set_val('Wait', 'Adjusting image')
                 e.x_shift = 700
@@ -299,7 +337,7 @@ def main(img, stop_event, reconnect_cam):
                 res = e.update(mouse_pos, pygame.event.get(), count_time=False)
                 show(e.img_BG)
 
-                res = adj_image(img_form_cam, img_for_ref, framesmodel)
+                res = adj_image(img_form_cam, framesmodel)
                 if res is not None:
                     img_form_cam = res
                 else:
@@ -517,6 +555,8 @@ def main(img, stop_event, reconnect_cam):
 
 
 if __name__ == '__main__':
+    import cv2
+    import numpy as np
     import multiprocessing
 
     stop_event = multiprocessing.Event()

@@ -201,27 +201,18 @@ def fine_mark(image, mark, rec, draw=None):
         return rec2xy(res)
 
 
-def adj_image(image, mark, frame):
-    # s = image.copy()
-    rec1 = frame.marks['m1'].rec_a
-    rec2 = frame.marks['m2'].rec_a
-
-    m = slope(frame.marks['m1'].xypx, frame.marks['m2'].xypx)
+def adj_image(image, frame):
+    h, w, _ = image.shape
+    rec1 = frame.marks['m1'].rec_around(h, w)
+    rec2 = frame.marks['m2'].rec_around(h, w)
+    mark1 = cv2.imread(f'data/{frame.name}/m1.png')
+    mark2 = cv2.imread(f'data/{frame.name}/m1.png')
+    m = slope(frame.marks['m1'].xypx(h, w), frame.marks['m2'].xypx(h, w))
     phi_default = round(math.degrees(math.atan(m)), 3)
-    disp_default = round(displacement(frame.marks['m1'].xypx, frame.marks['m2'].xypx), 3)
+    disp_default = round(displacement(frame.marks['m1'].xypx(h, w), frame.marks['m2'].xypx(h, w)), 3)
 
-    point_m1 = fine_mark(image, mark, rec1)
-    point_m2 = fine_mark(image, mark, rec2)
-    # cv2.circle(s, frame.marks['m1'].xypx, 10, (0, 0, 255), 3)
-    # cv2.circle(s, frame.marks['m2'].xypx, 10, (0, 0, 255), 3)
-
-    # cv2.rectangle(s, *rec1,(0, 0, 255), 1)
-    # cv2.rectangle(s, *rec2,(0, 0, 255), 1)
-    # cv2.circle(s, point_m1, 10, (0, 0, 255), 1)
-    # cv2.circle(s, point_m2, 10, (0, 0, 255), 1)
-    # s = cv2.resize(s, (0, 0), fx=0.4, fy=0.4)
-    # cv2.imshow('image', s)
-    # cv2.waitKey(0)
+    point_m1 = fine_mark(image, mark1, rec1)
+    point_m2 = fine_mark(image, mark2, rec2)
 
     if point_m1 is None or point_m2 is None:
         print('no mark point_be')
@@ -237,14 +228,14 @@ def adj_image(image, mark, frame):
     # cv2.waitKey(0)
     draw = image_ro.copy()
 
-    point_m1_af = fine_mark(image_ro, mark, rec1, draw)
-    point_m2_af = fine_mark(image_ro, mark, rec2, draw)
+    point_m1_af = fine_mark(image_ro, mark1, rec1, draw)
+    point_m2_af = fine_mark(image_ro, mark2, rec2, draw)
     if point_m1_af is None or point_m2_af is None:
         print('no mark point_af <<<<<')
         return
 
-    x = (frame.marks['m1'].xpx - point_m1_af[0] + frame.marks['m2'].xpx - point_m2_af[0]) // 2
-    y = (frame.marks['m1'].ypx - point_m1_af[1] + frame.marks['m2'].ypx - point_m2_af[1]) // 2
+    x = (frame.marks['m1'].xpx(h, w) - point_m1_af[0] + frame.marks['m2'].xpx(h, w) - point_m2_af[0]) // 2
+    y = (frame.marks['m1'].ypx(h, w) - point_m1_af[1] + frame.marks['m2'].ypx(h, w) - point_m2_af[1]) // 2
     image = overlay(image, image_ro, (x, y))
     return image
 
@@ -252,12 +243,11 @@ def adj_image(image, mark, frame):
 if __name__ == '__main__':
     import cv2
 
-    pos = (10, 10)
-    x = np.full((500, 500, 3), (0, 0, 100), dtype='uint8')
-    y = np.full((100, 100, 3), (0, 100, 100), dtype='uint8')
 
-    overlay(x, y, pos)
-    cv2.imshow('nx', x)
-    key = cv2.waitKey(0)
+    x = np.full((3000, 4000, 3), (0, 0, 100), dtype='uint8')
 
+    cv2.imshow('nx', cv2.resize(x,(0,0),fx=0.2,fy=0.2))
+    cv2.waitKey(1)
+    x = rotate(x, 10)
+    cv2.imshow('nx', cv2.resize(x,(0,0),fx=0.2,fy=0.2))
     cv2.waitKey(0)

@@ -6,31 +6,31 @@
     81
   ],
 
-  "mode_menu-1-debug": [
+  "mode_menu-debug": [
     0,
     92,
     40,
     132
   ],
-  "mode_menu-2-manual": [
+  "mode_menu-manual": [
     0,
     132,
     40,
     172
   ],
-  "mode_menu-3-run": [
+  "mode_menu-run": [
     0,
     172,
     40,
     212
   ],
-  "mode_menu-4-about": [
+  "mode_menu-about": [
     0,
     212,
     40,
     252
   ],
-  "mode_menu-5-xx": [
+  "mode_menu-xx": [
     0,
     252,
     40,

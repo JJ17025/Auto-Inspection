@@ -17,7 +17,7 @@ import pathlib
 import matplotlib.pyplot as plt
 from Frames import Frames
 from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
-from tensorflow.keras.applications import VGG16
+from keras.applications import VGG16
 
 def mkdir(directory):
     if not os.path.exists(directory):
@@ -34,10 +34,17 @@ IMG_FRAME_PATH = 'data/D07/img_frame'
 IMG_FRAME_LOG_PATH = 'data/D07/img_frame_log'
 MODEL_PATH = 'data/D07/model'
 
+IMG_FULL_PATH = 'data/QM7-3473/img_full'
+IMG_FRAME_PATH = 'data/QM7-3473/img_frame'
+IMG_FRAME_LOG_PATH = 'data/QM7-3473/img_frame_log'
+MODEL_PATH = 'data/QM7-3473/model'
+frames = Frames(rf"data/QM7-3473/frames pos.json")
+
 mkdir(IMG_FULL_PATH)
 mkdir(IMG_FRAME_PATH)
 mkdir(IMG_FRAME_LOG_PATH)
 mkdir(MODEL_PATH)
+
 
 batch_size = 32
 img_height = 180
@@ -47,7 +54,7 @@ epochs = 5
 # img_width = 250
 # epochs = 8
 MODEL_SET = 1  # 1,2,3
-MODEL_SET = 1.4
+# MODEL_SET = 1.4
 
 def controller(img, brightness=255, contrast=127):
     brightness = int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))
@@ -77,12 +84,11 @@ def corp_img(model_name, frames):
     img_full_namefile_list = list(set(file.split('.')[0] for file in img_full_namefile_list if file.endswith('.png')) &
                                   set(file.split('.')[0] for file in img_full_namefile_list if file.endswith('.txt')))
     img_full_namefile_list = sorted(img_full_namefile_list, reverse=True)
+    for i,file_name in enumerate(img_full_namefile_list,start=1):
 
-    for i in range(len(img_full_namefile_list)):
-        file_name = img_full_namefile_list[i]  # txt and png
         # file_name is 0807 143021, ...
         frames_list = open(fr"{IMG_FULL_PATH}/{file_name}.txt").readlines()
-        print(f'{i}/{len(img_full_namefile_list)} {file_name}')
+        print(f'{i+1}/{len(img_full_namefile_list)} {file_name}')
         for data_text in frames_list:
             data_list = data_text.strip().split(':')
             frame_name = data_list[0]  # ___________________________________________ ชื่อใน .txt
@@ -142,7 +148,7 @@ def create_model(model_name):
     data_dir = pathlib.Path(rf'{IMG_FRAME_PATH}/{model_name}')
 
     image_count = len(list(data_dir.glob('*/*.png')))
-    plog('image_count = {image_count}')
+    plog(f'image_count = {image_count}')
 
     print('data_dir is ', data_dir)
     train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
@@ -316,10 +322,11 @@ def plog(string):
 
 
 def f(model_name, model, frames):
-    try:
+    # try:
+    if True:
         t1 = datetime.now()
         plog('--------  >>> corp_img <<<  ---------')
-        # corp_img(model_name, frames)
+        corp_img(model_name, frames)
         t2 = datetime.now()
         plog(f'{t2 - t1} เวลาที่ใช้ในการเปลียน img_full เป็น shift_img ')
 
@@ -329,11 +336,11 @@ def f(model_name, model, frames):
         plog(f'{t2 - t1} เวลาที่ใช้ในการเปลียน img_full เป็น shift_img ')
         plog(f'{t3 - t2} เวลาที่ใช้ในการ training ')
         plog(f'{t3 - t1} เวลาที่ใช้ทั้งหมด')
-    except:
-        print(f'{WARNING}model_name error{ENDC}')
+    # except:
+    #     print(f'{WARNING}model_name error{ENDC}')
 
 
-frames = Frames(rf"data/D07/frames pos.json")
+
 print(frames)
 model_list = os.listdir(MODEL_PATH)
 model_list = [file.split('.')[0] for file in model_list if file.endswith('.h5')]
