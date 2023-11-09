@@ -1,6 +1,3 @@
-import numpy as np
-
-
 def capture(img, stop_event, reconnect_cam):
     import cv2
 
@@ -21,11 +18,12 @@ def capture(img, stop_event, reconnect_cam):
 def main(img, stop_event, reconnect_cam):
     import cv2
     import numpy as np
-    def show(text = None):
+    def show(text=None):
         if text:
             cv2.putText(img, text, (240, 160), 1, 3, (255, 255, 255), 3, -1)
         cv2.imshow('auto inspection', img)
         cv2.waitKey(1)
+
     img = np.full((200, 700, 3), (150, 140, 150), np.uint8)
     cv2.putText(img, 'Auto Inspection', (20, 90), 1, 5, (255, 255, 255), 5, -1)
     show()
@@ -70,7 +68,7 @@ def main(img, stop_event, reconnect_cam):
     img_form_cam = cv2.imread('ui/no image.png')
     dis = Display()
     fps = []
-    modelname = ''
+    pcb_model_name = ''
     autocap = False
     while not stop_event.is_set():
         t1 = datetime.now()
@@ -78,7 +76,7 @@ def main(img, stop_event, reconnect_cam):
         keys = pygame.key.get_pressed()
         events = pygame.event.get()
         surfacenp, res_dis = dis.update(mouse_pos, events)  # _______________________________ layer 0 ฉากหลัง
-        if modelname:
+        if pcb_model_name:
             if dis.mode == 'debug':
                 dict_data = {}
                 dict_data.update(esetting.check_box)
@@ -90,13 +88,12 @@ def main(img, stop_event, reconnect_cam):
             img_form_cam_and_frame = img_form_cam.copy()
         img_form_cam_and_frame = cv2.resize(img_form_cam_and_frame, (1344, 1008))  # ___ layer 1
         surfacenp = overlay(surfacenp, img_form_cam_and_frame, (41, 41))  # _____________ layer 0+1
-        if dis.mode == 'debug' and modelname:
+        if dis.mode == 'debug' and pcb_model_name:
             x, y = mouse_pos
             for event in events:
                 if event.type == pygame.MOUSEBUTTONUP and event.button == 3:
                     for name, frame in framesmodel.frames.items():
-                        if frame.x1 < (x - 41) / 1344 < frame.x2 and \
-                                frame.y1 < (y - 41) / 1008 < frame.y2:
+                        if frame.x1 < (x - 41) / 1344 < frame.x2 and frame.y1 < (y - 41) / 1008 < frame.y2:
                             e = Select(surfacenp.copy())
                             status_list = framesmodel.models[f'{frame.model_used}'].status_list
                             e.add_data(*[f'{frame.name} => {status}' for status in ['-'] + status_list])
@@ -139,7 +136,7 @@ def main(img, stop_event, reconnect_cam):
 
                                 break
                         break
-        if dis.mode == 'run' and modelname:
+        if dis.mode == 'run' and pcb_model_name:
             if res_dis == 'mode_menu-run':
                 try:
                     res = requests.get(f'{url}/run/0', timeout=0.1)
@@ -251,15 +248,14 @@ def main(img, stop_event, reconnect_cam):
                         if 'break' in res:
                             break
                         print(res)
-                        res2 = res
-                        if res in ['ac', 'QM7-3473', 'D07']:
-                            modelname = res
+                        pcb_model_name = res
+                        if pcb_model_name in ['QM7-3473_v2', 'QM7-3473', 'D07']:
                             have_frames_pos_file = False
-                            listdir = os.listdir(f'data/{res}')
+                            listdir = os.listdir(f'data/{pcb_model_name}')
                             print(listdir)
                             if 'frames pos.json' in listdir:
                                 have_frames_pos_file = True
-                                framesmodel = Frames(f"data/{res}/frames pos.json")
+                                framesmodel = Frames(f"{pcb_model_name}")
                                 print(framesmodel)
 
                             if 'mark pos.json' in listdir:
@@ -272,7 +268,7 @@ def main(img, stop_event, reconnect_cam):
                             for i, (name, model) in enumerate(framesmodel.models.items()):
                                 print(model)
                                 # try:
-                                model.load_model(modelname)
+                                model.load_model(pcb_model_name)
                                 # except:
                                 #     print('name have_model = False')
                                 have_model = False
@@ -283,13 +279,9 @@ def main(img, stop_event, reconnect_cam):
                                 if res:
                                     print(res)
                                 if res == 'x':
-                                    modelname = ''
+                                    pcb_model_name = ''
                                     break
                                 if i + 1 == len(framesmodel.frames):
-                                    modelname = res2
-                                    if not have_model:
-                                        modelname += ' (no model)'
-
                                     img_form_cam_and_frame = framesmodel.draw_frame(img_form_cam.copy())
                                     surface_img = cv2.resize(img_form_cam_and_frame, (1344, 1008))
                                     surfacenp = overlay(surfacenp, surface_img, (41, 41))
@@ -356,8 +348,9 @@ def main(img, stop_event, reconnect_cam):
 
             if res_dis == 'perdict' or dis.predict_auto:
                 dis.predict_auto = False
-                if modelname and '(no model)' not in modelname:
-                    framesmodel.crop_img(img_form_cam)
+                img_form_cam_bgr = cv2.cvtColor(img_form_cam, cv2.COLOR_RGB2BGR)
+                if pcb_model_name:
+                    framesmodel.crop_img(img_form_cam_bgr)
                     e = Wait(surfacenp.copy())
                     e.set_val('Wait', '')
                     e.x_shift = 700
@@ -383,7 +376,7 @@ def main(img, stop_event, reconnect_cam):
 
                 else:
                     e = Confirm(surfacenp.copy())
-                    e.set_val('Error', "don't have modelname", f"modelname = {modelname}")
+                    e.set_val('Error', "don't have modelname", f"pcb model name is {pcb_model_name}")
                     e.x_shift = 700
                     e.y_shift = 300
                     while True:
@@ -414,7 +407,7 @@ def main(img, stop_event, reconnect_cam):
                             namefile = datetime.now().strftime('Save Image/%y%m%d %H%M%S.png')
                             cv2.imwrite(namefile, img_form_cam)
                         if dis.mode == 'debug':
-                            path = f'data/{modelname}/img_full/'
+                            path = f'data/{pcb_model_name}/img_full/'
                             namefile = datetime.now().strftime('%y%m%d %H%M%S')
                             cv2.imwrite(path + namefile + '.png', img_form_cam)
                             string = ''
@@ -422,6 +415,10 @@ def main(img, stop_event, reconnect_cam):
                                 if frame.debug_res_name == '-':
                                     continue
                                 string += f'{name}:{frame.debug_res_name}\n'
+                                # ย้าย model.h5 go to old folder
+                                f'data/{framesmodel.name}/model'
+                            # todo
+                            # สร้าง folder (path + namefile)
                             with open(path + namefile + '.txt', 'w') as file:
                                 file.write(string)
 
@@ -537,7 +534,7 @@ def main(img, stop_event, reconnect_cam):
             else:
                 color = (0, 255, 255)
             cv2.putText(surfacenp, f'{dis.old_res}', (1500, 900), 2, 8, color, 2, cv2.LINE_AA)
-        cv2.putText(surfacenp, f'{modelname}',
+        cv2.putText(surfacenp, f'{pcb_model_name}',
                     (80, 26), 2, 0.6, (255, 255, 255), 1, cv2.LINE_AA)
 
         cv2.putText(surfacenp, f'fps: {round(1 / statistics.mean(fps))}',

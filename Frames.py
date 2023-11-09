@@ -203,10 +203,9 @@ class Mark:
 
 
 class Frames:
-    def __init__(self, filename):
-        self.name = filename.split('/')[1]
-        # self.name = filename.split('\\')[1]
-        data_all = json.loads(open(filename).read())
+    def __init__(self, name):
+        self.name = name
+        data_all = json.loads(open(f'data/{name}/frames pos.json').read())
         self.frames = {}
         self.models = {}
         self.marks = {}
@@ -303,7 +302,7 @@ class Frames:
                         d = (d, frame.color_text)
                     TextRectlist.append(d)
                 if textdata.get('Show list class name'):
-                    d = f'{frame.status_list}'
+                    d = f'{frame.percent_score_list}'
                     if textdata.get('Change color list class name'):
                         d = (d, frame.color_text)
                     TextRectlist.append(d)

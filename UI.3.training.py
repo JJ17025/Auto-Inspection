@@ -1,3 +1,18 @@
+from datetime import datetime
+import time
+
+print(datetime.now())
+
+x = datetime(2023, 11, 7, 3, 0, 0)
+print(x)
+
+while True:
+    now = datetime.now()
+    print((x - now))
+    if x < now:
+        break
+    time.sleep(5)
+
 '''
 ปรับให้สร้างภาพขนาดเล็กที่ใช้สร้างโมเดล ที่ละโมเดล
 จากเดิม ที่สร้างภาพขนาดเล็ก ทุก class ให้เสร็จก่อน ถึงจะสร้างโมเดล
@@ -12,39 +27,30 @@ import tensorflow as tf
 import keras
 from keras import layers, optimizers, models
 from keras.models import Sequential, load_model
-from keras.applications import VGG16
+
 import pathlib
 import matplotlib.pyplot as plt
 from Frames import Frames
 from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
 from keras.applications import VGG16
 
+
 def mkdir(directory):
     if not os.path.exists(directory):
         os.mkdir(directory)
 
+PCB_name = 'D07'
 
-IMG_FULL_PATH = 'img_full'
-IMG_FRAME_PATH = 'img_frame'
-IMG_FRAME_LOG_PATH = 'img_frame_log'
-MODEL_PATH = 'model'
-
-IMG_FULL_PATH = 'data/D07/img_full'
-IMG_FRAME_PATH = 'data/D07/img_frame'
-IMG_FRAME_LOG_PATH = 'data/D07/img_frame_log'
-MODEL_PATH = 'data/D07/model'
-
-IMG_FULL_PATH = 'data/QM7-3473/img_full'
-IMG_FRAME_PATH = 'data/QM7-3473/img_frame'
-IMG_FRAME_LOG_PATH = 'data/QM7-3473/img_frame_log'
-MODEL_PATH = 'data/QM7-3473/model'
-frames = Frames(rf"data/QM7-3473/frames pos.json")
+IMG_FULL_PATH = f'data/{PCB_name}/img_full'
+IMG_FRAME_PATH = f'data/{PCB_name}/img_frame'
+IMG_FRAME_LOG_PATH = f'data/{PCB_name}/img_frame_log'
+MODEL_PATH = f'data/{PCB_name}/model'
+frames = Frames(PCB_name)
 
 mkdir(IMG_FULL_PATH)
 mkdir(IMG_FRAME_PATH)
 mkdir(IMG_FRAME_LOG_PATH)
 mkdir(MODEL_PATH)
-
 
 batch_size = 32
 img_height = 180
@@ -54,6 +60,8 @@ epochs = 5
 # img_width = 250
 # epochs = 8
 MODEL_SET = 1  # 1,2,3
+
+
 # MODEL_SET = 1.4
 
 def controller(img, brightness=255, contrast=127):
@@ -84,11 +92,11 @@ def corp_img(model_name, frames):
     img_full_namefile_list = list(set(file.split('.')[0] for file in img_full_namefile_list if file.endswith('.png')) &
                                   set(file.split('.')[0] for file in img_full_namefile_list if file.endswith('.txt')))
     img_full_namefile_list = sorted(img_full_namefile_list, reverse=True)
-    for i,file_name in enumerate(img_full_namefile_list,start=1):
+    for i, file_name in enumerate(img_full_namefile_list, start=1):
 
         # file_name is 0807 143021, ...
         frames_list = open(fr"{IMG_FULL_PATH}/{file_name}.txt").readlines()
-        print(f'{i+1}/{len(img_full_namefile_list)} {file_name}')
+        print(f'{i}/{len(img_full_namefile_list)} {file_name}')
         for data_text in frames_list:
             data_list = data_text.strip().split(':')
             frame_name = data_list[0]  # ___________________________________________ ชื่อใน .txt
@@ -119,8 +127,8 @@ def corp_img(model_name, frames):
                 img_crop = img[y1:y2, x1:x2]
                 cv2.imwrite(fr"{IMG_FRAME_LOG_PATH}/{model_name}/{img_crop_namefile}", img_crop)
 
-                for shift_y in range(-4, 4 + 1):
-                    for shift_x in range(-4, 4 + 1):
+                for shift_y in [-4, -3, -2, -1, 0, 1, 2, 3, 4]:
+                    for shift_x in [-4, -3, -2, -1, 0, 1, 2, 3, 4]:
                         img_crop = img[y1 + shift_y:y2 + shift_y, x1 + shift_x:x2 + shift_x]
 
                         # add contran blige
@@ -199,7 +207,7 @@ def create_model(model_name):
     if MODEL_SET == 1:
         model = Sequential([
             layers.Rescaling(1. / 255, input_shape=(img_height, img_width, 3)),
-            layers.Conv2D(16, 3, padding='same', activation='relu'),
+            layers.Conv2D(16, (3,3), padding='same', activation='relu'),
             layers.MaxPooling2D(),
             layers.Conv2D(32, 3, padding='same', activation='relu'),
             layers.MaxPooling2D(),
@@ -211,8 +219,6 @@ def create_model(model_name):
             layers.Dense(num_classes)
         ])
     if MODEL_SET == 1.4:
-
-
         base_model = VGG16(include_top=False, weights='imagenet', input_shape=(img_height, img_width, 3))
         base_model.trainable = False
 
@@ -245,7 +251,6 @@ def create_model(model_name):
             metrics=['accuracy']
         )
         cp = False
-
 
     if MODEL_SET == 2:
         model = models.Sequential([
@@ -309,7 +314,7 @@ def create_model(model_name):
     plt.title(model_name)
 
     # plt.show()
-    plt.savefig(fr'{MODEL_PATH}/{model_name}graf.png')
+    plt.savefig(fr'{MODEL_PATH}/{model_name}_graf.png')
     model.save(os.path.join(MODEL_PATH, f'{model_name}.h5'))
     # delete IMG_FRAME_PATH
     shutil.rmtree(fr"{IMG_FRAME_PATH}/{model_name}")
@@ -322,8 +327,8 @@ def plog(string):
 
 
 def f(model_name, model, frames):
-    # try:
-    if True:
+    try:
+        # if True:
         t1 = datetime.now()
         plog('--------  >>> corp_img <<<  ---------')
         corp_img(model_name, frames)
@@ -336,9 +341,8 @@ def f(model_name, model, frames):
         plog(f'{t2 - t1} เวลาที่ใช้ในการเปลียน img_full เป็น shift_img ')
         plog(f'{t3 - t2} เวลาที่ใช้ในการ training ')
         plog(f'{t3 - t1} เวลาที่ใช้ทั้งหมด')
-    # except:
-    #     print(f'{WARNING}model_name error{ENDC}')
-
+    except:
+        print(f'{WARNING}model_name error{ENDC}')
 
 
 print(frames)
@@ -351,18 +355,5 @@ for name, model in frames.models.items():
     if name in model_list:
         print(f'{WARNING}continue{ENDC}')
         continue
+
     f(name, model, frames)
-
-'''
-Frames ╦ 54 frame is ╦ usb.1, usb.2, RJ45.1, RJ45.2, crys1.1, crys1.2, crys2.1, crys2.2, L1.1, L1.2, 
-       ║             ╠ L2.1, L2.2, L3.1, L3.2, C1.1, C1.2, C2.1, C2.2, C3.1, C3.2, 
-       ║             ╠ C4.1, C4.2, C5.1, C5.2, c1.1, c1.2, c2.1, c2.2, c3.1, c3.2, 
-       ║             ╠ c4.1, c4.2, c5.1, c5.2, c6.1, c6.2, c7.1, c7.2, c8.1, c8.2, 
-       ║             ╠ c9.1, c9.2, c10.1, c10.2, c11.1, c11.2, c12.1, c12.2, c13.1, 
-       ║             ╚ c13.2, c14.1, c14.2, c15.1, c15.2
-       ╠ 21 model is ╦ usb, RJ45, crys1, crys2, L, C123, C4, C5, c127, c3, 
-       ║             ╠ c4, c5, c6, c8, c9, c10, c11, c12, c13, c14, 
-       ║             ╚ c15
-       ╚  2 mark  is ═ m1, m2
-
-'''

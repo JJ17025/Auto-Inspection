@@ -1,7 +1,5 @@
 usb.1:ok
 usb.2:ok
-RJ45.1:ok
-RJ45.2:ok
 crys1.1:ok
 crys1.2:ok
 crys2.1:ok
