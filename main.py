@@ -1,3 +1,6 @@
+import numpy
+
+
 def capture(img, stop_event, reconnect_cam):
     import cv2
 
@@ -20,12 +23,12 @@ def main(img, stop_event, reconnect_cam):
     import numpy as np
     def show(text=None):
         if text:
-            cv2.putText(img, text, (240, 160), 1, 3, (255, 255, 255), 3, -1)
-        cv2.imshow('auto inspection', img)
+            cv2.putText(loading_windows, text, (240, 160), 1, 3, (255, 255, 255), 3, -1)
+        cv2.imshow('auto inspection', loading_windows)
         cv2.waitKey(1)
 
-    img = np.full((200, 700, 3), (150, 140, 150), np.uint8)
-    cv2.putText(img, 'Auto Inspection', (20, 90), 1, 5, (255, 255, 255), 5, -1)
+    loading_windows = np.full((200, 700, 3), (150, 140, 150), np.uint8)
+    cv2.putText(loading_windows, 'Auto Inspection', (20, 90), 1, 5, (255, 255, 255), 5, -1)
     show()
     import os
     import sys
@@ -147,55 +150,22 @@ def main(img, stop_event, reconnect_cam):
                 except requests.exceptions.RequestException as e:
                     print(f'{FAIL}An error occurred: {e}')
                 print(f'{ENDC}')
-            txt = [
-                ['step 1                           ', ['color=y', 'step', ]],
-                ['  if senser0 and senser0 is low  ', ['']],
-                ['    y1 on                        ', ['']],
-                ['    step=2                       ', ['']],
-                ['step 2                           ', ['color=y', 'step', ]],
-                ['  if senser1 high                ', ['']],
-                ['    step=3                       ', ['']],
-                ['step 3                           ', ['color=y', 'step', ]],
-                ['  if delay > 2                   ', ['']],
-                ['    step=4                       ', ['']],
-                ['step 4                           ', ['color=y', 'step', ]],
-                ['  Predict Image                  ', ['']],
-                ['  if OK                          ', ['']],
-                ['    step = 5.1                   ', ['']],
-                ['    y1 off                       ', ['']],
-                ['  if NG                          ', ['']],
-                ['    step = 5.2                   ', ['']],
-                ['step 5.1                         ', ['color=y', 'step', ]],
-                ['  delay 4 s                      ', ['']],
-                ['  y2 off                         ', ['']],
-            ]
-            line = -1.5
-            for t, command in txt:
-                if 'step' in command:
-                    line += 0.8
-
-                if 'color' in command[0]:
-                    if command[0].split('=')[1] == 'y':
-                        color = (0, 255, 255)
-                else:
-                    color = (255, 255, 255)
-                line += 1
-                cv2.putText(surfacenp, t, (1440, round(200 + line * 24)), 16, 0.5, color, 1, cv2.LINE_AA)
 
             ''' read data "ให้ ถ่ายภาพ --> predict "'''
-
             error_text = ''
             try:
                 res = requests.get(f'{url}/data/read', timeout=0.1)
                 if res.status_code == 200:
-                    if res.text == 'predict':
+                    if res.text == 'capture and predict':
                         dis.predict_auto = True
                         dis.predict_res = None
                         requests.get(f'{url}/data/write/predicting', timeout=0.1)
                     elif res.text == 'predicting' and dis.predict_res == 'ok':
-                        print('predicting and dis.predict_res == ok')
                         dis.predict_res = 'ok already_read'
                         requests.get(f'{url}/data/write/ok', timeout=0.1)
+                    elif res.text == 'predicting' and dis.predict_res == 'ng':
+                        dis.predict_res = 'ng already_read'
+                        requests.get(f'{url}/data/write/ng', timeout=0.1)
 
             except requests.exceptions.Timeout:
                 error_text = f"Request timed out. The request took longer than 0.1 second to complete."
@@ -204,13 +174,12 @@ def main(img, stop_event, reconnect_cam):
             if error_text:
                 putTextRect(surfacenp, error_text, (80, 160), 1.05, 2, (0, 0, 255), 5, cv2.LINE_AA)
 
-        if res_dis or dis.predict_auto:
+        if res_dis or dis.predict_auto or autocap:
             if res_dis == 'autocap':
-                if res_dis == 'autocap':
-                    if autocap:
-                        autocap = False
-                    else:
-                        autocap = True
+                if autocap:
+                    autocap = False
+                else:
+                    autocap = True
 
             if res_dis == 'New Project':
                 e = TextInput(surfacenp.copy())
@@ -301,6 +270,9 @@ def main(img, stop_event, reconnect_cam):
                             break
                         break
             if res_dis == 'Take a photo' or autocap or dis.predict_auto:
+                print(len(img))
+                print(type(img))
+                print((img))
                 if len(img) == 0:
                     e = Wait(surfacenp.copy())
                     e.set_val('Wait', '')
@@ -316,6 +288,7 @@ def main(img, stop_event, reconnect_cam):
                             break
                 if len(img) == 1:
                     img_form_cam = img[0].copy()
+                    print(img_form_cam)
 
                     # img_form_cam = cv2.imread('Save Image/231016 191324.png')
 
@@ -374,6 +347,8 @@ def main(img, stop_event, reconnect_cam):
                     print()
                     print('dis.predict_res =', dis.predict_res)
 
+
+
                 else:
                     e = Confirm(surfacenp.copy())
                     e.set_val('Error', "don't have modelname", f"pcb model name is {pcb_model_name}")
@@ -427,43 +402,48 @@ def main(img, stop_event, reconnect_cam):
 
             if res_dis == 'Load Image':
                 e = Select(surfacenp.copy())
-                e.add_data(
-                    *[f'{i}. {data}' for i, data in enumerate(os.listdir('Save Image'), start=1) if '.png' in data]
-                )
+                data_list = [f'{i}. {data}' for i, data in enumerate(os.listdir('Save Image'), start=1) if
+                             '.png' in data]
+                e.add_data(*data_list)
                 e.x_shift = 1546
                 e.y_shift = 121
-                while True:
+                play = True
+                while play:
                     mouse_pos = pygame.mouse.get_pos()
                     res = e.update(mouse_pos, pygame.event.get())
                     show(e.img_BG)
 
                     if res:
-                        if 'break' in res:
-                            break
                         print(res)
-                        namefile = fr'Save Image/{res.split(". ")[1]}'
-                        imread = cv2.imread(namefile)
-                        h, w, _ = imread.shape
-                        if h == 2448 or w == 3264:
-                            img_form_cam = imread.copy()
+                        if 'break' in res:
+                            play = False
+                        elif res == '- next -':
+                            e.next_page()
                         else:
-                            e = Confirm(surfacenp.copy())
-                            e.set_val(f'Confirm (h,w) is {h, w}', f"which is not equal to (2448 3264)",
-                                      'Are you sure', 'You want to Load Image?')
-                            e.x_shift = 700
-                            e.y_shift = 300
-                            while True:
-                                mouse_pos = pygame.mouse.get_pos()
-                                res = e.update(mouse_pos, pygame.event.get())
-                                show(e.img_BG)
-                                if res:
-                                    print(res)
-                                if res in ['OK']:
-                                    img_form_cam = imread.copy()
-                                    break
-                                if res in ['Cancel', 'x']:
-                                    break
-                        break
+                            namefile = fr'Save Image/{res.split(". ")[1]}'
+                            imread = cv2.imread(namefile)
+                            h, w, _ = imread.shape
+                            if h == 2448 or w == 3264:
+                                img_form_cam = imread.copy()
+                            else:
+                                e = Confirm(surfacenp.copy())
+                                e.set_val(f'Confirm (h,w) is {h, w}',
+                                          f"which is not equal to (2448 3264)",
+                                          'Are you sure', 'You want to Load Image?')
+                                e.x_shift = 700
+                                e.y_shift = 300
+                                while True:
+                                    mouse_pos = pygame.mouse.get_pos()
+                                    res = e.update(mouse_pos, pygame.event.get())
+                                    show(e.img_BG)
+                                    if res:
+                                        print(res)
+                                    if res in ['OK']:
+                                        img_form_cam = imread.copy()
+                                        break
+                                    if res in ['Cancel', 'x']:
+                                        break
+                            play = False
 
             if res_dis == 'minimize':
                 pygame.display.iconify()
@@ -526,6 +506,54 @@ def main(img, stop_event, reconnect_cam):
         fps.append(t_sec)
         if len(fps) > 20:
             fps = fps[1:]
+
+        if dis.mode == 'run':
+            class txt:
+                def __init__(self):
+                    self.txt_list = []
+                    self.row = 0
+
+                def add(self, txt, command=None, image=None):
+                    self.txt_list.append([txt, command, image])
+
+                def show(self, surfacenp):
+                    for txt, command, image in self.txt_list:
+                        print(txt, command)
+                        line = 1
+                        col = 0
+                        color = (255, 255, 255)
+                        if command:
+                            for c in command:
+                                c, v = c.split('=')
+                                if c == 'color':
+                                    if v == 'y':
+                                        color = (0, 255, 255)
+                                if c == 'spacing':
+                                    line = float(v)
+                                if c == 'col':
+                                    line = 0
+                                    col = float(v)
+
+                        self.row += line
+                        print('txt', txt)
+                        cv2.putText(surfacenp, txt, (round(1440 + col * 50), round(128 + self.row * 24)),
+                                    16, 0.5,
+                                    color, 1, cv2.LINE_AA)
+
+                        # if image is not None:
+                        #     print('img')
+                        #     surfacenp = overlay(surfacenp.copy(), image, (100, 100))
+
+            t = txt()
+            for k, v in framesmodel.frames.items():
+                if v.highest_score_name and v.highest_score_name in v.res_ok:
+                    continue
+                t.add(k, ['color=y', 'spacing=1.8', ])
+                t.add(v.highest_score_name, ['col=1'], v.img)
+                cv2.imshow(k, v.img)
+                cv2.waitKey(1)
+            t.show(surfacenp)
+
         if dis.old_res:
             if dis.old_res == 'ok':
                 color = (0, 255, 0)

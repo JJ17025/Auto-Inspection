@@ -2,6 +2,8 @@ import json
 import os
 import time
 from datetime import datetime
+from pprint import pprint
+
 import cv2
 import numpy as np
 import pygame
@@ -405,9 +407,10 @@ class Confirm:
 class Select:
     def __init__(self, img_BG=None):
         if img_BG is not None:
-            self.img_BG = img_BG
+            self.img_BG_ori = img_BG
         else:
-            self.img_BG = np.zeros((1080, 1920, 3), np.uint8)
+            self.img_BG_ori = np.zeros((1080, 1920, 3), np.uint8)
+
         self.x_shift = 0
         self.y_shift = 0
         self.img = cv2.imread('ui/select/non.png')
@@ -421,21 +424,40 @@ class Select:
         self.data_img_ac = self.img_ac[y1pix:y2pix, x1pix:x2pix]
         x1pix, y1pix, x2pix, y2pix = self.pos['bottom']
         self.bottom_img = self.img[y1pix:y2pix, x1pix:x2pix]
-        self.data = []
+        self.data_all = []
+        self.data_show = []
+        self.page = 0
         self.buttons = {}
+        self.n_max_data = 30
+
+    def n_data(self, page):
+        if len(self.data_all) <= self.n_max_data:
+            self.data_show = self.data_all
+            return 0
+        else:
+            self.data_show = self.data_all[30 * page:30 * (page + 1)] + ['- next -']
+            return len(self.data_all) % self.n_max_data
+
 
     def add_data(self, *args):
         for i in args:
-            self.data.append(i)
-        n = len(self.data)
+            self.data_all.append(i)
+        self.setup_data()
+
+    def next_page(self):
+        self.page += 1
+        if self.page * self.n_max_data > len(self.data_all):
+            self.page = 0
+        self.setup_data()
+
+    def setup_data(self):
+        self.n_data(self.page)
+        pprint(self.data_show)
+        n = len(self.data_show)
         self.img = np.concatenate((self.top_img, *(self.data_img,) * n, self.bottom_img), axis=0)
         self.img_ac = np.concatenate((self.top_img, *(self.data_img_ac,) * n, self.bottom_img), axis=0)
-        '''
-        0 9 325 33
-        0 9 325 33
-        '''
         for i in range(n):
-            name = self.data[i]
+            name = self.data_show[i]
             x1pixt, y1pixt, x2pixt, y2pixt = self.pos['top']  # [0, 0, 325, 8]
             x1pixd, y1pixd, x2pixd, y2pixd = self.pos['data']  # [0, 9, 325, 33]
             x1 = x1pixt
@@ -456,17 +478,17 @@ class Select:
             # v.show_frame_for_debug(self.img_show)
             self.img_show = v.show_button_ac(self.img_show, self.img_ac, (x, y))
 
-        for k, v in self.buttons.items():
-            res = None
-            for event in events:
-                if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-                    res = 'break, Click the mouse on an empty space.'
+        click_list = [None,]
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                click_list.append('break, Click the mouse on an empty space.')
+                for k, v in self.buttons.items():
                     if v.mouse_on_button(x, y):
-                        res = k
-                        return res
-                if event.type == pygame.MOUSEBUTTONUP and event.button == 3:
-                    res = 'break'
-        self.img_BG = overlay(self.img_BG, self.img_show, (self.x_shift, self.y_shift))
+                        click_list.append(k)
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 3:
+                click_list.append('break, Click R mouse')
+        res = click_list[-1]
+        self.img_BG = overlay(self.img_BG_ori, self.img_show, (self.x_shift, self.y_shift))
         return res
 
 
@@ -517,6 +539,5 @@ class Display:
                         res = f'm3:{k}'
                         print(f'{res}')
                         return self.img_show, res
-
 
         return self.img_show, res

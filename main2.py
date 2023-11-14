@@ -160,21 +160,24 @@ def main(img, stop_event, reconnect_cam):
                 cv2.putText(surfacenp, t, (1440, round(200 + line * 24)), 16, 0.5, color, 1, cv2.LINE_AA)
 
             ''' read data "ให้ ถ่ายภาพ --> predict "'''
-            url = "http://192.168.225.198:8080"
+            # url = "http://192.168.225.198:8080"
+            url = "http://192.168.225.90:8080"
 
             error_text = ''
             try:
                 res = requests.get(f'{url}/data/read', timeout=0.1)
                 print(res.status_code)
                 if res.status_code == 200:
-                    if res.text == 'predict':
+                    if res.text == 'cap and predict':
                         dis.predict_auto = True
                         dis.predict_res = None
                         requests.get(f'{url}/data/write/predicting', timeout=0.1)
                     elif res.text == 'predicting' and dis.predict_res == 'ok':
                         print('predicting and dis.predict_res == ok')
-                        dis.predict_res = 'ok already_read'
                         requests.get(f'{url}/data/write/ok', timeout=0.1)
+                    elif res.text == 'predicting' and dis.predict_res == 'ng':
+                        print('predicting and dis.predict_res == ng')
+                        requests.get(f'{url}/data/write/ng', timeout=0.1)
 
             except requests.exceptions.Timeout:
                 error_text = f"Request timed out. The request took longer than 0.1 second to complete."
@@ -303,18 +306,19 @@ def main(img, stop_event, reconnect_cam):
                 if res is not None:
                     img_form_cam = res
                 else:
-                    e = Confirm(surfacenp.copy())
-                    e.set_val('Error', "don't have mark")
-                    e.x_shift = 700
-                    e.y_shift = 300
-                    while True:
-                        mouse_pos = pygame.mouse.get_pos()
-                        res = e.update(mouse_pos, pygame.event.get())
-                        show(e.img_BG)
-                        if res:
-                            print(res)
-                        if res in ['OK', 'Cancel', 'x']:
-                            break
+                    if dis.mode != 'run':
+                        e = Confirm(surfacenp.copy())
+                        e.set_val('Error', "don't have mark")
+                        e.x_shift = 700
+                        e.y_shift = 300
+                        while True:
+                            mouse_pos = pygame.mouse.get_pos()
+                            res = e.update(mouse_pos, pygame.event.get())
+                            show(e.img_BG)
+                            if res:
+                                print(res)
+                            if res in ['OK', 'Cancel', 'x']:
+                                break
 
             if res_dis == 'perdict' or dis.predict_auto:
                 dis.predict_auto = False
@@ -336,8 +340,6 @@ def main(img, stop_event, reconnect_cam):
                     for name, frame in framesmodel.frames.items():
                         if frame.highest_score_name not in frame.res_ok:
                             print(frame.res_ok, frame.highest_score_name)
-                            if name in ['RJ45.1', 'RJ45.2', 'c2.1', 'c2.2']:
-                                continue
                             dis.predict_res = 'ng'
                             dis.old_res = 'ng'
 
