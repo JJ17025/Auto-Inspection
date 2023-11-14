@@ -243,9 +243,7 @@ def adj_image(image, frame):
 if __name__ == '__main__':
     import cv2
 
-
     x = np.full((3000, 4000, 3), (0, 0, 100), dtype='uint8')
-
     cv2.imshow('nx', cv2.resize(x,(0,0),fx=0.2,fy=0.2))
     cv2.waitKey(1)
     x = rotate(x, 10)

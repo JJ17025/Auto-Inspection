@@ -2,20 +2,16 @@ import json
 import os
 import time
 from datetime import datetime
-from pprint import pprint
-
 import cv2
 import numpy as np
 import pygame
 from func.about_image import putTextRect, overlay
 import requests
-
+from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
 
 def mkdir(directory):
-    try:
+    if not os.path.exists(directory):
         os.mkdir(directory)
-    except:
-        pass
 
 
 ####################################################################################
@@ -132,7 +128,8 @@ class Button:
 class Exit:
     def __init__(self, img_BG=None):
         if img_BG is not None:
-            self.img_BG = cv2.blur(img_BG, (20, 20))
+            self.img_BG = img_BG//4
+            # self.img_BG = cv2.blur(img_BG, (5, 5))
         else:
             self.img_BG = np.zeros((1080, 1920, 3), np.uint8)
         self.x_shift = 0
@@ -172,7 +169,8 @@ class Exit:
 class TextInput:
     def __init__(self, img_BG=None):
         if img_BG is not None:
-            self.img_BG = cv2.blur(img_BG, (10, 10))
+            self.img_BG = img_BG // 4
+            # self.img_BG = cv2.blur(img_BG, (5, 5))
         else:
             self.img_BG = np.zeros((1080, 1920, 3), np.uint8)
         self.x_shift = 0
@@ -201,7 +199,6 @@ class TextInput:
             res = None
             print('---')
             for event in events:
-                print(events)
                 if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     if v.mouse_on_button(x, y):
                         res = k
@@ -221,7 +218,8 @@ class TextInput:
 class Setting:
     def __init__(self, img_BG=None):
         if img_BG is not None:
-            self.img_BG = cv2.blur(img_BG, (20, 20))
+            self.img_BG = img_BG // 4
+            # self.img_BG = cv2.blur(img_BG, (20, 20))
         else:
             self.img_BG = np.zeros((1080, 1920, 3), np.uint8)
         self.x_shift = 0
@@ -317,7 +315,8 @@ class Setting:
 class Wait:
     def __init__(self, img_BG=None):
         if img_BG is not None:
-            self.img_BG = cv2.blur(img_BG, (10, 10))
+            self.img_BG = img_BG // 4
+            # self.img_BG = cv2.blur(img_BG, (5, 5))
         else:
             self.img_BG = np.zeros((1080, 1920, 3), np.uint8)
         self.x_shift = 0
@@ -365,7 +364,8 @@ class Wait:
 class Confirm:
     def __init__(self, img_BG=None):
         if img_BG is not None:
-            self.img_BG = cv2.blur(img_BG, (10, 10))
+            self.img_BG = img_BG // 4
+            # self.img_BG = cv2.blur(img_BG, (5, 5))
         else:
             self.img_BG = np.zeros((1080, 1920, 3), np.uint8)
         self.x_shift = 0
@@ -452,7 +452,6 @@ class Select:
 
     def setup_data(self):
         self.n_data(self.page)
-        pprint(self.data_show)
         n = len(self.data_show)
         self.img = np.concatenate((self.top_img, *(self.data_img,) * n, self.bottom_img), axis=0)
         self.img_ac = np.concatenate((self.top_img, *(self.data_img_ac,) * n, self.bottom_img), axis=0)
@@ -478,17 +477,18 @@ class Select:
             # v.show_frame_for_debug(self.img_show)
             self.img_show = v.show_button_ac(self.img_show, self.img_ac, (x, y))
 
-        click_list = [None,]
+        res = None
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-                click_list.append('break, Click the mouse on an empty space.')
+                res = 'break, Click the mouse on an empty space.'
                 for k, v in self.buttons.items():
                     if v.mouse_on_button(x, y):
-                        click_list.append(k)
+                        res = k
             if event.type == pygame.MOUSEBUTTONUP and event.button == 3:
-                click_list.append('break, Click R mouse')
-        res = click_list[-1]
+                res = 'break, Click R mouse'
         self.img_BG = overlay(self.img_BG_ori, self.img_show, (self.x_shift, self.y_shift))
+        if res:
+            print(f'{ITALICIZED}Select click --> {UNDERLINE}{res}{ENDC}')
         return res
 
 
@@ -508,7 +508,7 @@ class Display:
         self.ipIO = 'http://192.168.225.198:8080'
         self.mode = 'manual'  # debug, manual, run
         self.mode_run_step = 0
-        self.predict_auto = False
+        self.update_dis_res = set()
         self.predict_res = None
         self.old_res = None
 
@@ -525,19 +525,18 @@ class Display:
             else:
                 self.img_show = v.show_button_ac(self.img_show, self.img_ac, (x, y))
 
-        for k, v in self.buttons.items():
-            res = None
-            for event in events:
-                if v.mouse_on_button(x, y):
-                    if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-                        res = k
-                        if 'mode_menu' in res:
-                            self.mode = res.split('-')[1]
-                        print(f'{res}')
-                        return self.img_show, res
-                    if event.type == pygame.MOUSEBUTTONUP and event.button == 3:
-                        res = f'm3:{k}'
-                        print(f'{res}')
-                        return self.img_show, res
-
-        return self.img_show, res
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONUP:
+                for k, v in self.buttons.items():
+                    if v.mouse_on_button(x, y):
+                        if event.button == 1 or event.button == 3:
+                            res = k
+                            if event.button == 3:
+                                res = f'm3:{k}'
+                            if 'mode_menu' in res:
+                                self.mode = res.split('-')[1]
+                            if res == 'perdict':
+                                self.update_dis_res.add('adj image')
+                            self.update_dis_res.add(res)
+                            print(f'{GREEN}{ITALICIZED}display click --> {UNDERLINE}{res}{ENDC}')
+        return self.img_show
