@@ -1,9 +1,9 @@
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 from datetime import datetime
 import json
 import time
 
-GPIO.setmode(GPIO.BCM)
+# GPIO.setmode(GPIO.BCM)
 datetime_old = datetime.now()
 run_step = 1
 HIGH = 1
@@ -30,10 +30,10 @@ IO = {}
 IO.update(O)
 IO.update(I)
 
-for k, v in I.items():
-    GPIO.setup(v, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-for k, v in O.items():
-    GPIO.setup(v, GPIO.OUT)
+# for k, v in I.items():
+#     GPIO.setup(v, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+# for k, v in O.items():
+#     GPIO.setup(v, GPIO.OUT)
 
 
 
@@ -42,7 +42,7 @@ def on(pin):
     if not pin.isnumeric():
         pin = O.get(pin)
     pin = int(pin)
-    GPIO.output(pin, GPIO.LOW)
+    # GPIO.output(pin, GPIO.LOW)
     print(f'func >> {pin} is on')
 
 
@@ -50,7 +50,7 @@ def off(pin):
     if not pin.isnumeric():
         pin = O.get(pin)
     pin = int(pin)
-    GPIO.output(pin, GPIO.HIGH)
+    # GPIO.output(pin, GPIO.HIGH)
     print(f'func >> {pin} is off')
 
 
@@ -59,16 +59,17 @@ def read(pinstr):
         pin = I.get(pinstr)
     else:
         pin = pinstr
-    res = GPIO.input(pin)
-    inv = [1,0]
-    res = inv[res]
+    # res = GPIO.input(pin)
+    # inv = [1,0]
+    res = 0
     print(f'func >> {pinstr} is {res}')
     return res
 
 def readall():
     data = {}
     for name, pin in IO.items():
-        res = GPIO.input(pin)
+        # res = GPIO.input(pin)
+        res = 0
         inv = [1,0]
         res = inv[res]
         data[name] = [pin, res]
@@ -104,13 +105,13 @@ def main_program():
 
     elif run_step == 4:
         # บอกให้ predict
-        with open('/home/pi/autorun/static/data.txt', 'w') as f:
+        with open('static/data.txt', 'w') as f:
             f.write('predict')
         run_step = 5
 
     elif run_step == 5:
         # อ่านผลลัพธ์
-        with open('/home/pi/autorun/static/data.txt') as f:
+        with open('static/data.txt') as f:
             res = f.read()
             print("res",res)
             
@@ -129,7 +130,7 @@ def main_program():
             off('Stopper_2')
             run_step = 8
     elif run_step == 8:
-        with open('/home/pi/autorun/static/data.txt', 'w') as f:
+        with open('static/data.txt', 'w') as f:
             f.write('None')
         run_step = 1
 
@@ -138,7 +139,7 @@ def main_program():
 if __name__ == '__main__':
     while True:
         try:
-            with open("/home/pi/autorun/static/log.txt", 'a' ,encoding='utf-8') as f:
+            with open("static/log.txt", 'a' ,encoding='utf-8') as f:
                 f.write(f'{datetime.now()} run io\n\n')
             old_txt = '0'
             txt = '0'
@@ -154,12 +155,12 @@ if __name__ == '__main__':
             'step 8'
             ]
             while True:
-                with open('/home/pi/autorun/static/run.txt') as f:
+                with open('static/run.txt') as f:
                     old_txt = txt
                     txt = f.read()
                 printt = f'{datetime.now()} run={txt} step={run_step}'
                 print(printt)
-                with open("/home/pi/autorun/static/step.txt", 'w') as f:
+                with open("static/step.txt", 'w') as f:
                     f.write(f'{printt}\n{step_text[run_step]}')
                 if old_txt == '0' and txt == '1': # สั่งrun
                     run_step = 1
@@ -180,7 +181,7 @@ if __name__ == '__main__':
 
         except:        
         # except Exception as e:
-            # with open("/home/pi/autorun/static/log.txt", 'a') as f:
+            # with open("static/log.txt", 'a') as f:
                 # f.write(f'{datetime.now()}\n{e}\n\n')
             time.sleep(2)
         

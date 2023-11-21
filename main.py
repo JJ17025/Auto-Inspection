@@ -44,7 +44,8 @@ def main(img, stop_event, reconnect_cam):
     from Frames import Frame, Frames, predict
     from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
     cv2.destroyWindow('auto inspection')
-    url = "http://192.168.225.198:8080"
+    url_list = ["http://192.168.225.10:8080", "http://192.168.225.90:8080", "http://192.168.225.92:8080"]
+    url = None
 
     def cvimage_to_pygame(image):
         """Convert cvimage into a pygame image"""
@@ -53,6 +54,28 @@ def main(img, stop_event, reconnect_cam):
         else:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return pygame.image.frombuffer(image.tobytes(), image.shape[1::-1], "RGB")
+
+    def requests_get(url_all, timeout=0.2):
+        count_error = 0
+        error = None
+        while True:
+            try:
+                res = requests.get(url_all, timeout=timeout)
+                if res.status_code == 200:
+                    return 'requests OK', res.text
+                else:
+                    return 'error', f'status_code = {res.status_code}'
+            except requests.exceptions.Timeout:
+                count_error += 1
+                error = f'{FAIL}Timeout. The request took longer than 0.1 second to complete.{ENDC}'
+                print(error)
+            except requests.exceptions.RequestException as e:
+                count_error += 1
+                error = f'{FAIL}{e}{ENDC}'
+                print(error)
+            if count_error > 3:
+                break
+        return 'error', error
 
     def show(surfacenp):
         surface = cvimage_to_pygame(surfacenp)
@@ -141,38 +164,44 @@ def main(img, stop_event, reconnect_cam):
         if dis.mode == 'run' and pcb_model_name:
             if 'mode_menu-run' in dis.update_dis_res:
                 dis.update_dis_res -= {'mode_menu-run'}
-                try:
-                    res = requests.get(f'{url}/run/0', timeout=0.1)
-                    res = requests.get(f'{url}/run/1', timeout=0.1)
-                    print(f'{GREEN}status {res.status_code} ping to {url} run IO Raspberrypi')
-                except requests.exceptions.Timeout:
-                    print(f'{FAIL}Request timed out. The request took longer than 0.1 second to complete.')
-                except requests.exceptions.RequestException as e:
-                    print(f'{FAIL}An error occurred: {e}')
-                print(f'{ENDC}')
+                for u in url_list:
+                    try:
+                        res = requests.get(f'{u}', timeout=0.2)
+                        if res.status_code == 200:
+                            url = u
+                            break
+                    except requests.exceptions.Timeout:
+                        print(f'{FAIL}Request timed out. The request took longer than 0.1 second to complete.{ENDC}')
+                    except requests.exceptions.RequestException as e:
+                        print(f'{FAIL}An error occurred: {e}{ENDC}')
+
+                if url:
+                    requests_get(f'{url}/run/0', timeout=0.2)
+                    requests_get(f'{url}/run/1', timeout=0.2)
+                    print(f'{GREEN}ping to {url} OK{ENDC}')
+                else:
+                    print(f"{FAIL} can't connect to raspberrypi{ENDC}")
 
             ''' read data "ให้ ถ่ายภาพ --> predict "'''
-            error_text = ''
-            try:
-                res = requests.get(f'{url}/data/read', timeout=0.1)
-                if res.status_code == 200:
-                    if res.text == 'capture and predict':
-                        dis.update_dis_res += ['Take a photo', 'adj image', 'predict']
-                        dis.predict_res = None
-                        requests.get(f'{url}/data/write/predicting', timeout=0.1)
-                    elif res.text == 'predicting' and dis.predict_res == 'ok':
-                        dis.predict_res = 'ok already_read'
-                        requests.get(f'{url}/data/write/ok', timeout=0.1)
-                    elif res.text == 'predicting' and dis.predict_res == 'ng':
-                        dis.predict_res = 'ng already_read'
-                        requests.get(f'{url}/data/write/ng', timeout=0.1)
 
-            except requests.exceptions.Timeout:
-                error_text = f"Request timed out. The request took longer than 0.1 second to complete."
-            except requests.exceptions.RequestException as e:
-                error_text = f"An error occurred: {e}"
-            if error_text:
-                putTextRect(surfacenp, error_text, (80, 160), 1.05, 2, (0, 0, 255), 5, cv2.LINE_AA)
+            error_text = ''
+            res_text = requests_get(f'{url}/data/read', timeout=0.2)
+            cv2.putText(surfacenp, f'rasppi data: {res_text[0]} {res_text[1]}',
+                        (430, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
+            if res_text[0] == 'error':
+                putTextRect(surfacenp, f'{error_text[1]}', (80, 160), 1.05, 2, (0, 0, 255), 5, cv2.LINE_AA)
+            if res_text[0] == 'requests OK':
+                if res_text[1] == 'capture and predict':
+                    dis.update_dis_res = dis.update_dis_res.union({'Take a photo', 'adj image', 'predict'})
+                    # dis.update_dis_res = dis.update_dis_res.union({'adj image', 'predict'})
+                    dis.predict_res = None
+                    requests_get(f'{url}/data/write/AI is predicting', timeout=0.2)
+                elif res_text[1] == 'AI is predicting' and dis.predict_res == 'ok':
+                    requests_get(f'{url}/data/write/ok', timeout=0.2)
+                    dis.predict_res = 'ok already_read'
+                elif res_text[1] == 'AI is predicting' and dis.predict_res == 'ng':
+                    requests_get(f'{url}/data/write/ng', timeout=0.2)
+                    dis.predict_res = 'ng already_read'
 
         if dis.update_dis_res or autocap:
             if 'autocap' in dis.update_dis_res:
@@ -268,10 +297,23 @@ def main(img, stop_event, reconnect_cam):
                     mouse_pos = pygame.mouse.get_pos()
                     res = e.update(mouse_pos, pygame.event.get())
                     show(e.img_BG)
-
                     if res:
                         if 'save mark' in res:
                             framesmodel.save_mark(img_form_cam)
+                            break
+                        break
+            elif 'm3:mode_menu-run' in dis.update_dis_res:
+                dis.update_dis_res -= {'m3:mode_menu-run'}
+                e = Select(surfacenp.copy())
+                e.add_data('predict')
+                e.x_shift, e.y_shift = mouse_pos
+                while True:
+                    mouse_pos = pygame.mouse.get_pos()
+                    res = e.update(mouse_pos, pygame.event.get())
+                    show(e.img_BG)
+                    if res:
+                        if 'predict' in res:
+                            requests_get(f'{url}/data/write/AI is predicting', timeout=0.2)
                             break
                         break
             elif autocap or 'Take a photo' in dis.update_dis_res:
@@ -309,21 +351,22 @@ def main(img, stop_event, reconnect_cam):
                 if res is not None:
                     img_form_cam = res
                 else:
-                    e = Confirm(surfacenp.copy())
-                    e.set_val('Error', "don't have mark")
-                    e.x_shift = 700
-                    e.y_shift = 300
-                    while True:
-                        mouse_pos = pygame.mouse.get_pos()
-                        res = e.update(mouse_pos, pygame.event.get())
-                        show(e.img_BG)
-                        if res:
-                            print(res)
-                        if res in ['OK', 'Cancel', 'x']:
-                            break
+                    if dis.mode != 'run':
+                        e = Confirm(surfacenp.copy())
+                        e.set_val('Error', "don't have mark")
+                        e.x_shift = 700
+                        e.y_shift = 300
+                        while True:
+                            mouse_pos = pygame.mouse.get_pos()
+                            res = e.update(mouse_pos, pygame.event.get())
+                            show(e.img_BG)
+                            if res:
+                                print(res)
+                            if res in ['OK', 'Cancel', 'x']:
+                                break
 
-            elif 'perdict' in dis.update_dis_res:
-                dis.update_dis_res -= {'perdict'}
+            elif 'predict' in dis.update_dis_res:
+                dis.update_dis_res -= {'predict'}
                 dis.predict_auto = False
                 img_form_cam_bgr = cv2.cvtColor(img_form_cam, cv2.COLOR_RGB2BGR)
                 if pcb_model_name:
@@ -350,8 +393,6 @@ def main(img, stop_event, reconnect_cam):
 
                     print()
                     print('dis.predict_res =', dis.predict_res)
-
-
 
                 else:
                     e = Confirm(surfacenp.copy())
@@ -512,6 +553,7 @@ def main(img, stop_event, reconnect_cam):
 
         if 'run' in dis.update_dis_res:
             dis.update_dis_res -= {'run'}
+
             class txt:
                 def __init__(self):
                     self.txt_list = []

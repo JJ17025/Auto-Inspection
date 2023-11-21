@@ -45,7 +45,7 @@ def read_pin_all():
 @app.route('/<file_name>/read')
 def data_read(file_name):
     if file_name in ['data', 'log']:
-        with open('/home/pi/autorun/static/data.txt') as f:
+        with open('static/data.txt') as f:
             val = f.read()
         return f"{val}"
     else:
@@ -53,29 +53,29 @@ def data_read(file_name):
 
 @app.route('/data/write/<data>')
 def data_write(data):
-    with open('/home/pi/autorun/static/data.txt' ,'w') as f:
+    with open('static/data.txt' ,'w') as f:
         f.write(data)
     return f"write>{data}"
     
 @app.route('/run/<val>')
 def run_io_programe(val):
     if val in ['0', '1']:
-        with open('/home/pi/autorun/static/run.txt' ,'w') as f:
+        with open('static/run.txt' ,'w') as f:
             f.write(val)
-        with open('/home/pi/autorun/static/data.txt' ,'w') as f:
+        with open('static/data.txt' ,'w') as f:
             f.write('None')
         return redirect(url_for('index'))
     return redirect(url_for('index'))
     
         
 if __name__ == '__main__':
-    while True:
-        try:
-            with open("/home/pi/autorun/static/log.txt", 'a' ,encoding='utf-8') as f:
-                f.write(f'{datetime.now()} run web\n\n')
-            app.run('192.168.225.198',port=8080, debug=True)
-        except:
-            # with open("/home/pi/autorun/static/log.txt", 'a') as f:
+    # while True:
+    #     try:
+    # with open("static/log.txt", 'a' ,encoding='utf-8') as f:
+    #     f.write(f'{datetime.now()} run web\n\n')
+    app.run('192.168.225.92',port=8080, debug=True)
+        # except:
+            # with open("static/log.txt", 'a') as f:
                 # f.write(f'{datetime.now()}\n{e}\n\n')
-            time.sleep(3)
+            # time.sleep(3)
         

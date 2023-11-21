@@ -233,6 +233,7 @@ class Setting:
             self.buttons[k] = Button(k, x1pix=x1pix, y1pix=y1pix, x2pix=x2pix, y2pix=y2pix)
         self.read_check_box_data()
         self.ipIO = 'http://192.168.225.198:8080'
+        self.ipIO = 'http://192.168.225.198:8080'
 
     def read_check_box_data(self):
         try:
@@ -535,7 +536,7 @@ class Display:
                                 res = f'm3:{k}'
                             if 'mode_menu' in res:
                                 self.mode = res.split('-')[1]
-                            if res == 'perdict':
+                            if res == 'predict':
                                 self.update_dis_res.add('adj image')
                             self.update_dis_res.add(res)
                             print(f'{GREEN}{ITALICIZED}display click --> {UNDERLINE}{res}{ENDC}')

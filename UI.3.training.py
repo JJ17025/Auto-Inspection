@@ -39,7 +39,8 @@ def mkdir(directory):
     if not os.path.exists(directory):
         os.mkdir(directory)
 
-PCB_name = 'D07'
+PCB_name = 'QM7-3473'
+PCB_name = 'QM7-3472'
 
 IMG_FULL_PATH = f'data/{PCB_name}/img_full'
 IMG_FRAME_PATH = f'data/{PCB_name}/img_frame'
@@ -88,6 +89,8 @@ def controller(img, brightness=255, contrast=127):
 
 
 def corp_img(model_name, frames):
+    # shutil.rmtree(fr"{IMG_FRAME_LOG_PATH}/{model_name}")
+    # shutil.rmtree(fr"{IMG_FRAME_PATH}/{model_name}")
     img_full_namefile_list = os.listdir(IMG_FULL_PATH)
     img_full_namefile_list = list(set(file.split('.')[0] for file in img_full_namefile_list if file.endswith('.png')) &
                                   set(file.split('.')[0] for file in img_full_namefile_list if file.endswith('.txt')))

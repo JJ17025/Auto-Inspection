@@ -1,6 +1,6 @@
 {
-    "Show name": true,
-    "Show results from predictions": false,
+    "Show name": false,
+    "Show results from predictions": true,
     "Show %results from predictions": false,
     "Show list class name": false,
     "Change color frame": true,
