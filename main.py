@@ -161,7 +161,8 @@ def main(img, stop_event, reconnect_cam):
 
                                 break
                         break
-        if dis.mode == 'run' and pcb_model_name:
+        if dis.mode == 'run':
+        # if dis.mode == 'run' and pcb_model_name:
             if 'mode_menu-run' in dis.update_dis_res:
                 dis.update_dis_res -= {'mode_menu-run'}
                 for u in url_list:
@@ -186,10 +187,11 @@ def main(img, stop_event, reconnect_cam):
 
             error_text = ''
             res_text = requests_get(f'{url}/data/read', timeout=0.2)
+            print(res_text)
             cv2.putText(surfacenp, f'rasppi data: {res_text[0]} {res_text[1]}',
                         (430, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
             if res_text[0] == 'error':
-                putTextRect(surfacenp, f'{error_text[1]}', (80, 160), 1.05, 2, (0, 0, 255), 5, cv2.LINE_AA)
+                putTextRect(surfacenp, f'{error_text}', (80, 160), 1.05, 2, (0, 0, 255), 5, cv2.LINE_AA)
             if res_text[0] == 'requests OK':
                 if res_text[1] == 'capture and predict':
                     dis.update_dis_res = dis.update_dis_res.union({'Take a photo', 'adj image', 'predict'})
@@ -202,8 +204,17 @@ def main(img, stop_event, reconnect_cam):
                 elif res_text[1] == 'AI is predicting' and dis.predict_res == 'ng':
                     requests_get(f'{url}/data/write/ng', timeout=0.2)
                     dis.predict_res = 'ng already_read'
+                elif res_text[1] == 'pro=[1, 1, 1, 0]':
+                    dis.select_model = 'QM7-3472'
+                    dis.update_dis_res.add('select model')
+                    requests_get(f'{url}/data/write/None', timeout=0.2)
+                elif res_text[1] == 'pro=[1, 1, 0, 1]':
+                    dis.select_model = 'QM7-3473_v2'
+                    dis.update_dis_res.add('select model')
+                    requests_get(f'{url}/data/write/None', timeout=0.2)
 
         if dis.update_dis_res or autocap:
+            print(dis.update_dis_res)
             if 'autocap' in dis.update_dis_res:
                 dis.update_dis_res -= {'autocap'}
                 if autocap:
@@ -244,7 +255,9 @@ def main(img, stop_event, reconnect_cam):
                     mouse_pos = pygame.mouse.get_pos()
                     res = e.update(mouse_pos, pygame.event.get())
                     show(e.img_BG)
-
+                    if dis.select_model:
+                        res = dis.select_model
+                        dis.select_model = None
                     if res:
                         if 'break' in res:
                             break

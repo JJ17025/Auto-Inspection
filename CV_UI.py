@@ -512,6 +512,7 @@ class Display:
         self.update_dis_res = set()
         self.predict_res = None
         self.old_res = None
+        self.select_model = None
 
     def update(self, mouse_pos, events):
         x, y = mouse_pos
