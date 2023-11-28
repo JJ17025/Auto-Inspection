@@ -329,7 +329,7 @@ def main(img, stop_event, reconnect_cam):
                             requests_get(f'{url}/data/write/AI is predicting', timeout=0.2)
                             break
                         break
-            elif autocap or 'Take a photo' in dis.update_dis_res:
+            elif 'Take a photo' in dis.update_dis_res or autocap:
                 dis.update_dis_res -= {'Take a photo'}
                 if len(img) == 0:
                     e = Wait(surfacenp.copy())
@@ -347,7 +347,7 @@ def main(img, stop_event, reconnect_cam):
                 if len(img) == 1:
                     img_form_cam = img[0].copy()
 
-                    # img_form_cam = cv2.imread('Save Image/231016 191324.png')
+                    img_form_cam = cv2.imread(r"C:\Python_Project\Auto Inspection\Save Image\231003 193441.png")
 
             elif 'adj image' in dis.update_dis_res:
                 dis.update_dis_res -= {'adj image'}

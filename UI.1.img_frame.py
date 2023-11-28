@@ -281,10 +281,10 @@ h = cap.get(4)
 
 
 def capture():
-    # s, IMG = cap.read()
-    s = False
-    if s == False:
-        IMG = cv2.imread('Save Image/231113 180642.png')
+    s, IMG = cap.read()
+    # s = False
+    # if s == False:
+    #     IMG = cv2.imread('Save Image/231113 180642.png')
     img = IMG.copy()
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     return img, IMG
