@@ -27,6 +27,7 @@ def main(img, stop_event, reconnect_cam):
     loading_windows = np.full((200, 700, 3), (150, 140, 150), np.uint8)
     cv2.putText(loading_windows, 'Auto Inspection', (20, 90), 1, 5, (255, 255, 255), 5, -1)
     show()
+    import shutil
     import os
     import sys
     show('Loading.')
@@ -99,6 +100,7 @@ def main(img, stop_event, reconnect_cam):
     fps = []
     pcb_model_name = ''
     autocap = False
+    save_img = False
     update_dis_res = []
     while not stop_event.is_set():
         t1 = datetime.now()
@@ -167,6 +169,21 @@ def main(img, stop_event, reconnect_cam):
                                 break
                         break
         if dis.mode == 'run':
+            if save_img:
+                namefile = datetime.now().strftime('%y%m%d %H%M%S.png')
+                mkdir(f'data/{pcb_model_name}/log_img')
+                mkdir(f'data/{pcb_model_name}/log_img/{save_img}')
+                log_img_list = os.listdir(f'data/{pcb_model_name}/log_img/{save_img}')
+                if len(log_img_list) > 4:
+                    print('...\n'*20)
+                    print(log_img_list)
+                    # del log_img_list[0]
+
+                    print(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[0]}')
+                    # shutil.rmtree(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[0]}')
+                    # shutil.rmtree(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[1]}')
+                cv2.imwrite(f'data/{pcb_model_name}/log_img/{save_img}/{namefile}', img_form_cam_and_frame)
+                save_img = False
         # if dis.mode == 'run' and pcb_model_name:
             if 'mode_menu-run' in dis.update_dis_res:
                 dis.update_dis_res -= {'mode_menu-run'}
@@ -245,7 +262,7 @@ def main(img, stop_event, reconnect_cam):
                     if res == 'OK':
                         output = e.textinput
                         if not os.path.exists('data'):
-                            os.mkdir('data', )
+                            os.mkdir('data')
                         if not os.path.exists(f'data/{output}'):
                             os.mkdir(f'data/{output}')
                             break
@@ -425,7 +442,7 @@ def main(img, stop_event, reconnect_cam):
                             print(res)
                         if res in ['OK', 'Cancel', 'x']:
                             break
-
+                save_img = dis.predict_res
                 surface_img = cv2.resize(img_form_cam_and_frame, (1344, 1008))
                 surfacenp = overlay(surfacenp, surface_img, (41, 41))
 
