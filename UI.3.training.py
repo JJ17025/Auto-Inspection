@@ -27,17 +27,12 @@ import tensorflow as tf
 import keras
 from keras import layers, optimizers, models
 from keras.models import Sequential, load_model
-
+from CV_UI import mkdir ,remove
 import pathlib
 import matplotlib.pyplot as plt
 from Frames import Frames
 from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
 from keras.applications import VGG16
-
-
-def mkdir(directory):
-    if not os.path.exists(directory):
-        os.mkdir(directory)
 
 PCB_name = 'QM7-3473'
 PCB_name = 'QM7-3472'

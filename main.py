@@ -38,7 +38,7 @@ def main(img, stop_event, reconnect_cam):
     from datetime import datetime
     import requests
     import time
-    from CV_UI import mkdir
+    from CV_UI import mkdir ,remove
     from CV_UI import Button, Display, Exit, TextInput, Select, Setting, Wait, Confirm
     show('Loading...')
     from func.about_image import putTextRect, putTextRect_center, overlay, adj_image, rotate
@@ -174,14 +174,10 @@ def main(img, stop_event, reconnect_cam):
                 mkdir(f'data/{pcb_model_name}/log_img')
                 mkdir(f'data/{pcb_model_name}/log_img/{save_img}')
                 log_img_list = os.listdir(f'data/{pcb_model_name}/log_img/{save_img}')
-                if len(log_img_list) > 4:
-                    print('...\n'*20)
-                    print(log_img_list)
-                    # del log_img_list[0]
-
-                    print(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[0]}')
-                    # shutil.rmtree(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[0]}')
-                    # shutil.rmtree(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[1]}')
+                if len(log_img_list) > 100:
+                    # del file log_img_list[0]
+                    remove(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[0]}')
+                    remove(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[1]}')
                 cv2.imwrite(f'data/{pcb_model_name}/log_img/{save_img}/{namefile}', img_form_cam_and_frame)
                 save_img = False
         # if dis.mode == 'run' and pcb_model_name:

@@ -12,7 +12,9 @@ from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, IT
 def mkdir(directory):
     if not os.path.exists(directory):
         os.mkdir(directory)
-
+def remove(directory):
+    if os.path.exists(directory):
+      os.remove(directory)
 
 ####################################################################################
 mouse_event = False

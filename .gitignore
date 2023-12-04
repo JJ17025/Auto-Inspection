@@ -4,3 +4,4 @@ data/QM7-3473/img_frame/
 .idea/
 __pycache__/
 test.py
+data/*/log_img
