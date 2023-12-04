@@ -1,3 +1,4 @@
+import os
 import statistics
 import time
 from datetime import datetime
@@ -199,15 +200,19 @@ def main(img):
 
                     if where_is_mose == 'select model button':
                         select_model_win.show_flex = True
-                        select_model_win.add_button(Button('model 1', (10, 10, 195, 30),
-                                                           "ui/display2/main button/button box.png",
-                                                           text='          model 1', text_size=14, text_center='l'))
-                        select_model_win.add_button(Button('model 2', (10, 40, 195, 30),
-                                                           "ui/display2/main button/button box.png",
-                                                           text='          model 2', text_size=14, text_center='l'))
-                        select_model_win.add_button(Button('model 3', (10, 70, 195, 30),
-                                                           "ui/display2/main button/button box.png",
-                                                           text='          model 3', text_size=14, text_center='l'))
+                        data = os.listdir('data')
+                        i=0
+                        for d in data:
+                            i+=1
+                            select_model_win.add_button(Button(f'{d}', (10, 10+i*35, 195, 30),
+                                                               "ui/display2/main button/button box.png",
+                                                               text=f'          {d}', text_size=14, text_center='l'))
+                        # select_model_win.add_button(Button('model 2', (10, 40, 195, 30),
+                        #                                    "ui/display2/main button/button box.png",
+                        #                                    text='          model 2', text_size=14, text_center='l'))
+                        # select_model_win.add_button(Button('model 3', (10, 70, 195, 30),
+                        #                                    "ui/display2/main button/button box.png",
+                        #                                    text='          model 3', text_size=14, text_center='l'))
                     if where_is_mose == 'setting button':
                         setting_win.show_flex = True
                         setting_win.add_button(Button('model 1', (10, 10, 195, 30),

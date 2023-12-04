@@ -44,7 +44,12 @@ def main(img, stop_event, reconnect_cam):
     from Frames import Frame, Frames, predict
     from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
     cv2.destroyWindow('auto inspection')
-    url_list = ["http://192.168.225.10:8080", "http://192.168.225.90:8080", "http://192.168.225.92:8080"]
+    url_list = [
+        "http://192.168.1.11:8080",
+        "http://192.168.225.10:8080", 
+        "http://192.168.225.90:8080",
+        "http://192.168.225.92:8080"
+    ]
     url = None
 
     def cvimage_to_pygame(image):
