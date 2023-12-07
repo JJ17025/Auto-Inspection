@@ -637,7 +637,7 @@ def main(img, stop_event, reconnect_cam):
                 color = (0, 0, 255)
             else:
                 color = (0, 255, 255)
-            cv2.putText(surfacenp, f'{dis.old_res}', (1500, 900), 2, 8, color, 2, cv2.LINE_AA)
+            cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1500, 900), 2, 6, color, 8, cv2.LINE_AA)
         cv2.putText(surfacenp, f'{pcb_model_name}',
                     (80, 26), 2, 0.6, (255, 255, 255), 1, cv2.LINE_AA)
 

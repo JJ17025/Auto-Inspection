@@ -115,9 +115,9 @@ class Frame:
 
     def reset_result(self):
         self.color_frame = (0, 255, 255)
-        self.color_frame_thickness = 3
+        self.color_frame_thickness = 5
         self.color_text = (255, 255, 255)
-        self.font_size = 2
+        self.font_size = 2.5
         self.predictions_score_list = None  # [ -6.520611   8.118368 -21.86103   22.21528 ]
         self.percent_score_list = None  # [3.3125e-11 7.5472e-05 7.2094e-18 9.9999e+01]
         self.highest_score_number = None  # ตำแหน่งไหน # 3
@@ -306,7 +306,7 @@ class Frames:
                     if textdata.get('Change color list class name'):
                         d = (d, frame.color_text)
                     TextRectlist.append(d)
-                putTextRectlist(img, TextRectlist, 22, start_point, frame.font_size, 2, font=1, offset=1)
+                putTextRectlist(img, TextRectlist, 22, start_point, frame.font_size, 3, font=1, offset=1)
         return img
 
     def save_mark(self, img):

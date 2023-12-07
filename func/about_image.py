@@ -44,35 +44,37 @@ def putTextRectlist(img, texts, step, pos, scale=3, thickness=3, colorT=(255, 25
                     offset=10, border=None, colorB=(0, 255, 0), cen=False):
     # พื้นหลัง
     for i, text in enumerate(texts):
-        if type(text) is tuple:
-            txt = text[0]
-        else:
-            txt = text
+        if text not in ['None']:
+            if type(text) is tuple:
+                txt = text[0]
+            else:
+                txt = text
 
-        ox, oy = pos
-        oy = int(oy + i * step)
-        (w, h), _ = cv2.getTextSize(txt, font, scale, thickness)
-        if cen:
-            ox -= w // 2
-            oy -= h // 2
-        x1, y1, x2, y2 = ox - offset, oy + offset, ox + w + offset, oy - h - offset
-        if offset:
-            cv2.rectangle(img, (x1, y1), (x2, y2), colorR, cv2.FILLED)
-        if border is not None:
-            cv2.rectangle(img, (x1, y1), (x2, y2), colorB, border)
+            ox, oy = pos
+            oy = int(oy + i * step)
+            (w, h), _ = cv2.getTextSize(txt, font, scale, thickness)
+            if cen:
+                ox -= w // 2
+                oy -= h // 2
+            x1, y1, x2, y2 = ox - offset, oy + offset, ox + w + offset, oy - h - offset
+            if offset:
+                cv2.rectangle(img, (x1, y1), (x2, y2), colorR, cv2.FILLED)
+            if border is not None:
+                cv2.rectangle(img, (x1, y1), (x2, y2), colorB, border)
 
     # ตัวอักษร
     for i, text in enumerate(texts):
-        if type(text) is tuple:
-            txt = text[0]
-            colorT = text[1]
-        else:
-            txt = text
-            colorT = (255, 255, 255)
+        if text not in ['None']:
+            if type(text) is tuple:
+                txt = text[0]
+                colorT = text[1]
+            else:
+                txt = text
+                colorT = (255, 255, 255)
 
-        ox, oy = pos
-        oy = int(oy + i * step)
-        cv2.putText(img, txt, (ox, oy), font, scale, colorT, thickness)
+            ox, oy = pos
+            oy = int(oy + i * step)
+            cv2.putText(img, txt, (ox, oy), font, scale, colorT, thickness)
 
     return img
 
