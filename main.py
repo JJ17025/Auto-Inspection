@@ -47,7 +47,7 @@ def main(img, stop_event, reconnect_cam):
     cv2.destroyWindow('auto inspection')
     url_list = [
         "http://192.168.1.11:8080",
-        "http://192.168.225.10:8080", 
+        "http://192.168.225.10:8080",
         "http://192.168.225.90:8080",
         "http://192.168.225.92:8080"
     ]
@@ -182,6 +182,8 @@ def main(img, stop_event, reconnect_cam):
                 save_img = False
         # if dis.mode == 'run' and pcb_model_name:
             if 'mode_menu-run' in dis.update_dis_res:
+                time_req = True
+                time_req_time = datetime.now()
                 dis.update_dis_res -= {'mode_menu-run'}
                 for u in url_list:
                     try:
@@ -204,8 +206,14 @@ def main(img, stop_event, reconnect_cam):
             ''' read data "ให้ ถ่ายภาพ --> predict "'''
 
             error_text = ''
-            res_text = requests_get(f'{url}/data/read', timeout=0.2)
-            print(res_text)
+            if time_req == True:
+                time_req_time = datetime.now()
+                time_req = False
+                res_text = requests_get(f'{url}/data/read', timeout=0.2)
+                print(res_text)
+            else:
+                if (datetime.now() - time_req_time).total_seconds() > 0.6:
+                    time_req = True
             cv2.putText(surfacenp, f'rasppi data: {res_text[0]} {res_text[1]}',
                         (430, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
             if res_text[0] == 'error':
@@ -232,7 +240,7 @@ def main(img, stop_event, reconnect_cam):
                     requests_get(f'{url}/data/write/None', timeout=0.2)
 
         if dis.update_dis_res or autocap:
-            print(dis.update_dis_res)
+            # print(dis.update_dis_res)
             if 'autocap' in dis.update_dis_res:
                 dis.update_dis_res -= {'autocap'}
                 if autocap:
