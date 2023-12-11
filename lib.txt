@@ -1,0 +1,9 @@
+python -m venv venv
+venv\Scripts\activate.bat
+
+tensorflow
+scipy
+
+pip install opencv-python
+pip install pygame
+requests
