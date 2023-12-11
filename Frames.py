@@ -306,7 +306,7 @@ class Frames:
                     if textdata.get('Change color list class name'):
                         d = (d, frame.color_text)
                     TextRectlist.append(d)
-                putTextRectlist(img, TextRectlist, 22, start_point, frame.font_size, 3, font=1, offset=1)
+                putTextRectlist(img, TextRectlist, 22, start_point, frame.font_size, 2, font=1, offset=1)
         return img
 
     def save_mark(self, img):

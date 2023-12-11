@@ -18,40 +18,21 @@ def capture(img, stop_event, reconnect_cam):
 def main(img, stop_event, reconnect_cam):
     import cv2
     import numpy as np
-    def show(text=None):
-        if text:
-            cv2.putText(loading_windows, text, (240, 160), 1, 3, (255, 255, 255), 3, -1)
-        cv2.imshow('auto inspection', loading_windows)
-        cv2.waitKey(1)
-
-    loading_windows = np.full((200, 700, 3), (150, 140, 150), np.uint8)
-    cv2.putText(loading_windows, 'Auto Inspection', (20, 90), 1, 5, (255, 255, 255), 5, -1)
-    show()
     import shutil
     import os
     import sys
-    show('Loading.')
     import pygame
     import statistics
     import json
-    show('Loading..')
     from datetime import datetime
     import requests
     import time
     from CV_UI import mkdir, remove
     from CV_UI import Button, Display, Exit, TextInput, Select, Setting, Wait, Confirm
-    show('Loading...')
-    from func.about_image import putTextRect, putTextRect_center, overlay, adj_image, rotate
+    from func.about_image import putTextRect, overlay, adj_image, rotate
     from Frames import Frame, Frames, predict
     from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
-    cv2.destroyWindow('auto inspection')
-    url_list = [
-        "http://192.168.1.11:8080",
-        "http://192.168.225.10:8080",
-        "http://192.168.225.90:8080",
-        "http://192.168.225.92:8080"
-    ]
-    url = None
+    url = "http://192.168.1.11:8080"
 
     def cvimage_to_pygame(image):
         """Convert cvimage into a pygame image"""
@@ -185,23 +166,8 @@ def main(img, stop_event, reconnect_cam):
             if 'mode_menu-run' in dis.update_dis_res:
                 time_req_time = datetime.now()
                 dis.update_dis_res -= {'mode_menu-run'}
-                for u in url_list:
-                    try:
-                        res = requests.get(f'{u}', timeout=0.2)
-                        if res.status_code == 200:
-                            url = u
-                            break
-                    except requests.exceptions.Timeout:
-                        print(f'{FAIL}Request timed out. The request took longer than 0.1 second to complete.{ENDC}')
-                    except requests.exceptions.RequestException as e:
-                        print(f'{FAIL}An error occurred: {e}{ENDC}')
-
-                if url:
-                    requests_get(f'{url}/run/0', timeout=0.2)
-                    requests_get(f'{url}/run/1', timeout=0.2)
-                    print(f'{GREEN}ping to {url} OK{ENDC}')
-                else:
-                    print(f"{FAIL} can't connect to raspberrypi{ENDC}")
+                requests_get(f'{url}/run/0', timeout=0.2)
+                requests_get(f'{url}/run/1', timeout=0.2)
 
             ''' read data "ให้ ถ่ายภาพ --> predict "'''
 
@@ -214,10 +180,8 @@ def main(img, stop_event, reconnect_cam):
             else:
                 if (datetime.now() - time_req_time).total_seconds() > 0.6:
                     time_req = True
-            cv2.putText(surfacenp, f'rasppi data: {res_text[0]} {res_text[1]}',
+            cv2.putText(surfacenp, f'{res_text[0]}: {res_text[1]}',
                         (430, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
-            if res_text[0] == 'error':
-                putTextRect(surfacenp, f'{error_text}', (80, 160), 1.05, 2, (0, 0, 255), 5, cv2.LINE_AA)
             if res_text[0] == 'requests OK':
                 if res_text[1] == 'capture and predict':
                     dis.update_dis_res = dis.update_dis_res.union({'Take a photo', 'adj image', 'predict'})
@@ -239,7 +203,9 @@ def main(img, stop_event, reconnect_cam):
                     dis.update_dis_res.add('select model')
                     requests_get(f'{url}/data/write/None', timeout=0.2)
 
-        if dis.update_dis_res or autocap:
+        if autocap:
+            dis.update_dis_res.add('Take a photo')
+        if dis.update_dis_res:
             # print(dis.update_dis_res)
             if 'autocap' in dis.update_dis_res:
                 dis.update_dis_res -= {'autocap'}
@@ -355,7 +321,7 @@ def main(img, stop_event, reconnect_cam):
                             requests_get(f'{url}/data/write/AI is predicting', timeout=0.2)
                             break
                         break
-            elif 'Take a photo' in dis.update_dis_res or autocap:
+            elif 'Take a photo' in dis.update_dis_res:
                 dis.update_dis_res -= {'Take a photo'}
                 if len(img) == 0:
                     e = Wait(surfacenp.copy())
@@ -372,7 +338,6 @@ def main(img, stop_event, reconnect_cam):
                             break
                 if len(img) == 1:
                     img_form_cam = img[0].copy()
-
                     # img_form_cam = cv2.imread(r"C:\Python_Project\Auto Inspection\Save Image\231003 193441.png")
 
             elif 'adj image' in dis.update_dis_res:
@@ -653,7 +618,7 @@ def main(img, stop_event, reconnect_cam):
                     (10, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
         cv2.putText(surfacenp, f'pos: {mouse_pos}',
                     (90, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
-        cv2.putText(surfacenp, f'auto capture: {autocap}',
+        cv2.putText(surfacenp, f'Auto Capture: {autocap}',
                     (250, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
 
         cv2.putText(surfacenp, f'{datetime.now().strftime("%d/%m/%y %H:%M:%S")}',
