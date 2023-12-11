@@ -38,7 +38,7 @@ def main(img, stop_event, reconnect_cam):
     from datetime import datetime
     import requests
     import time
-    from CV_UI import mkdir ,remove
+    from CV_UI import mkdir, remove
     from CV_UI import Button, Display, Exit, TextInput, Select, Setting, Wait, Confirm
     show('Loading...')
     from func.about_image import putTextRect, putTextRect_center, overlay, adj_image, rotate
@@ -101,6 +101,7 @@ def main(img, stop_event, reconnect_cam):
     pcb_model_name = ''
     autocap = False
     save_img = False
+    time_req = True
     update_dis_res = []
     while not stop_event.is_set():
         t1 = datetime.now()
@@ -180,9 +181,8 @@ def main(img, stop_event, reconnect_cam):
                     remove(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[1]}')
                 cv2.imwrite(f'data/{pcb_model_name}/log_img/{save_img}/{namefile}', img_form_cam_and_frame)
                 save_img = False
-        # if dis.mode == 'run' and pcb_model_name:
+            # if dis.mode == 'run' and pcb_model_name:
             if 'mode_menu-run' in dis.update_dis_res:
-                time_req = True
                 time_req_time = datetime.now()
                 dis.update_dis_res -= {'mode_menu-run'}
                 for u in url_list:
@@ -373,7 +373,7 @@ def main(img, stop_event, reconnect_cam):
                 if len(img) == 1:
                     img_form_cam = img[0].copy()
 
-                    img_form_cam = cv2.imread(r"C:\Python_Project\Auto Inspection\Save Image\231003 193441.png")
+                    # img_form_cam = cv2.imread(r"C:\Python_Project\Auto Inspection\Save Image\231003 193441.png")
 
             elif 'adj image' in dis.update_dis_res:
                 dis.update_dis_res -= {'adj image'}
