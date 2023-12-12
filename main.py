@@ -33,6 +33,7 @@ def main(img, stop_event, reconnect_cam):
     from Frames import Frame, Frames, predict
     from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
     url = "http://192.168.1.11:8080"
+    url = "http://192.168.225.159:8080/"
 
     def cvimage_to_pygame(image):
         """Convert cvimage into a pygame image"""
@@ -83,6 +84,7 @@ def main(img, stop_event, reconnect_cam):
     autocap = False
     save_img = False
     time_req = True
+    PASS_FAIL = [0, 0]
     update_dis_res = []
     while not stop_event.is_set():
         t1 = datetime.now()
@@ -384,7 +386,7 @@ def main(img, stop_event, reconnect_cam):
                         mouse_pos = pygame.mouse.get_pos()
                         res = e.update(mouse_pos, pygame.event.get())
                         show(e.img_BG)
-
+                    dis.predict_time = datetime.now()
                     dis.predict_res = 'ok'
                     dis.old_res = 'ok'
                     for name, frame in framesmodel.frames.items():
@@ -394,7 +396,10 @@ def main(img, stop_event, reconnect_cam):
                             #     continue
                             dis.predict_res = 'ng'
                             dis.old_res = 'ng'
-
+                    if dis.old_res == 'ok':
+                        PASS_FAIL[0] += 1
+                    if dis.old_res == 'ng':
+                        PASS_FAIL[1] += 1
                     print()
                     print('dis.predict_res =', dis.predict_res)
 
@@ -603,14 +608,19 @@ def main(img, stop_event, reconnect_cam):
                 cv2.waitKey(1)
             t.show(surfacenp)
 
-        if dis.old_res:
+        if dis.old_res in ['ok', 'ng']:
             if dis.old_res == 'ok':
                 color = (0, 255, 0)
             elif dis.old_res == 'ng':
                 color = (0, 0, 255)
             else:
                 color = (0, 255, 255)
-            cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1500, 900), 2, 6, color, 8, cv2.LINE_AA)
+            if (datetime.now() - dis.predict_time).total_seconds() < 3:
+                cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1550, 300), 2, 5, color, 8, cv2.LINE_AA)
+
+        cv2.putText(surfacenp, f'PASS:{PASS_FAIL[0]}'.upper(), (1450, 160), 2, 1.3, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.putText(surfacenp, f'FAIL:{PASS_FAIL[1]}'.upper(), (1670, 160), 2, 1.3, (0, 0, 255), 2, cv2.LINE_AA)
+
         cv2.putText(surfacenp, f'{pcb_model_name}',
                     (80, 26), 2, 0.6, (255, 255, 255), 1, cv2.LINE_AA)
 
