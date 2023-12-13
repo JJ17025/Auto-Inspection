@@ -85,6 +85,7 @@ def main(img, stop_event, reconnect_cam):
     save_img = False
     time_req = True
     PASS_FAIL = [0, 0]
+    NG_list = []
     update_dis_res = []
     while not stop_event.is_set():
         t1 = datetime.now()
@@ -344,38 +345,51 @@ def main(img, stop_event, reconnect_cam):
 
             elif 'adj image' in dis.update_dis_res:
                 dis.update_dis_res -= {'adj image'}
-                # img_for_ref = cv2.imread('m.png')
-                e = Wait(surfacenp.copy())
-                e.set_val('Wait', 'Adjusting image')
-                e.x_shift = 700
-                e.y_shift = 300
-                mouse_pos = pygame.mouse.get_pos()
-                res = e.update(mouse_pos, pygame.event.get(), count_time=False)
-                show(e.img_BG)
+                NG_list = []
+                if pcb_model_name:
+                    e = Wait(surfacenp.copy())
+                    e.set_val('Wait', 'Adjusting image')
+                    e.x_shift = 700
+                    e.y_shift = 300
+                    mouse_pos = pygame.mouse.get_pos()
+                    res = e.update(mouse_pos, pygame.event.get(), count_time=False)
+                    show(e.img_BG)
 
-                res = adj_image(img_form_cam, framesmodel)
-                if res is not None:
-                    img_form_cam = res
+                    res = adj_image(img_form_cam, framesmodel)
+                    if res is not None:
+                        img_form_cam = res
+                    else:
+                        if dis.mode != 'run':
+                            e = Confirm(surfacenp.copy())
+                            e.set_val('Error', "don't have mark")
+                            e.x_shift = 700
+                            e.y_shift = 300
+                            while True:
+                                mouse_pos = pygame.mouse.get_pos()
+                                res = e.update(mouse_pos, pygame.event.get())
+                                show(e.img_BG)
+                                if res:
+                                    print(res)
+                                if res in ['OK', 'Cancel', 'x']:
+                                    break
                 else:
-                    if dis.mode != 'run':
-                        e = Confirm(surfacenp.copy())
-                        e.set_val('Error', "don't have mark")
-                        e.x_shift = 700
-                        e.y_shift = 300
-                        while True:
-                            mouse_pos = pygame.mouse.get_pos()
-                            res = e.update(mouse_pos, pygame.event.get())
-                            show(e.img_BG)
-                            if res:
-                                print(res)
-                            if res in ['OK', 'Cancel', 'x']:
-                                break
+                    e = Confirm(surfacenp.copy())
+                    e.set_val('Error', "don't have modelname", f"pcb model name is {pcb_model_name}")
+                    e.x_shift = 700
+                    e.y_shift = 300
+                    while True:
+                        mouse_pos = pygame.mouse.get_pos()
+                        res = e.update(mouse_pos, pygame.event.get())
+                        show(e.img_BG)
+                        if res:
+                            print(res)
+                        if res in ['OK', 'Cancel', 'x']:
+                            break
 
             elif 'predict' in dis.update_dis_res:
                 dis.update_dis_res -= {'predict'}
-                dis.predict_auto = False
-                img_form_cam_bgr = cv2.cvtColor(img_form_cam, cv2.COLOR_RGB2BGR)
                 if pcb_model_name:
+                    img_form_cam_bgr = cv2.cvtColor(img_form_cam, cv2.COLOR_RGB2BGR)
                     framesmodel.crop_img(img_form_cam_bgr)
                     e = Wait(surfacenp.copy())
                     e.set_val('Wait', '')
@@ -392,6 +406,7 @@ def main(img, stop_event, reconnect_cam):
                     for name, frame in framesmodel.frames.items():
                         if frame.highest_score_name not in frame.res_ok:
                             print(frame.res_ok, frame.highest_score_name)
+                            NG_list.append([frame.name, frame.highest_score_name])
                             # if name in ['RJ45.1', 'RJ45.2', 'c2.1', 'c2.2']:
                             #     continue
                             dis.predict_res = 'ng'
@@ -403,19 +418,19 @@ def main(img, stop_event, reconnect_cam):
                     print()
                     print('dis.predict_res =', dis.predict_res)
 
-                else:
-                    e = Confirm(surfacenp.copy())
-                    e.set_val('Error', "don't have modelname", f"pcb model name is {pcb_model_name}")
-                    e.x_shift = 700
-                    e.y_shift = 300
-                    while True:
-                        mouse_pos = pygame.mouse.get_pos()
-                        res = e.update(mouse_pos, pygame.event.get())
-                        show(e.img_BG)
-                        if res:
-                            print(res)
-                        if res in ['OK', 'Cancel', 'x']:
-                            break
+                # else:
+                #     e = Confirm(surfacenp.copy())
+                #     e.set_val('Error', "don't have modelname", f"pcb model name is {pcb_model_name}")
+                #     e.x_shift = 700
+                #     e.y_shift = 300
+                #     while True:
+                #         mouse_pos = pygame.mouse.get_pos()
+                #         res = e.update(mouse_pos, pygame.event.get())
+                #         show(e.img_BG)
+                #         if res:
+                #             print(res)
+                #         if res in ['OK', 'Cancel', 'x']:
+                #             break
                 save_img = dis.predict_res
                 surface_img = cv2.resize(img_form_cam_and_frame, (1344, 1008))
                 surfacenp = overlay(surfacenp, surface_img, (41, 41))
@@ -617,9 +632,19 @@ def main(img, stop_event, reconnect_cam):
                 color = (0, 255, 255)
             if (datetime.now() - dis.predict_time).total_seconds() < 3:
                 cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1550, 300), 2, 5, color, 8, cv2.LINE_AA)
-
-        cv2.putText(surfacenp, f'PASS:{PASS_FAIL[0]}'.upper(), (1450, 160), 2, 1.3, (0, 255, 0), 2, cv2.LINE_AA)
-        cv2.putText(surfacenp, f'FAIL:{PASS_FAIL[1]}'.upper(), (1670, 160), 2, 1.3, (0, 0, 255), 2, cv2.LINE_AA)
+        if dis.mode == 'run':
+            cv2.putText(surfacenp, f'PASS:{PASS_FAIL[0]}'.upper(), (1450, 160), 2, 1.3, (0, 255, 0), 2, cv2.LINE_AA)
+            cv2.putText(surfacenp, f'FAIL:{PASS_FAIL[1]}'.upper(), (1670, 160), 2, 1.3, (0, 0, 255), 2, cv2.LINE_AA)
+            NG_list_show = NG_list
+            NG_list_len = len(NG_list)
+            if NG_list_len >= 10:
+                NG_list_show = NG_list_show[:10]
+                NG_list_show.append(['other', f'{NG_list_len-10} position'])
+            line = 0
+            for name, res in NG_list_show:
+                cv2.putText(surfacenp, f'{name} {res}',
+                            (1450, 350 + line), 2, 1, (255, 255, 255), 1, cv2.LINE_AA)
+                line += 40
 
         cv2.putText(surfacenp, f'{pcb_model_name}',
                     (80, 26), 2, 0.6, (255, 255, 255), 1, cv2.LINE_AA)
