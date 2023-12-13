@@ -623,18 +623,25 @@ def main(img, stop_event, reconnect_cam):
                 cv2.waitKey(1)
             t.show(surfacenp)
 
-        if dis.old_res in ['ok', 'ng']:
-            if dis.old_res == 'ok':
-                color = (0, 255, 0)
-            elif dis.old_res == 'ng':
-                color = (0, 0, 255)
-            else:
-                color = (0, 255, 255)
+        if dis.old_res == 'ok':
+            color = (0, 255, 0)
             if (datetime.now() - dis.predict_time).total_seconds() < 3:
-                cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1550, 300), 2, 5, color, 8, cv2.LINE_AA)
+                cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1550, 250), 2, 5, color, 8, cv2.LINE_AA)
+
+        if dis.old_res == 'ng':
+            color = (0, 0, 255)
+            cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1550, 250), 2, 5, color, 8, cv2.LINE_AA)
+
         if dis.mode == 'run':
-            cv2.putText(surfacenp, f'PASS:{PASS_FAIL[0]}'.upper(), (1450, 160), 2, 1.3, (0, 255, 0), 2, cv2.LINE_AA)
-            cv2.putText(surfacenp, f'FAIL:{PASS_FAIL[1]}'.upper(), (1670, 160), 2, 1.3, (0, 0, 255), 2, cv2.LINE_AA)
+            cv2.putText(surfacenp, f'Pass', (1450, 920), 2, 1.2, (0, 255, 0), 2, cv2.LINE_AA)
+            cv2.putText(surfacenp, f'Fail', (1450, 970), 2, 1.2, (0, 0, 255), 2, cv2.LINE_AA)
+            cv2.putText(surfacenp, f'Pass rate', (1450, 1020), 2, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
+
+            cv2.putText(surfacenp, f': {PASS_FAIL[0]}', (1660, 920), 2, 1.2, (0, 255, 0), 2, cv2.LINE_AA)
+            cv2.putText(surfacenp, f': {PASS_FAIL[1]}', (1660, 970), 2, 1.2, (0, 0, 255), 2, cv2.LINE_AA)
+            cv2.putText(surfacenp, f': {round(PASS_FAIL[0] * 100 / (PASS_FAIL[0] + PASS_FAIL[1] + 0.000001), 2)}%',
+                        (1660, 1020), 2, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
+
             NG_list_show = NG_list
             NG_list_len = len(NG_list)
             if NG_list_len >= 10:
@@ -643,7 +650,7 @@ def main(img, stop_event, reconnect_cam):
             line = 0
             for name, res in NG_list_show:
                 cv2.putText(surfacenp, f'{name} {res}',
-                            (1450, 350 + line), 2, 1, (255, 255, 255), 1, cv2.LINE_AA)
+                            (1450, 300 + line), 2, 1, (255, 255, 255), 1, cv2.LINE_AA)
                 line += 40
 
         cv2.putText(surfacenp, f'{pcb_model_name}',
