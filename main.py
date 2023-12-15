@@ -159,7 +159,7 @@ def main(img, stop_event, reconnect_cam):
                 mkdir(f'data/{pcb_model_name}/log_img')
                 mkdir(f'data/{pcb_model_name}/log_img/{save_img}')
                 log_img_list = os.listdir(f'data/{pcb_model_name}/log_img/{save_img}')
-                if len(log_img_list) > 100:
+                if len(log_img_list) > 1000:
                     # del file log_img_list[0]
                     remove(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[0]}')
                     remove(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[1]}')
@@ -406,7 +406,7 @@ def main(img, stop_event, reconnect_cam):
                     for name, frame in framesmodel.frames.items():
                         if frame.highest_score_name not in frame.res_ok:
                             print(frame.res_ok, frame.highest_score_name)
-                            NG_list.append([frame.name, frame.highest_score_name])
+                            NG_list.append([frame.pcb_frame_name, frame.highest_score_name])
                             # if name in ['RJ45.1', 'RJ45.2', 'c2.1', 'c2.2']:
                             #     continue
                             dis.predict_res = 'ng'
@@ -626,11 +626,13 @@ def main(img, stop_event, reconnect_cam):
         if dis.old_res == 'ok':
             color = (0, 255, 0)
             if (datetime.now() - dis.predict_time).total_seconds() < 3:
-                cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1550, 250), 2, 5, color, 8, cv2.LINE_AA)
+                cv2.rectangle(surfacenp, (1540, 140), (1780, 280), (75, 76, 79), -1)
+                cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1550, 260), 2, 5, color, 8, cv2.LINE_AA)
 
         if dis.old_res == 'ng':
             color = (0, 0, 255)
-            cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1550, 250), 2, 5, color, 8, cv2.LINE_AA)
+            cv2.rectangle(surfacenp, (1540, 140), (1780, 280), (75, 76, 79), -1)
+            cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1550, 260), 2, 5, color, 8, cv2.LINE_AA)
 
         if dis.mode == 'run':
             cv2.putText(surfacenp, f'Pass', (1450, 920), 2, 1.2, (0, 255, 0), 2, cv2.LINE_AA)
@@ -646,11 +648,11 @@ def main(img, stop_event, reconnect_cam):
             NG_list_len = len(NG_list)
             if NG_list_len >= 10:
                 NG_list_show = NG_list_show[:10]
-                NG_list_show.append(['other', f'{NG_list_len-10} position'])
+                NG_list_show.append(['other', f'{NG_list_len - 10} position'])
             line = 0
             for name, res in NG_list_show:
-                cv2.putText(surfacenp, f'{name} {res}',
-                            (1450, 300 + line), 2, 1, (255, 255, 255), 1, cv2.LINE_AA)
+                cv2.putText(surfacenp, f'{name}  ' + f'{res}'.capitalize(),
+                            (1450, 320 + line), 2, 1, (255, 255, 255), 1, cv2.LINE_AA)
                 line += 40
 
         cv2.putText(surfacenp, f'{pcb_model_name}',

@@ -1,5 +1,5 @@
 {
-    "Show name": false,
+    "Show name": true,
     "Show results from predictions": true,
     "Show %results from predictions": false,
     "Show list class name": false,
