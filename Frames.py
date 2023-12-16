@@ -221,7 +221,7 @@ class Frames:
             dy = v['dy']
             model_used = v['model_used']
             res_ok = v['res_ok']
-            pcb_frame_name = v['pcb_frame_name']
+            pcb_frame_name = v.get('pcb_frame_name')
             self.frames[name] = Frame(name, x, y, dx, dy, model_used, res_ok, pcb_frame_name)
         for name, v in data_all['models'].items():
             status_list = sorted(v['status_list'])
