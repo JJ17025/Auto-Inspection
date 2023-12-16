@@ -33,7 +33,6 @@ def main(img, stop_event, reconnect_cam):
     from Frames import Frame, Frames, predict
     from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
     url = "http://192.168.1.11:8080"
-    url = "http://192.168.225.159:8080/"
 
     def cvimage_to_pygame(image):
         """Convert cvimage into a pygame image"""
