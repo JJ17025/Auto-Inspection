@@ -633,7 +633,7 @@ def main(img, stop_event, reconnect_cam):
             cv2.rectangle(surfacenp, (1540, 140), (1780, 280), (75, 76, 79), -1)
             cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1550, 260), 2, 5, color, 8, cv2.LINE_AA)
 
-        if dis.mode == 'run':
+        if dis.mode in ['manual', 'run']:
             cv2.putText(surfacenp, f'Pass', (1450, 920), 2, 1.2, (0, 255, 0), 2, cv2.LINE_AA)
             cv2.putText(surfacenp, f'Fail', (1450, 970), 2, 1.2, (0, 0, 255), 2, cv2.LINE_AA)
             cv2.putText(surfacenp, f'Pass rate', (1450, 1020), 2, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
