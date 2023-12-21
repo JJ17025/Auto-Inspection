@@ -241,6 +241,7 @@ def main(img, stop_event, reconnect_cam):
 
             elif 'select model' in dis.update_dis_res:
                 dis.update_dis_res -= {'select model'}
+                PASS_FAIL = [0, 0]
                 e = Select(surfacenp.copy())
                 e.add_data(*os.listdir('data'))
                 e.x_shift = 43
