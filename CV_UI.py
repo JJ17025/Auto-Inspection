@@ -509,9 +509,10 @@ class Display:
         self.LOW = 0
         self.HIGH = 1
         self.ipIO = 'http://192.168.225.198:8080'
-        self.mode = 'manual'  # debug, manual, run
+        self.mode = 'run'  # debug, manual, run
         self.mode_run_step = 0
         self.update_dis_res = set()
+        self.predict_time = None
         self.predict_res = None
         self.old_res = None
         self.select_model = None

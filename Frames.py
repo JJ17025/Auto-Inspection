@@ -87,8 +87,12 @@ def drawrect(img, pt1, pt2, color, thickness=1):
 
 
 class Frame:
-    def __init__(self, name, x, y, dx, dy, model_used, res_ok):
+    def __init__(self, name, x, y, dx, dy, model_used, res_ok, pcb_frame_name=None):
         self.name = name
+        if pcb_frame_name:
+            self.pcb_frame_name = pcb_frame_name
+        else:
+            self.pcb_frame_name = name
         self.x = x
         self.y = y
         self.dx = dx
@@ -115,9 +119,9 @@ class Frame:
 
     def reset_result(self):
         self.color_frame = (0, 255, 255)
-        self.color_frame_thickness = 3
+        self.color_frame_thickness = 5
         self.color_text = (255, 255, 255)
-        self.font_size = 2
+        self.font_size = 2.5
         self.predictions_score_list = None  # [ -6.520611   8.118368 -21.86103   22.21528 ]
         self.percent_score_list = None  # [3.3125e-11 7.5472e-05 7.2094e-18 9.9999e+01]
         self.highest_score_number = None  # ตำแหน่งไหน # 3
@@ -217,7 +221,8 @@ class Frames:
             dy = v['dy']
             model_used = v['model_used']
             res_ok = v['res_ok']
-            self.frames[name] = Frame(name, x, y, dx, dy, model_used, res_ok)
+            pcb_frame_name = v.get('pcb_frame_name')
+            self.frames[name] = Frame(name, x, y, dx, dy, model_used, res_ok, pcb_frame_name)
         for name, v in data_all['models'].items():
             status_list = sorted(v['status_list'])
             self.models[name] = Model(name, status_list)
