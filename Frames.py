@@ -265,7 +265,7 @@ class Frames:
         h, w, _ = img.shape
         for name, mark in self.marks.items():
             cv2.rectangle(img, *mark.rec_mark(h, w), (0, 255, 255), 2)
-            cv2.rectangle(img, *mark.rec_around(h, w), (0, 2, 255), 2)
+            cv2.rectangle(img, *mark.rec_around(h, w), (0, 255, 255), 2)
 
         for name, frame in self.frames.items():
             start_point = int(frame.x1 * w), int(frame.y1 * h)

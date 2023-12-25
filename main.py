@@ -575,54 +575,6 @@ def main(img, stop_event, reconnect_cam):
         if len(fps) > 20:
             fps = fps[1:]
 
-        if 'run' in dis.update_dis_res:
-            dis.update_dis_res -= {'run'}
-
-            class txt:
-                def __init__(self):
-                    self.txt_list = []
-                    self.row = 0
-
-                def add(self, txt, command=None, image=None):
-                    self.txt_list.append([txt, command, image])
-
-                def show(self, surfacenp):
-                    for txt, command, image in self.txt_list:
-                        print(txt, command)
-                        line = 1
-                        col = 0
-                        color = (255, 255, 255)
-                        if command:
-                            for c in command:
-                                c, v = c.split('=')
-                                if c == 'color':
-                                    if v == 'y':
-                                        color = (0, 255, 255)
-                                if c == 'spacing':
-                                    line = float(v)
-                                if c == 'col':
-                                    line = 0
-                                    col = float(v)
-
-                        self.row += line
-                        print('txt', txt)
-                        cv2.putText(surfacenp, txt, (round(1440 + col * 50), round(128 + self.row * 24)),
-                                    16, 0.5, color, 1, cv2.LINE_AA)
-
-                        # if image is not None:
-                        #     print('img')
-                        #     surfacenp = overlay(surfacenp.copy(), image, (100, 100))
-
-            t = txt()
-            for k, v in framesmodel.frames.items():
-                if v.highest_score_name and v.highest_score_name in v.res_ok:
-                    continue
-                t.add(k, ['color=y', 'spacing=1.8', ])
-                t.add(v.highest_score_name, ['col=1'], v.img)
-                cv2.imshow(k, v.img)
-                cv2.waitKey(1)
-            t.show(surfacenp)
-
         if dis.old_res == 'ok':
             color = (0, 255, 0)
             if (datetime.now() - dis.predict_time).total_seconds() < 3:
