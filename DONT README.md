@@ -2,12 +2,21 @@
 ```bash
 python -m venv venv
 ```
+- cmd
 ```bash
 venv\Scripts\activate.bat
 ```
-
-2. install lib
+- ps
 ```bash
+venv\Scripts\activate
+```
+2. upgrade pip
+```bash
+python.exe -m pip install --upgrade pip
+```
+3. install lib
+```bash
+python.exe -m pip install --upgrade pip
 pip install opencv-python
 pip install tensorflow
 pip install scipy
