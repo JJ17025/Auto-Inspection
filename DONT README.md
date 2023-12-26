@@ -4,11 +4,11 @@ python -m venv venv
 ```
 - cmd
 ```bash
-venv\Scripts\activate.bat
+.venv\Scripts\activate.bat
 ```
 - ps
 ```bash
-venv\Scripts\activate
+.venv\Scripts\activate
 ```
 2. upgrade pip
 ```bash
