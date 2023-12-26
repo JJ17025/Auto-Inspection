@@ -1,5 +1,6 @@
 import json
 import random
+import time
 from datetime import datetime
 import cv2
 import numpy as np
@@ -87,7 +88,7 @@ def drawrect(img, pt1, pt2, color, thickness=1):
 
 
 class Frame:
-    def __init__(self, name, x, y, dx, dy, model_used, res_ok, pcb_frame_name=None):
+    def __init__(self, name, x, y, dx, dy, model_used, res_show, pcb_frame_name=None):
         self.name = name
         if pcb_frame_name:
             self.pcb_frame_name = pcb_frame_name
@@ -98,7 +99,7 @@ class Frame:
         self.dx = dx
         self.dy = dy
         self.model_used = model_used
-        self.res_ok = res_ok
+        self.res_show = res_show
         self.x1 = x - dx / 2
         self.y1 = y - dy / 2
         self.x2 = x + dx / 2
@@ -127,6 +128,14 @@ class Frame:
         self.highest_score_number = None  # ตำแหน่งไหน # 3
         self.highest_score_percent = None
         self.highest_score_name = None
+
+    def resShow(self):
+        for key, values in self.res_show.items():
+            if self.highest_score_name in values:
+                return key
+        print(self.highest_score_name)
+        0/0
+        return self.highest_score_name
 
 
 class Model:
@@ -220,9 +229,9 @@ class Frames:
             dx = v['dx']
             dy = v['dy']
             model_used = v['model_used']
-            res_ok = v['res_ok']
+            res_show = v['res_show']
             pcb_frame_name = v.get('pcb_frame_name')
-            self.frames[name] = Frame(name, x, y, dx, dy, model_used, res_ok, pcb_frame_name)
+            self.frames[name] = Frame(name, x, y, dx, dy, model_used, res_show, pcb_frame_name)
         for name, v in data_all['models'].items():
             status_list = sorted(v['status_list'])
             self.models[name] = Model(name, status_list)
@@ -345,7 +354,7 @@ def predict(frame, Frames):
 
     # if frame.highest_score_name:
     #     frame.color_frame = frame.color_text = frame.K_color[frame.highest_score_name]
-    if frame.highest_score_name in frame.res_ok:
+    if frame.highest_score_name in frame.res_show['OK']:
         frame.color_frame = frame.color_text = (0, 255, 0)
     else:
         frame.color_frame = frame.color_text = (0, 0, 255)

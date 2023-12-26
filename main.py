@@ -404,9 +404,9 @@ def main(img, stop_event, reconnect_cam):
                     dis.predict_res = 'ok'
                     dis.old_res = 'ok'
                     for name, frame in framesmodel.frames.items():
-                        if frame.highest_score_name not in frame.res_ok:
-                            print(frame.res_ok, frame.highest_score_name)
-                            NG_list.append([frame.pcb_frame_name, frame.highest_score_name])
+                        if frame.highest_score_name not in frame.res_show['OK']:
+                            print(frame.res_show['OK'], frame.highest_score_name)
+                            NG_list.append([frame.pcb_frame_name, frame.resShow()])
                             # if name in ['RJ45.1', 'RJ45.2', 'c2.1', 'c2.2']:
                             #     continue
                             dis.predict_res = 'ng'
@@ -600,10 +600,10 @@ def main(img, stop_event, reconnect_cam):
             NG_list_len = len(NG_list)
             if NG_list_len >= 10:
                 NG_list_show = NG_list_show[:10]
-                NG_list_show.append(['other', f'{NG_list_len - 10} position'])
+                NG_list_show.append(['Other NG', f'{NG_list_len - 10} position'])
             line = 0
             for name, res in NG_list_show:
-                cv2.putText(surfacenp, f'{name}  ' + f'{res}'.capitalize(),
+                cv2.putText(surfacenp, f'{name}  ' + f'{res}',
                             (1450, 320 + line), 2, 1, (255, 255, 255), 1, cv2.LINE_AA)
                 line += 40
 

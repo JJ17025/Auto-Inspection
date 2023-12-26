@@ -36,6 +36,7 @@ import random
 
 PCB_name = 'QM7-3473'
 # PCB_name = 'QM7-3472'
+PCB_name = 'D07'
 
 IMG_FULL_PATH = f'data/{PCB_name}/img_full'
 IMG_FRAME_PATH = f'data/{PCB_name}/img_frame'
@@ -152,18 +153,18 @@ def corp_img(model_name, frames):
 
 
 def create_model(model_name):
-    data_dir = pathlib.Path(rf'{IMG_FRAME_PATH}/{model_name}')
-    type_data_list = os.listdir(data_dir)
-    for type_data in type_data_list:
-        path = pathlib.Path(data_dir, type_data)
-        l = os.listdir(path)
-        n = len(l) - 40000
-        if n > 0:
-            selected_files = random.sample(l, n)
-            for file in selected_files:
-                os.remove(pathlib.Path(path, file))
-        l = os.listdir(path)
-        print(len(l))
+    # data_dir = pathlib.Path(rf'{IMG_FRAME_PATH}/{model_name}')
+    # type_data_list = os.listdir(data_dir)
+    # for type_data in type_data_list:
+    #     path = pathlib.Path(data_dir, type_data)
+    #     l = os.listdir(path)
+    #     n = len(l) - 40000
+    #     if n > 0:
+    #         selected_files = random.sample(l, n)
+    #         for file in selected_files:
+    #             os.remove(pathlib.Path(path, file))
+    #     l = os.listdir(path)
+    #     print(len(l))
 
     data_dir = pathlib.Path(rf'{IMG_FRAME_PATH}/{model_name}')
     image_count = len(list(data_dir.glob('*/*.png')))
@@ -342,8 +343,7 @@ def f(model_name, model, frames):
     if True:
         t1 = datetime.now()
         plog('--------  >>> corp_img <<<  ---------')
-        if model_name != 'w':
-            corp_img(model_name, frames)
+        corp_img(model_name, frames)
         t2 = datetime.now()
         plog(f'{t2 - t1} เวลาที่ใช้ในการเปลียน img_full เป็น shift_img ')
 
