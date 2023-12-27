@@ -1,5 +1,6 @@
-venv/
+.venv/
 .idea/
+.version
 __pycache__/
 data/*/img_frame/
 data/*/log_img/
