@@ -133,8 +133,6 @@ class Frame:
         for key, values in self.res_show.items():
             if self.highest_score_name in values:
                 return key
-        print(self.highest_score_name)
-        0/0
         return self.highest_score_name
 
 

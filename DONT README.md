@@ -1,6 +1,6 @@
 1. venv
 ```bash
-python -m venv venv
+python -m venv .venv
 ```
 - cmd
 ```bash
@@ -16,10 +16,10 @@ python.exe -m pip install --upgrade pip
 ```
 3. install lib
 ```bash
-python.exe -m pip install --upgrade pip
 pip install opencv-python
 pip install tensorflow
 pip install scipy
 pip install pygame
 pip install requests
+pip install beautifulsoup4
 ```

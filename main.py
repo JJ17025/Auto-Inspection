@@ -1,21 +1,23 @@
-def capture(img, stop_event, reconnect_cam):
+def capture(data, stop_event):
     import cv2
 
     cap = cv2.VideoCapture(0)
     cap.set(3, 3264)
     cap.set(4, 2448)
     while not stop_event.is_set():
-        s, frame = cap.read()
-        if s:
-            img[:] = [frame]
-        if reconnect_cam.is_set():
+        data['cap.read'] = cap.read()
+        if data['reconnect_cam']:
+            data['reconnect_cam'] = False
             cap = cv2.VideoCapture(0)
             cap.set(3, 3264)
             cap.set(4, 2448)
-            reconnect_cam.clear()
 
 
-def main(img, stop_event, reconnect_cam):
+def requests_data(data):
+    return
+
+
+def main(data, stop_event):
     import cv2
     import numpy as np
     import shutil
@@ -326,12 +328,12 @@ def main(img, stop_event, reconnect_cam):
                         break
             elif 'Take a photo' in dis.update_dis_res:
                 dis.update_dis_res -= {'Take a photo'}
-                if len(img) == 0:
+                if len(data) == 0:
                     e = Wait(surfacenp.copy())
                     e.set_val('Wait', '')
                     e.x_shift = 700
                     e.y_shift = 300
-                    while len(img) == 0:
+                    while data['cap.read'][0] == False:
                         mouse_pos = pygame.mouse.get_pos()
                         res = e.update(mouse_pos, pygame.event.get())
                         show(e.img_BG)
@@ -339,9 +341,8 @@ def main(img, stop_event, reconnect_cam):
                             print(res)
                         if res in ['OK', 'Cancel', 'x']:
                             break
-                if len(img) == 1:
-                    img_form_cam = img[0].copy()
-                    # img_form_cam = cv2.imread(r"C:\Python_Project\Auto Inspection\Save Image\231003 193441.png")
+                img_form_cam = data['cap.read'][1].copy()
+                # img_form_cam = cv2.imread(r"C:\Python_Project\Auto Inspection\Save Image\231003 193441.png")
 
             elif 'adj image' in dis.update_dis_res:
                 dis.update_dis_res -= {'adj image'}
@@ -405,7 +406,6 @@ def main(img, stop_event, reconnect_cam):
                     dis.old_res = 'ok'
                     for name, frame in framesmodel.frames.items():
                         if frame.highest_score_name not in frame.res_show['OK']:
-                            print(frame.res_show['OK'], frame.highest_score_name)
                             NG_list.append([frame.pcb_frame_name, frame.resShow()])
                             # if name in ['RJ45.1', 'RJ45.2', 'c2.1', 'c2.2']:
                             #     continue
@@ -554,7 +554,7 @@ def main(img, stop_event, reconnect_cam):
                             file.write(json.dumps(esetting.check_box, indent=4))
                         break
                     elif res == 'Reconnect Camera':
-                        reconnect_cam.set()
+                        data['reconnect_cam'] = True
                         e = Wait(surfacenp.copy())
                         e.set_val('Wait', '')
                         e.x_shift = 700
@@ -565,7 +565,7 @@ def main(img, stop_event, reconnect_cam):
                             show(e.img_BG)
                             if res == 'x':
                                 break
-                            if reconnect_cam.is_set() == False:
+                            if data['reconnect_cam'] == False:
                                 break
                         break
 
@@ -628,18 +628,28 @@ if __name__ == '__main__':
     import cv2
     import numpy as np
     import multiprocessing
+    from update import update_a_program
+
+    update_a_program()
 
     stop_event = multiprocessing.Event()
-    reconnect_cam = multiprocessing.Event()
     manager = multiprocessing.Manager()
-    img = manager.list()
+    data = manager.dict()
+    data['cap.read'] = (False, None)
+    data['reconnect_cam'] = False
+    data['url_requests'] = {
+        'ex': {
+            'url': 'www.google.com',
+            'status_code':404,
+            'text': '',
+        }
+    }
 
-    capture_process = multiprocessing.Process(target=capture, args=(img, stop_event, reconnect_cam))
-    show_process = multiprocessing.Process(target=main, args=(img, stop_event, reconnect_cam))
+    capture_process = multiprocessing.Process(target=capture, args=(data, stop_event))
+    show_process = multiprocessing.Process(target=main, args=(data, stop_event))
 
     capture_process.start()
     show_process.start()
 
     capture_process.join()
     show_process.join()
-
