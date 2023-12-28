@@ -1,6 +1,5 @@
 def capture(data, stop_event):
     import cv2
-
     cap = cv2.VideoCapture(0)
     cap.set(3, 3264)
     cap.set(4, 2448)
@@ -13,8 +12,37 @@ def capture(data, stop_event):
             cap.set(4, 2448)
 
 
-def requests_data(data):
-    return
+def req_io_box(data, stop_event):
+    import requests
+    import time
+    time.sleep(5)
+    dict_data = data['url requests']
+
+    while not stop_event.is_set():
+        for k, v in dict_data.items():
+            if (v['status code'] == 1) or (v['command'] == 'run all the time'):
+                dict_data[k]['text'] = ''
+                try:
+                    res = requests.get(v['url'], timeout=0.5)
+                    dict_data[k]['status code'] = res.status_code
+                    dict_data[k]['text'] = res.text
+                except:
+                    dict_data[k]['status code'] = 0
+                    dict_data[k]['text'] = f"error req {v['url']}"
+            data['url requests'] = dict_data
+            time.sleep(0.2)
+        time.sleep(1)
+
+
+def printdata(data, stop_event):
+    import time
+    from pprint import pprint
+    from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
+    while not stop_event.is_set():
+        print(PINK, UNDERLINE)
+        pprint(data['url requests'])
+        print(ENDC)
+        time.sleep(5)
 
 
 def main(data, stop_event):
@@ -28,13 +56,14 @@ def main(data, stop_event):
     import json
     from datetime import datetime
     import requests
+    from bs4 import BeautifulSoup
     import time
     from CV_UI import mkdir, remove
     from CV_UI import Button, Display, Exit, TextInput, Select, Setting, Wait, Confirm
     from func.about_image import putTextRect, overlay, adj_image, rotate
     from Frames import Frame, Frames, predict
     from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
-    url = "http://192.168.1.11:8080"
+    url = data['url']
 
     def cvimage_to_pygame(image):
         """Convert cvimage into a pygame image"""
@@ -179,17 +208,22 @@ def main(data, stop_event):
             if time_req == True:
                 time_req_time = datetime.now()
                 time_req = False
-                res_text = requests_get(f'{url}/data/read', timeout=0.2)
-                print(res_text)
+
+                res_text = (
+                    data['url requests']['read data']['status code'],
+                    data['url requests']['read data']['text']
+                )
+
             else:
                 if (datetime.now() - time_req_time).total_seconds() > 0.6:
                     time_req = True
-            cv2.putText(surfacenp, f'{res_text[0]}: {res_text[1]}',
-                        (430, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
-            if res_text[0] == 'requests OK':
+
+
+            text_only = BeautifulSoup(res_text[1], 'html.parser').get_text()
+            cv2.putText(surfacenp, f'{res_text[0]}: {text_only}', (430, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
+            if res_text[0] == 200:
                 if res_text[1] == 'capture and predict':
                     dis.update_dis_res = dis.update_dis_res.union({'Take a photo', 'adj image', 'predict'})
-                    # dis.update_dis_res = dis.update_dis_res.union({'adj image', 'predict'})
                     dis.predict_res = None
                     requests_get(f'{url}/data/write/AI is predicting', timeout=0.2)
                 elif res_text[1] == 'AI is predicting' and dis.predict_res == 'ok':
@@ -198,6 +232,7 @@ def main(data, stop_event):
                 elif res_text[1] == 'AI is predicting' and dis.predict_res == 'ng':
                     requests_get(f'{url}/data/write/ng', timeout=0.2)
                     dis.predict_res = 'ng already_read'
+
                 elif res_text[1] == 'pro=[1, 1, 1, 0]':
                     dis.select_model = 'QM7-3472'
                     dis.update_dis_res.add('select model')
@@ -629,27 +664,56 @@ if __name__ == '__main__':
     import numpy as np
     import multiprocessing
     from update import update_a_program
+    import json
 
     update_a_program()
 
     stop_event = multiprocessing.Event()
     manager = multiprocessing.Manager()
     data = manager.dict()
+    data['url'] = "http://192.168.1.11:8080"
+    # data['url'] = "http://192.168.157.220:8080"
     data['cap.read'] = (False, None)
     data['reconnect_cam'] = False
-    data['url_requests'] = {
-        'ex': {
-            'url': 'www.google.com',
-            'status_code':404,
+
+    data['url requests'] = {
+        'write data': {
+            'command': '',
+            'input data': {'data': 'start_program'},
+            'url': f'{data["url"]}/data/write/<data>',
+            'status code': 0,
             'text': '',
-        }
+            'note': ''
+        },
+        'read data': {
+            'command': 'run all the time',
+            'input data': {},
+            'url': f'{data["url"]}/static/data.txt',
+            'status code': 0,
+            'text': '',
+            'note': ''
+        },
+        'read step': {
+            'command': '',
+            'input data': {},
+            'url': f'{data["url"]}/static/step.txt',
+            'status code': 0,
+            'text': '',
+            'note': ''
+        },
     }
 
     capture_process = multiprocessing.Process(target=capture, args=(data, stop_event))
     show_process = multiprocessing.Process(target=main, args=(data, stop_event))
+    req_io_box_process = multiprocessing.Process(target=req_io_box, args=(data, stop_event))
+    # printdata_process = multiprocessing.Process(target=printdata, args=(data, stop_event))
 
     capture_process.start()
     show_process.start()
+    req_io_box_process.start()
+    # printdata_process.start()
 
     capture_process.join()
     show_process.join()
+    req_io_box_process.join()
+    # printdata_process.join()
