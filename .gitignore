@@ -4,4 +4,7 @@
 __pycache__/
 data/*/img_frame/
 data/*/log_img/
+data/*/log_img_original/
+
 test.py
+ip address.txt

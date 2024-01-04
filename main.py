@@ -189,11 +189,18 @@ def main(data, stop_event):
                 mkdir(f'data/{pcb_model_name}/log_img')
                 mkdir(f'data/{pcb_model_name}/log_img/{save_img}')
                 log_img_list = os.listdir(f'data/{pcb_model_name}/log_img/{save_img}')
-                if len(log_img_list) > 1000:
+                if len(log_img_list) > 10000:
                     # del file log_img_list[0]
                     remove(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[0]}')
                     remove(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[1]}')
                 cv2.imwrite(f'data/{pcb_model_name}/log_img/{save_img}/{namefile}', img_form_cam_and_frame)
+                mkdir(f'data/{pcb_model_name}/log_img_original')
+                mkdir(f'data/{pcb_model_name}/log_img_original/{save_img}')
+                log_img_original_list = os.listdir(f'data/{pcb_model_name}/log_img/{save_img}')
+                if len(log_img_original_list) > 10000:
+                    remove(f'data/{pcb_model_name}/log_img_original/{save_img}/{log_img_list[0]}')
+                    remove(f'data/{pcb_model_name}/log_img_original/{save_img}/{log_img_list[1]}')
+                cv2.imwrite(f'data/{pcb_model_name}/log_img_original/{save_img}/{namefile}', img_form_cam)
                 save_img = False
             # if dis.mode == 'run' and pcb_model_name:
             if 'mode_menu-run' in dis.update_dis_res:
@@ -665,14 +672,19 @@ if __name__ == '__main__':
     import multiprocessing
     from update import update_a_program
     import json
+    import os
 
     update_a_program()
 
     stop_event = multiprocessing.Event()
     manager = multiprocessing.Manager()
     data = manager.dict()
-    data['url'] = "http://192.168.1.11:8080"
-    # data['url'] = "http://192.168.157.220:8080"
+    if 'ip address.txt' not in os.listdir():
+        with open('ip address.txt', 'w') as f:
+            f.write("http://192.168.1.11:8080")
+    with open('ip address.txt') as f:
+        data['url'] = f.read()
+
     data['cap.read'] = (False, None)
     data['reconnect_cam'] = False
 
