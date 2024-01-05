@@ -225,9 +225,9 @@ def main(data, stop_event):
                 if (datetime.now() - time_req_time).total_seconds() > 0.6:
                     time_req = True
 
-
             text_only = BeautifulSoup(res_text[1], 'html.parser').get_text()
-            cv2.putText(surfacenp, f'{res_text[0]}: {text_only}', (430, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
+            cv2.putText(surfacenp, f'{res_text[0]}: {text_only}', (430, 1068), 16, 0.45, (255, 255, 255), 1,
+                        cv2.LINE_AA)
             if res_text[0] == 200:
                 if res_text[1] == 'capture and predict':
                     dis.update_dis_res = dis.update_dis_res.union({'Take a photo', 'adj image', 'predict'})
@@ -661,6 +661,8 @@ def main(data, stop_event):
 
         cv2.putText(surfacenp, f'{datetime.now().strftime("%d/%m/%y %H:%M:%S")}',
                     (1750, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
+        cv2.putText(surfacenp, f'program version: 1.0',
+                    (1520, 25), 16, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
         show(surfacenp)
     pygame.quit()
     sys.exit()
@@ -670,11 +672,8 @@ if __name__ == '__main__':
     import cv2
     import numpy as np
     import multiprocessing
-    from update import update_a_program
     import json
     import os
-
-    update_a_program()
 
     stop_event = multiprocessing.Event()
     manager = multiprocessing.Manager()
