@@ -9,14 +9,34 @@ ENDC = '\033[0m'
 BOLD = '\033[1m'
 ITALICIZED = '\033[3m'
 UNDERLINE = '\033[4m'
-import requests
-from bs4 import BeautifulSoup
+
 import subprocess
 import os
 import sys
 
 
+def install_requests_and_soup():
+    result = subprocess.run('pip freeze', capture_output=True, text=True)
+    if 'beautifulsoup4' and 'requests' not in [lib.split('==')[0] for lib in result.stdout.split('\n')]:
+        result = subprocess.run('pip install requests', capture_output=True, text=True)
+        if result.stdout:
+            print(GREEN, '\n'.join([f for f in result.stdout.split('\n') if 'Successfully' in f]), ENDC, sep='')
+        else:
+            print(FAIL, '\n'.join([f for f in result.stderr.split('\n') if 'ERROR:' in f]), ENDC, sep='')
+            input(f'{WARNING}connect internet to download library and Open the program again.{ENDC}')
+
+        result = subprocess.run('pip install beautifulsoup4', capture_output=True, text=True)
+        if result.stdout:
+            print(GREEN, '\n'.join([f for f in result.stdout.split('\n') if 'Successfully' in f]), ENDC, sep='')
+        else:
+            print(FAIL, '\n'.join([f for f in result.stderr.split('\n') if 'ERROR:' in f]), ENDC, sep='')
+            input(f'{WARNING}connect internet to download library and Open the program again.{ENDC}')
+
+
 def update_a_program():
+    import requests
+    from bs4 import BeautifulSoup
+
     result = subprocess.run('git status', capture_output=True, text=True)
     if result.stdout.split('\n')[1] == 'nothing to commit, working tree clean':
         all_file = 'unchanged'
@@ -27,6 +47,12 @@ def update_a_program():
 
     try:
         r = requests.get('https://github.com/JJ17025/Auto-Inspection/commit/m2')
+        req = 'ok'
+    except:
+        print(FAIL, 'Request to github error', ENDC, sep='')
+        req = 'not ok'
+
+    if req == 'ok':
         soup = BeautifulSoup(r.content, 'html.parser')
         new_v = soup.find('span', {'class': 'sha user-select-contain'}).text
 
@@ -41,13 +67,9 @@ def update_a_program():
             print(GREEN, 'Update program OK.', ENDC, sep='')
         else:
             print(GREEN, 'Program is the latest version.', ENDC, sep='')
-    except:
-        print(FAIL, 'Request to github error', ENDC, sep='')
 
 
-if __name__ == "__main__":
-    update_a_program()
-
+def activate_venv_and_run_program():
     venv_activate_script = '.venv/Scripts/activate.bat'
     if not os.path.exists(venv_activate_script):
         print(f"Error: Virtual environment activate script not found at {venv_activate_script}")
@@ -62,3 +84,9 @@ if __name__ == "__main__":
         subprocess.run(combined_command, shell=True, check=True)
     except subprocess.CalledProcessError as e:
         print(FAIL, f"Error executing main.py: {e}", ENDC, sep='')
+
+
+if __name__ == "__main__":
+    install_requests_and_soup()
+    update_a_program()
+    activate_venv_and_run_program()
