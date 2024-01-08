@@ -151,7 +151,7 @@ class Model:
             self.model = models.load_model(fr'data/{modelname}/model/{self.name}.h5')
         except Exception as e:
             print(f'{WARNING}function "load_model" error.\n'
-                  f'file error data/{modelname}/model/{self.name}.h5{ENDC}'
+                  f'file error data/{modelname}/model/{self.name}.h5{ENDC}\n'
                   f'{str(e)}')
             # sys.exit()
         try:
