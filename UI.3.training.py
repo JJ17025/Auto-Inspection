@@ -36,11 +36,11 @@ import random
 
 PCB_name = 'QM7-3473'
 # PCB_name = 'QM7-3472'
-PCB_name = 'D07'
+PCB_name = 'D07 QM7-3238'
 
 IMG_FULL_PATH = f'data/{PCB_name}/img_full'
 IMG_FRAME_PATH = f'data/{PCB_name}/img_frame'
-IMG_FRAME_PATH = fr'C:\Python_Project\training keras\img_frame'
+# IMG_FRAME_PATH = fr'C:\Python_Project\training keras\img_frame'
 IMG_FRAME_LOG_PATH = f'data/{PCB_name}/img_frame_log'
 MODEL_PATH = f'data/{PCB_name}/model'
 frames = Frames(PCB_name)

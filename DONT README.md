@@ -22,4 +22,5 @@ pip install scipy
 pip install pygame
 pip install requests
 pip install beautifulsoup4
+pip install matplotlib
 ```

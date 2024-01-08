@@ -676,3 +676,24 @@
 [94mModel [92mc14[0m MODEL_SET=1 | img_height_width=180, 180
 1226-111129| 
 [94mModel [92mc15[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| model_list (ที่มี) 20 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap1', 'Cap2', 'Cap3', 'crys', 'L', 'RJ45', 'usb']
+0108-125812| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mCap1[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mCap2[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mCap3[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mCap45[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| --------  >>> corp_img <<<  ---------
+0108-125920| 0:01:07.941591 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+0108-125920| ------- >>> training... <<< ---------
+0108-125921| image_count = 83025
