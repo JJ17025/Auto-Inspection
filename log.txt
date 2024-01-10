@@ -797,3 +797,53 @@
 [94mModel [92mc14[0m MODEL_SET=1 | img_height_width=180, 180
 0108-160607| 
 [94mModel [92mc15[0m MODEL_SET=1 | img_height_width=180, 180
+0110-150117| model_list (ที่มี) 20 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap2', 'Cap3', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+0110-150117| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+0110-150117| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+0110-150117| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+0110-150117| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+0110-150117| 
+[94mModel [92mCap1[0m MODEL_SET=1 | img_height_width=180, 180
+0110-150117| --------  >>> corp_img <<<  ---------
+0110-150234| 0:01:17.366041 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+0110-150234| ------- >>> training... <<< ---------
+0110-150235| image_count = 81000
+0110-152402| 0:01:17.366041 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+0110-152402| 0:21:27.542098 เวลาที่ใช้ในการ training 
+0110-152402| 0:22:44.908139 เวลาที่ใช้ทั้งหมด
+0110-152402| 
+[94mModel [92mCap2[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mCap3[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mCap45[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc127[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc3[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc4[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc5[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc6[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc8[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc9[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc10[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc11[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc12[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc13[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc14[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc15[0m MODEL_SET=1 | img_height_width=180, 180
