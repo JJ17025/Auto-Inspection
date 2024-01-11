@@ -1,3 +1,4 @@
+from Config import config
 def capture(data, stop_event):
     import cv2
     cap = cv2.VideoCapture(0)
@@ -63,7 +64,7 @@ def main(data, stop_event):
     from func.about_image import putTextRect, overlay, adj_image, rotate
     from Frames import Frame, Frames, predict
     from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
-    url = data['url']
+
 
     def cvimage_to_pygame(image):
         """Convert cvimage into a pygame image"""
@@ -206,8 +207,8 @@ def main(data, stop_event):
             if 'mode_menu-run' in dis.update_dis_res:
                 time_req_time = datetime.now()
                 dis.update_dis_res -= {'mode_menu-run'}
-                requests_get(f'{url}/run/0', timeout=0.2)
-                requests_get(f'{url}/run/1', timeout=0.2)
+                requests_get(f'{config.ip_address()}/run/0', timeout=0.2)
+                requests_get(f'{config.ip_address()}/run/1', timeout=0.2)
 
             ''' read data "ให้ ถ่ายภาพ --> predict "'''
 
@@ -232,22 +233,22 @@ def main(data, stop_event):
                 if res_text[1] == 'capture and predict':
                     dis.update_dis_res = dis.update_dis_res.union({'Take a photo', 'adj image', 'predict'})
                     dis.predict_res = None
-                    requests_get(f'{url}/data/write/AI is predicting', timeout=0.2)
+                    requests_get(f'{config.ip_address()}/data/write/AI is predicting', timeout=0.2)
                 elif res_text[1] == 'AI is predicting' and dis.predict_res == 'ok':
-                    requests_get(f'{url}/data/write/ok', timeout=0.2)
+                    requests_get(f'{config.ip_address()}/data/write/ok', timeout=0.2)
                     dis.predict_res = 'ok already_read'
                 elif res_text[1] == 'AI is predicting' and dis.predict_res == 'ng':
-                    requests_get(f'{url}/data/write/ng', timeout=0.2)
+                    requests_get(f'{config.ip_address()}/data/write/ng', timeout=0.2)
                     dis.predict_res = 'ng already_read'
 
                 elif res_text[1] == 'pro=[1, 1, 1, 0]':
                     dis.select_model = 'QM7-3472'
                     dis.update_dis_res.add('select model')
-                    requests_get(f'{url}/data/write/None', timeout=0.2)
+                    requests_get(f'{config.ip_address()}/data/write/None', timeout=0.2)
                 elif res_text[1] == 'pro=[1, 1, 0, 1]':
                     dis.select_model = 'QM7-3473_v2'
                     dis.update_dis_res.add('select model')
-                    requests_get(f'{url}/data/write/None', timeout=0.2)
+                    requests_get(f'{config.ip_address()}/data/write/None', timeout=0.2)
 
         if autocap:
             dis.update_dis_res.add('Take a photo')
@@ -365,7 +366,7 @@ def main(data, stop_event):
                     show(e.img_BG)
                     if res:
                         if 'predict' in res:
-                            requests_get(f'{url}/data/write/AI is predicting', timeout=0.2)
+                            requests_get(f'{config.ip_address()}/data/write/AI is predicting', timeout=0.2)
                             break
                         break
             elif 'Take a photo' in dis.update_dis_res:
@@ -678,12 +679,6 @@ if __name__ == '__main__':
     stop_event = multiprocessing.Event()
     manager = multiprocessing.Manager()
     data = manager.dict()
-    if 'ip address.txt' not in os.listdir():
-        with open('ip address.txt', 'w') as f:
-            f.write("http://192.168.1.11:8080")
-    with open('ip address.txt') as f:
-        data['url'] = f.read()
-
     data['cap.read'] = (False, None)
     data['reconnect_cam'] = False
 
@@ -691,7 +686,7 @@ if __name__ == '__main__':
         'write data': {
             'command': '',
             'input data': {'data': 'start_program'},
-            'url': f'{data["url"]}/data/write/<data>',
+            'url': f'{config.ip_address()}/data/write/<data>',
             'status code': 0,
             'text': '',
             'note': ''
@@ -699,7 +694,7 @@ if __name__ == '__main__':
         'read data': {
             'command': 'run all the time',
             'input data': {},
-            'url': f'{data["url"]}/static/data.txt',
+            'url': f'{config.ip_address()}/static/data.txt',
             'status code': 0,
             'text': '',
             'note': ''
@@ -707,7 +702,7 @@ if __name__ == '__main__':
         'read step': {
             'command': '',
             'input data': {},
-            'url': f'{data["url"]}/static/step.txt',
+            'url': f'{config.ip_address()}/static/step.txt',
             'status code': 0,
             'text': '',
             'note': ''

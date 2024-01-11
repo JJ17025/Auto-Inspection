@@ -8,5 +8,5 @@ data/*/log_img_original/
 data/D07/
 
 test.py
-ip address.txt
+config.ini
 Auto Inspection.lnk
