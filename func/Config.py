@@ -8,10 +8,11 @@ class Config:
         # print([key for key in self.conf['DEFAULT']])
 
     def write_to_config_file(self):
-        with open('config.ini', 'w') as configfile:
+        with open('../config.ini', 'w') as configfile:
             self.conf.write(configfile)
 
     def ip_address(self):
+        self.__init__()
         if (self.conf.get('DEFAULT', 'ip address', fallback=None)) is None:
             self.conf['DEFAULT']['ip address'] = 'http://192.168.1.11:8080'
             self.write_to_config_file()

@@ -21,18 +21,15 @@ import os
 from datetime import datetime
 import shutil
 import cv2
-import numpy as np
 import tensorflow as tf
-import keras
-from keras import layers, optimizers, models
-from keras.models import Sequential, load_model
-from CV_UI import mkdir, remove
+from keras import layers, models
+from keras.models import Sequential
+from func.CV_UI import mkdir
 import pathlib
 import matplotlib.pyplot as plt
 from Frames import Frames
-from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
+from Frames import WARNING, PINK, ENDC
 from keras.applications import VGG16
-import random
 
 PCB_name = 'QM7-3473'
 # PCB_name = 'QM7-3472'

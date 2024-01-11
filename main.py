@@ -1,4 +1,4 @@
-from Config import config
+
 def capture(data, stop_event):
     import cv2
     cap = cv2.VideoCapture(0)
@@ -38,7 +38,7 @@ def req_io_box(data, stop_event):
 def printdata(data, stop_event):
     import time
     from pprint import pprint
-    from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
+    from Frames import PINK, ENDC, UNDERLINE
     while not stop_event.is_set():
         print(PINK, UNDERLINE)
         pprint(data['url requests'])
@@ -49,7 +49,6 @@ def printdata(data, stop_event):
 def main(data, stop_event):
     import cv2
     import numpy as np
-    import shutil
     import os
     import sys
     import pygame
@@ -59,12 +58,11 @@ def main(data, stop_event):
     import requests
     from bs4 import BeautifulSoup
     import time
-    from CV_UI import mkdir, remove
-    from CV_UI import Button, Display, Exit, TextInput, Select, Setting, Wait, Confirm
-    from func.about_image import putTextRect, overlay, adj_image, rotate
-    from Frames import Frame, Frames, predict
-    from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
-
+    from func.CV_UI import mkdir, remove
+    from func.CV_UI import Display, Exit, TextInput, Select, Setting, Wait, Confirm
+    from func.about_image import overlay, adj_image
+    from Frames import Frames, predict
+    from Frames import FAIL, ENDC
 
     def cvimage_to_pygame(image):
         """Convert cvimage into a pygame image"""
@@ -226,7 +224,7 @@ def main(data, stop_event):
                 if (datetime.now() - time_req_time).total_seconds() > 0.6:
                     time_req = True
 
-            text_only = BeautifulSoup(res_text[1], 'html.parser').get_text()
+            text_only = BeautifulSoup(f'{res_text[1]}', 'html.parser').get_text()
             cv2.putText(surfacenp, f'{res_text[0]}: {text_only}', (430, 1068), 16, 0.45, (255, 255, 255), 1,
                         cv2.LINE_AA)
             if res_text[0] == 200:
@@ -675,6 +673,7 @@ if __name__ == '__main__':
     import multiprocessing
     import json
     import os
+    from func.Config import config
 
     stop_event = multiprocessing.Event()
     manager = multiprocessing.Manager()
