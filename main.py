@@ -60,6 +60,7 @@ def main(data, stop_event):
     import time
     from func.CV_UI import mkdir, remove
     from func.CV_UI import Display, Exit, TextInput, Select, Setting, Wait, Confirm
+    from func.Config import config
     from func.about_image import overlay, adj_image
     from Frames import Frames, predict
     from Frames import FAIL, ENDC
