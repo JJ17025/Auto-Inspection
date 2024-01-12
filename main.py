@@ -1,4 +1,3 @@
-
 def capture(data, stop_event):
     import cv2
     cap = cv2.VideoCapture(0)
@@ -16,23 +15,38 @@ def capture(data, stop_event):
 def req_io_box(data, stop_event):
     import requests
     import time
+    from Frames import FAIL, ENDC, WARNING, UNDERLINE,PINK
     time.sleep(5)
-    dict_data = data['url requests']
 
     while not stop_event.is_set():
-        for k, v in dict_data.items():
-            if (v['status code'] == 1) or (v['command'] == 'run all the time'):
-                dict_data[k]['text'] = ''
-                try:
-                    res = requests.get(v['url'], timeout=0.5)
-                    dict_data[k]['status code'] = res.status_code
-                    dict_data[k]['text'] = res.text
-                except:
-                    dict_data[k]['status code'] = 0
-                    dict_data[k]['text'] = f"error req {v['url']}"
-            data['url requests'] = dict_data
-            time.sleep(0.2)
-        time.sleep(1)
+        read = data['read data']
+        try:
+            res = requests.get(read['url'], timeout=0.5)
+            read['status code'] = res.status_code
+            read['res_text'] = res.text
+        except requests.exceptions.Timeout:
+            read['status code'] = 0
+            read['res_text'] = 'Timeout. The request took longer than 0.5 second to complete.'
+        except requests.exceptions.RequestException as e:
+            read['status code'] = 0
+            read['res_text'] = f'{e}'
+        data['read data'] = read
+        time.sleep(0.8)
+
+        write = data['write data']
+        if write['input data'] != write['res_text'].split('write>')[-1] or write['status code'] != 200:
+            try:
+                res = requests.get(write['url'].replace('<data>', write['input data']), timeout=0.5)
+                write['status code'] = res.status_code
+                write['res_text'] = res.text
+            except requests.exceptions.Timeout:
+                write['status code'] = 0
+                write['res_text'] = 'Timeout. The request took longer than 0.5 second to complete.'
+            except requests.exceptions.RequestException as e:
+                write['status code'] = 0
+                write['res_text'] = f'{e}'
+            data['write data'] = write
+        time.sleep(0.8)
 
 
 def printdata(data, stop_event):
@@ -41,9 +55,10 @@ def printdata(data, stop_event):
     from Frames import PINK, ENDC, UNDERLINE
     while not stop_event.is_set():
         print(PINK, UNDERLINE)
-        pprint(data['url requests'])
+        pprint(data['requests']['read data'])
+        pprint(data['requests']['write data'])
         print(ENDC)
-        time.sleep(5)
+        time.sleep(1)
 
 
 def main(data, stop_event):
@@ -63,7 +78,7 @@ def main(data, stop_event):
     from func.Config import config
     from func.about_image import overlay, adj_image
     from Frames import Frames, predict
-    from Frames import FAIL, ENDC
+    from Frames import FAIL, ENDC, WARNING
 
     def cvimage_to_pygame(image):
         """Convert cvimage into a pygame image"""
@@ -183,7 +198,7 @@ def main(data, stop_event):
 
                                 break
                         break
-        if dis.mode == 'run':
+        if dis.mode == 'run' and pcb_model_name:
             if save_img:
                 namefile = datetime.now().strftime('%y%m%d %H%M%S.png')
                 mkdir(f'data/{pcb_model_name}/log_img')
@@ -204,55 +219,65 @@ def main(data, stop_event):
                 save_img = False
             # if dis.mode == 'run' and pcb_model_name:
             if 'mode_menu-run' in dis.update_dis_res:
-                time_req_time = datetime.now()
                 dis.update_dis_res -= {'mode_menu-run'}
                 requests_get(f'{config.ip_address()}/run/0', timeout=0.2)
                 requests_get(f'{config.ip_address()}/run/1', timeout=0.2)
 
-            ''' read data "ให้ ถ่ายภาพ --> predict "'''
+            read = data['read data']
+            write = data['write data']
 
-            error_text = ''
-            if time_req == True:
-                time_req_time = datetime.now()
-                time_req = False
+            cv2.putText(surfacenp, f"{data['step']} {read['status code']}: {read['res_text']}",
+                        (430, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
 
-                res_text = (
-                    data['url requests']['read data']['status code'],
-                    data['url requests']['read data']['text']
-                )
-
-            else:
-                if (datetime.now() - time_req_time).total_seconds() > 0.6:
-                    time_req = True
-
-            text_only = BeautifulSoup(f'{res_text[1]}', 'html.parser').get_text()
-            cv2.putText(surfacenp, f'{res_text[0]}: {text_only}', (430, 1068), 16, 0.45, (255, 255, 255), 1,
-                        cv2.LINE_AA)
-            if res_text[0] == 200:
-                if res_text[1] == 'capture and predict':
-                    dis.update_dis_res = dis.update_dis_res.union({'Take a photo', 'adj image', 'predict'})
-                    dis.predict_res = None
-                    requests_get(f'{config.ip_address()}/data/write/AI is predicting', timeout=0.2)
-                elif res_text[1] == 'AI is predicting' and dis.predict_res == 'ok':
-                    requests_get(f'{config.ip_address()}/data/write/ok', timeout=0.2)
+            if data['step'] == 0:
+                data['step'] = 1
+            elif data['step'] == 1 and read['res_text'] == 'capture and predict':
+                print(WARNING, 'step1', ENDC)
+                data['step'] = 2
+                dis.update_dis_res = dis.update_dis_res.union({'adj image', 'predict'})
+                dis.predict_res = None
+            elif data['step'] == 2 and dis.predict_res:
+                print(WARNING, 'step2', ENDC)
+                if dis.predict_res == 'ok':
+                    write['input data'] = 'ok'
+                    write['res_text'] = ''
+                    write['status code'] = 1
                     dis.predict_res = 'ok already_read'
-                elif res_text[1] == 'AI is predicting' and dis.predict_res == 'ng':
-                    requests_get(f'{config.ip_address()}/data/write/ng', timeout=0.2)
+                    data['step'] = 3
+                elif dis.predict_res == 'ng':
+                    write['input data'] = 'ng'
+                    write['res_text'] = ''
+                    write['status code'] = 1
                     dis.predict_res = 'ng already_read'
+                    data['step'] = 3
+            elif data['step'] == 3 and write['res_text'] in ['write>ok', 'write>ng']:
+                print(WARNING, 'step3', ENDC)
+                data['step'] = 4
+            elif data['step'] == 4 and read['res_text'] in ['ok', 'ng']:
+                print(WARNING, 'step4', ENDC)
+                data['step'] = 0
 
-                elif res_text[1] == 'pro=[1, 1, 1, 0]':
-                    dis.select_model = 'QM7-3472'
-                    dis.update_dis_res.add('select model')
-                    requests_get(f'{config.ip_address()}/data/write/None', timeout=0.2)
-                elif res_text[1] == 'pro=[1, 1, 0, 1]':
-                    dis.select_model = 'QM7-3473_v2'
-                    dis.update_dis_res.add('select model')
-                    requests_get(f'{config.ip_address()}/data/write/None', timeout=0.2)
+            if read['res_text'] == 'pro=[1, 1, 1, 0]':
+                dis.select_model = 'QM7-3472'
+                dis.update_dis_res.add('select model')
+                write['input data'] = 'None'
+                write['res_text'] = ''
+                write['status code'] = 1
+            elif read['res_text'] == 'pro=[1, 1, 0, 1]':
+                dis.select_model = 'QM7-3473_v2'
+                dis.update_dis_res.add('select model')
+                write['input data'] = 'None'
+                write['res_text'] = ''
+                write['status code'] = 1
+
+            data['read data'] = read
+            data['write data'] = write
 
         if autocap:
             dis.update_dis_res.add('Take a photo')
         if dis.update_dis_res:
-            # print(dis.update_dis_res)
+            # if dis.update_dis_res:
+            #     print(dis.update_dis_res)
             if 'autocap' in dis.update_dis_res:
                 dis.update_dis_res -= {'autocap'}
                 if autocap:
@@ -357,16 +382,21 @@ def main(data, stop_event):
             elif 'm3:mode_menu-run' in dis.update_dis_res:
                 dis.update_dis_res -= {'m3:mode_menu-run'}
                 e = Select(surfacenp.copy())
-                e.add_data('predict')
+                e.add_data('send capture and predict', 'send AI is predicting', 'send ok', 'send ng')
                 e.x_shift, e.y_shift = mouse_pos
                 while True:
                     mouse_pos = pygame.mouse.get_pos()
                     res = e.update(mouse_pos, pygame.event.get())
                     show(e.img_BG)
                     if res:
-                        if 'predict' in res:
+                        if 'send AI is predicting' in res:
                             requests_get(f'{config.ip_address()}/data/write/AI is predicting', timeout=0.2)
-                            break
+                        if 'send capture and predict' in res:
+                            requests_get(f'{config.ip_address()}/data/write/capture and predict', timeout=0.2)
+                        if 'send ok' in res:
+                            requests_get(f'{config.ip_address()}/data/write/ok', timeout=0.2)
+                        if 'send ng' in res:
+                            requests_get(f'{config.ip_address()}/data/write/ng', timeout=0.2)
                         break
             elif 'Take a photo' in dis.update_dis_res:
                 dis.update_dis_res -= {'Take a photo'}
@@ -681,33 +711,18 @@ if __name__ == '__main__':
     data = manager.dict()
     data['cap.read'] = (False, None)
     data['reconnect_cam'] = False
-
-    data['url requests'] = {
-        'write data': {
-            'command': '',
-            'input data': {'data': 'start_program'},
-            'url': f'{config.ip_address()}/data/write/<data>',
-            'status code': 0,
-            'text': '',
-            'note': ''
-        },
-        'read data': {
-            'command': 'run all the time',
-            'input data': {},
-            'url': f'{config.ip_address()}/static/data.txt',
-            'status code': 0,
-            'text': '',
-            'note': ''
-        },
-        'read step': {
-            'command': '',
-            'input data': {},
-            'url': f'{config.ip_address()}/static/step.txt',
-            'status code': 0,
-            'text': '',
-            'note': ''
-        },
+    data['write data'] = {
+        'input data': 'start a program',
+        'url': f'{config.ip_address()}/data/write/<data>',
+        'status code': 0,
+        'res_text': '',
     }
+    data['read data'] = {
+        'url': f'{config.ip_address()}/static/data.txt',
+        'status code': 0,
+        'res_text': '',
+    }
+    data['step'] = 0
 
     capture_process = multiprocessing.Process(target=capture, args=(data, stop_event))
     show_process = multiprocessing.Process(target=main, args=(data, stop_event))
