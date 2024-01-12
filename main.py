@@ -234,7 +234,7 @@ def main(data, stop_event):
             elif data['step'] == 1 and read['res_text'] == 'capture and predict':
                 print(WARNING, 'step1', ENDC)
                 data['step'] = 2
-                dis.update_dis_res = dis.update_dis_res.union({'adj image', 'predict'})
+                dis.update_dis_res = dis.update_dis_res.union({'Take a photo','adj image', 'predict'})
                 dis.predict_res = None
             elif data['step'] == 2 and dis.predict_res:
                 print(WARNING, 'step2', ENDC)
