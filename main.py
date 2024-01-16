@@ -117,7 +117,7 @@ def main(data, stop_event):
         clock.tick(60)
 
     pygame.init()
-    display = pygame.display.set_mode((1920, 1080))
+    display = pygame.display.set_mode((1920, 1080),pygame.NOFRAME)
     pygame.display.set_caption('Auto Inspection')
     clock = pygame.time.Clock()
 
