@@ -135,7 +135,7 @@ def rotate(image, fee):
         print(f"func rotate, fee={fee}, don't rotate, fee<0.01")
     else:
         print(f'func rotate, fee={fee}')
-        image = ndimage.rotate(image, fee)
+        image = ndimage.rotate(image, fee, reshape=False)
     return image
 
 
