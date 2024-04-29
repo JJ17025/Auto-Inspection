@@ -136,6 +136,12 @@ def rotate(image, fee):
     else:
         print(f'func rotate, fee={fee}')
         image = ndimage.rotate(image, fee, reshape=False)
+      
+        # h, w = image.shape[:2]
+        # center = image.shape[0]//2, image.shape[1]//2
+        # scale = 1
+        # rotate_matrix = cv2.getRotationMatrix2D(center=center, angle=angle, scale=scale)
+        # image = cv2.warpAffine(src=image, M=rotate_matrix, dsize=(w, h))
     return image
 
 
