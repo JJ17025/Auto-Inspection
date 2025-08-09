@@ -1,7 +1,12 @@
-venv/
-data/D07/img_frame/
-data/QM7-3473/img_frame/
+.venv/
 .idea/
+.version
 __pycache__/
+data/*/img_frame/
+data/*/log_img/
+data/*/log_img_original/
+data/D07/
+
 test.py
-data/*/log_img
+config.ini
+Auto Inspection.lnk

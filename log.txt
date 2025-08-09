@@ -263,3 +263,587 @@
 [94mModel [92mw3[0m MODEL_SET=1 | img_height_width=180, 180
 1121-090040| 
 [94mModel [92mw4[0m MODEL_SET=1 | img_height_width=180, 180
+1222-151834| model_list (ที่มี) 6 ['b', 'c0', 'w', 'w3', 'w4', 'y']
+1222-151834| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-151834| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-151834| 
+[94mModel [92my[0m MODEL_SET=1 | img_height_width=180, 180
+1222-151834| 
+[94mModel [92mb[0m MODEL_SET=1 | img_height_width=180, 180
+1222-151834| 
+[94mModel [92mw3[0m MODEL_SET=1 | img_height_width=180, 180
+1222-151834| 
+[94mModel [92mw4[0m MODEL_SET=1 | img_height_width=180, 180
+1222-151915| model_list (ที่มี) 2 ['bat', 'c0']
+1222-151915| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-151915| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-151915| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-151915| --------  >>> corp_img <<<  ---------
+1222-152042| 
+[94mModel [92my[0m MODEL_SET=1 | img_height_width=180, 180
+1222-152042| --------  >>> corp_img <<<  ---------
+1222-152114| model_list (ที่มี) 2 ['bat', 'c0']
+1222-152114| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-152114| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-152114| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-152114| --------  >>> corp_img <<<  ---------
+1222-152246| 
+[94mModel [92my[0m MODEL_SET=1 | img_height_width=180, 180
+1222-152246| --------  >>> corp_img <<<  ---------
+1222-152309| model_list (ที่มี) 2 ['bat', 'c0']
+1222-152309| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-152309| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-152309| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-152309| --------  >>> corp_img <<<  ---------
+1222-152532| 
+[94mModel [92my[0m MODEL_SET=1 | img_height_width=180, 180
+1222-152532| --------  >>> corp_img <<<  ---------
+1222-152537| model_list (ที่มี) 2 ['bat', 'c0']
+1222-152537| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-152537| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-152537| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-152538| --------  >>> corp_img <<<  ---------
+1222-152613| 
+[94mModel [92my[0m MODEL_SET=1 | img_height_width=180, 180
+1222-152613| --------  >>> corp_img <<<  ---------
+1222-153430| model_list (ที่มี) 2 ['bat', 'c0']
+1222-153430| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-153430| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-153430| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-153431| --------  >>> corp_img <<<  ---------
+1222-153452| 
+[94mModel [92my[0m MODEL_SET=1 | img_height_width=180, 180
+1222-153452| --------  >>> corp_img <<<  ---------
+1222-153511| model_list (ที่มี) 2 ['bat', 'c0']
+1222-153511| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-153511| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-153511| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-153511| --------  >>> corp_img <<<  ---------
+1222-153907| 0:03:56.064311 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-153907| ------- >>> training... <<< ---------
+1222-153909| image_count = 413100
+1222-155824| model_list (ที่มี) 2 ['bat', 'c0']
+1222-155824| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-155824| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-155824| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-155825| --------  >>> corp_img <<<  ---------
+1222-155826| 
+[94mModel [92my[0m MODEL_SET=1 | img_height_width=180, 180
+1222-155826| --------  >>> corp_img <<<  ---------
+1222-155853| model_list (ที่มี) 2 ['bat', 'c0']
+1222-155854| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-155854| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-155854| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-155854| --------  >>> corp_img <<<  ---------
+1222-155854| 0:00:00.016010 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-155854| ------- >>> training... <<< ---------
+1222-155855| image_count = 413100
+1222-155908| 
+[94mModel [92my[0m MODEL_SET=1 | img_height_width=180, 180
+1222-155908| --------  >>> corp_img <<<  ---------
+1222-155908| 0:00:00.025117 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-155908| ------- >>> training... <<< ---------
+1222-155908| image_count = 0
+1222-155908| 
+[94mModel [92mb[0m MODEL_SET=1 | img_height_width=180, 180
+1222-155908| --------  >>> corp_img <<<  ---------
+1222-155908| 0:00:00.014827 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-155908| ------- >>> training... <<< ---------
+1222-155908| image_count = 0
+1222-155908| 
+[94mModel [92mw4[0m MODEL_SET=1 | img_height_width=180, 180
+1222-155908| --------  >>> corp_img <<<  ---------
+1222-155908| 0:00:00.017030 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-155908| ------- >>> training... <<< ---------
+1222-155908| image_count = 0
+1222-155927| model_list (ที่มี) 2 ['bat', 'c0']
+1222-155927| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-155927| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-155927| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-155927| --------  >>> corp_img <<<  ---------
+1222-160310| 0:03:42.031441 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-160310| ------- >>> training... <<< ---------
+1222-160311| image_count = 413100
+1222-160323| 
+[94mModel [92my[0m MODEL_SET=1 | img_height_width=180, 180
+1222-160323| --------  >>> corp_img <<<  ---------
+1222-160724| 0:04:00.314718 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-160724| ------- >>> training... <<< ---------
+1222-160725| image_count = 413100
+1222-160738| 
+[94mModel [92mb[0m MODEL_SET=1 | img_height_width=180, 180
+1222-160738| --------  >>> corp_img <<<  ---------
+1222-160838| 
+[94mModel [92mw4[0m MODEL_SET=1 | img_height_width=180, 180
+1222-160838| --------  >>> corp_img <<<  ---------
+1222-160956| model_list (ที่มี) 2 ['bat', 'c0']
+1222-160956| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-160956| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-160956| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-160956| --------  >>> corp_img <<<  ---------
+1222-160956| 0:00:00.034156 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-160956| ------- >>> training... <<< ---------
+1222-160958| image_count = 413100
+1222-161104| model_list (ที่มี) 2 ['bat', 'c0']
+1222-161104| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-161104| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-161104| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-161104| --------  >>> corp_img <<<  ---------
+1222-161104| 0:00:00.016000 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-161104| ------- >>> training... <<< ---------
+1222-161106| image_count = 413100
+1222-162801| model_list (ที่มี) 2 ['bat', 'c0']
+1222-162801| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-162801| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-162801| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-162801| --------  >>> corp_img <<<  ---------
+1222-163200| 0:03:58.400287 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-163200| ------- >>> training... <<< ---------
+1222-163315| model_list (ที่มี) 2 ['bat', 'c0']
+1222-163315| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-163315| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-163315| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-163315| --------  >>> corp_img <<<  ---------
+1222-163315| 0:00:00.017778 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-163315| ------- >>> training... <<< ---------
+1222-163349| model_list (ที่มี) 2 ['bat', 'c0']
+1222-163349| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-163349| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-163349| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-163349| --------  >>> corp_img <<<  ---------
+1222-163350| 0:00:00.025588 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-163350| ------- >>> training... <<< ---------
+1222-163401| image_count = 320000
+1222-164246| model_list (ที่มี) 2 ['bat', 'c0']
+1222-164246| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-164246| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-164246| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-164246| --------  >>> corp_img <<<  ---------
+1222-164246| 0:00:00.015000 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-164246| ------- >>> training... <<< ---------
+1222-164311| image_count = 200000
+1222-165538| model_list (ที่มี) 2 ['bat', 'c0']
+1222-165538| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1222-165538| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1222-165538| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1222-165538| --------  >>> corp_img <<<  ---------
+1222-165538| 0:00:00.017919 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-165538| ------- >>> training... <<< ---------
+1222-165544| image_count = 160000
+1222-172925| 0:00:00.017919 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-172925| 0:33:47.514691 เวลาที่ใช้ในการ training 
+1222-172925| 0:33:47.532610 เวลาที่ใช้ทั้งหมด
+1222-172925| 
+[94mModel [92my[0m MODEL_SET=1 | img_height_width=180, 180
+1222-172925| --------  >>> corp_img <<<  ---------
+1222-173338| 0:04:12.912489 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-173338| ------- >>> training... <<< ---------
+1222-173409| image_count = 160000
+1222-180909| 0:04:12.912489 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-180909| 0:35:30.945591 เวลาที่ใช้ในการ training 
+1222-180909| 0:39:43.858080 เวลาที่ใช้ทั้งหมด
+1222-180909| 
+[94mModel [92mb[0m MODEL_SET=1 | img_height_width=180, 180
+1222-180910| --------  >>> corp_img <<<  ---------
+1222-181050| 0:01:40.674740 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-181050| ------- >>> training... <<< ---------
+1222-181053| image_count = 137200
+1222-183828| 0:01:40.674740 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-183828| 0:27:37.540966 เวลาที่ใช้ในการ training 
+1222-183828| 0:29:18.215706 เวลาที่ใช้ทั้งหมด
+1222-183828| 
+[94mModel [92mw4[0m MODEL_SET=1 | img_height_width=180, 180
+1222-183828| --------  >>> corp_img <<<  ---------
+1222-184028| 0:01:59.947089 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-184028| ------- >>> training... <<< ---------
+1222-184031| image_count = 144800
+1222-190824| 0:01:59.947089 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1222-190824| 0:27:55.997657 เวลาที่ใช้ในการ training 
+1222-190824| 0:29:55.944746 เวลาที่ใช้ทั้งหมด
+1225-092459| model_list (ที่มี) 6 ['b', 'bat', 'c0', 'w', 'y', 'z w4']
+1225-092459| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1225-092459| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1225-092459| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1225-092459| 
+[94mModel [92my[0m MODEL_SET=1 | img_height_width=180, 180
+1225-092459| 
+[94mModel [92mb[0m MODEL_SET=1 | img_height_width=180, 180
+1225-092459| 
+[94mModel [92mw4[0m MODEL_SET=1 | img_height_width=180, 180
+1225-092459| --------  >>> corp_img <<<  ---------
+1225-092705| 0:02:05.987914 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1225-092705| ------- >>> training... <<< ---------
+1225-092706| image_count = 144800
+1225-095436| 0:02:05.987914 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1225-095436| 0:27:31.634135 เวลาที่ใช้ในการ training 
+1225-095436| 0:29:37.622049 เวลาที่ใช้ทั้งหมด
+1226-094912| model_list (ที่มี) 7 ['b', 'bat', 'c0', 'w', 'w4', 'y', 'z w4']
+1226-094912| 
+[94mModel [92mc0[0m MODEL_SET=1 | img_height_width=180, 180
+1226-094912| 
+[94mModel [92mbat[0m MODEL_SET=1 | img_height_width=180, 180
+1226-094912| 
+[94mModel [92mw[0m MODEL_SET=1 | img_height_width=180, 180
+1226-094912| 
+[94mModel [92my[0m MODEL_SET=1 | img_height_width=180, 180
+1226-094913| 
+[94mModel [92mb[0m MODEL_SET=1 | img_height_width=180, 180
+1226-094913| 
+[94mModel [92mw4[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095114| model_list (ที่มี) 18 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+1226-095114| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095114| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095114| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095114| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095114| 
+[94mModel [92mCap123[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095114| --------  >>> corp_img <<<  ---------
+1226-095349| model_list (ที่มี) 18 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+1226-095349| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095349| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095349| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095349| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095349| 
+[94mModel [92mCap123[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095349| --------  >>> corp_img <<<  ---------
+1226-095930| model_list (ที่มี) 18 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+1226-095930| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095930| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095930| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095930| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095930| 
+[94mModel [92mCap123[0m MODEL_SET=1 | img_height_width=180, 180
+1226-095930| --------  >>> corp_img <<<  ---------
+1226-100130| 0:01:59.856972 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1226-100130| ------- >>> training... <<< ---------
+1226-100131| image_count = 212625
+1226-101517| model_list (ที่มี) 18 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+1226-101517| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+1226-101517| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+1226-101517| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+1226-101517| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+1226-101517| 
+[94mModel [92mCap123[0m MODEL_SET=1 | img_height_width=180, 180
+1226-101517| --------  >>> corp_img <<<  ---------
+1226-101517| 0:00:00.019038 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1226-101517| ------- >>> training... <<< ---------
+1226-101518| image_count = 212625
+1226-103125| model_list (ที่มี) 18 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+1226-103125| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+1226-103125| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+1226-103125| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+1226-103125| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+1226-103125| 
+[94mModel [92mCap1[0m MODEL_SET=1 | img_height_width=180, 180
+1226-103125| --------  >>> corp_img <<<  ---------
+1226-103125| 0:00:00.014438 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1226-103125| ------- >>> training... <<< ---------
+1226-103125| image_count = 0
+1226-103158| model_list (ที่มี) 18 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+1226-103158| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+1226-103158| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+1226-103158| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+1226-103158| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+1226-103158| 
+[94mModel [92mCap1[0m MODEL_SET=1 | img_height_width=180, 180
+1226-103158| --------  >>> corp_img <<<  ---------
+1226-103256| 0:00:57.653390 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1226-103256| ------- >>> training... <<< ---------
+1226-103256| image_count = 74925
+1226-104548| 0:00:57.653390 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1226-104548| 0:12:52.488774 เวลาที่ใช้ในการ training 
+1226-104549| 0:13:50.142164 เวลาที่ใช้ทั้งหมด
+1226-104549| 
+[94mModel [92mCap2[0m MODEL_SET=1 | img_height_width=180, 180
+1226-104549| --------  >>> corp_img <<<  ---------
+1226-104642| 0:00:53.691294 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1226-104642| ------- >>> training... <<< ---------
+1226-104643| image_count = 70875
+1226-105905| 0:00:53.691294 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1226-105905| 0:12:22.307132 เวลาที่ใช้ในการ training 
+1226-105905| 0:13:15.998426 เวลาที่ใช้ทั้งหมด
+1226-105905| 
+[94mModel [92mCap3[0m MODEL_SET=1 | img_height_width=180, 180
+1226-105905| --------  >>> corp_img <<<  ---------
+1226-105955| 0:00:50.395808 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1226-105955| ------- >>> training... <<< ---------
+1226-105955| image_count = 66825
+1226-111129| 0:00:50.395808 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+1226-111129| 0:11:33.526281 เวลาที่ใช้ในการ training 
+1226-111129| 0:12:23.922089 เวลาที่ใช้ทั้งหมด
+1226-111129| 
+[94mModel [92mCap45[0m MODEL_SET=1 | img_height_width=180, 180
+1226-111129| 
+[94mModel [92mc127[0m MODEL_SET=1 | img_height_width=180, 180
+1226-111129| 
+[94mModel [92mc3[0m MODEL_SET=1 | img_height_width=180, 180
+1226-111129| 
+[94mModel [92mc4[0m MODEL_SET=1 | img_height_width=180, 180
+1226-111129| 
+[94mModel [92mc5[0m MODEL_SET=1 | img_height_width=180, 180
+1226-111129| 
+[94mModel [92mc6[0m MODEL_SET=1 | img_height_width=180, 180
+1226-111129| 
+[94mModel [92mc8[0m MODEL_SET=1 | img_height_width=180, 180
+1226-111129| 
+[94mModel [92mc9[0m MODEL_SET=1 | img_height_width=180, 180
+1226-111129| 
+[94mModel [92mc10[0m MODEL_SET=1 | img_height_width=180, 180
+1226-111129| 
+[94mModel [92mc11[0m MODEL_SET=1 | img_height_width=180, 180
+1226-111129| 
+[94mModel [92mc12[0m MODEL_SET=1 | img_height_width=180, 180
+1226-111129| 
+[94mModel [92mc13[0m MODEL_SET=1 | img_height_width=180, 180
+1226-111129| 
+[94mModel [92mc14[0m MODEL_SET=1 | img_height_width=180, 180
+1226-111129| 
+[94mModel [92mc15[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| model_list (ที่มี) 20 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap1', 'Cap2', 'Cap3', 'crys', 'L', 'RJ45', 'usb']
+0108-125812| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mCap1[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mCap2[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mCap3[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| 
+[94mModel [92mCap45[0m MODEL_SET=1 | img_height_width=180, 180
+0108-125812| --------  >>> corp_img <<<  ---------
+0108-125920| 0:01:07.941591 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+0108-125920| ------- >>> training... <<< ---------
+0108-125921| image_count = 83025
+0108-131511| model_list (ที่มี) 20 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap1', 'Cap2', 'Cap3', 'crys', 'L', 'RJ45', 'usb']
+0108-131511| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+0108-131511| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+0108-131511| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+0108-131511| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+0108-131511| 
+[94mModel [92mCap1[0m MODEL_SET=1 | img_height_width=180, 180
+0108-131512| 
+[94mModel [92mCap2[0m MODEL_SET=1 | img_height_width=180, 180
+0108-131512| 
+[94mModel [92mCap3[0m MODEL_SET=1 | img_height_width=180, 180
+0108-131512| 
+[94mModel [92mCap45[0m MODEL_SET=1 | img_height_width=180, 180
+0108-131512| --------  >>> corp_img <<<  ---------
+0108-131633| 0:01:21.055483 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+0108-131633| ------- >>> training... <<< ---------
+0108-131633| image_count = 83025
+0108-134030| 0:01:21.055483 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+0108-134030| 0:23:57.134752 เวลาที่ใช้ในการ training 
+0108-134030| 0:25:18.190235 เวลาที่ใช้ทั้งหมด
+0108-134030| 
+[94mModel [92mc127[0m MODEL_SET=1 | img_height_width=180, 180
+0108-134030| 
+[94mModel [92mc3[0m MODEL_SET=1 | img_height_width=180, 180
+0108-134030| 
+[94mModel [92mc4[0m MODEL_SET=1 | img_height_width=180, 180
+0108-134030| 
+[94mModel [92mc5[0m MODEL_SET=1 | img_height_width=180, 180
+0108-134030| 
+[94mModel [92mc6[0m MODEL_SET=1 | img_height_width=180, 180
+0108-134030| 
+[94mModel [92mc8[0m MODEL_SET=1 | img_height_width=180, 180
+0108-134030| 
+[94mModel [92mc9[0m MODEL_SET=1 | img_height_width=180, 180
+0108-134030| 
+[94mModel [92mc10[0m MODEL_SET=1 | img_height_width=180, 180
+0108-134030| 
+[94mModel [92mc11[0m MODEL_SET=1 | img_height_width=180, 180
+0108-134030| 
+[94mModel [92mc12[0m MODEL_SET=1 | img_height_width=180, 180
+0108-134030| 
+[94mModel [92mc13[0m MODEL_SET=1 | img_height_width=180, 180
+0108-134030| 
+[94mModel [92mc14[0m MODEL_SET=1 | img_height_width=180, 180
+0108-134030| 
+[94mModel [92mc15[0m MODEL_SET=1 | img_height_width=180, 180
+0108-154203| model_list (ที่มี) 20 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap1', 'Cap3', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+0108-154203| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+0108-154203| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+0108-154203| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+0108-154203| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+0108-154203| 
+[94mModel [92mCap1[0m MODEL_SET=1 | img_height_width=180, 180
+0108-154203| 
+[94mModel [92mCap2[0m MODEL_SET=1 | img_height_width=180, 180
+0108-154203| --------  >>> corp_img <<<  ---------
+0108-154321| 0:01:17.592183 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+0108-154321| ------- >>> training... <<< ---------
+0108-154321| image_count = 72900
+0108-160607| 0:01:17.592183 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+0108-160607| 0:22:45.996660 เวลาที่ใช้ในการ training 
+0108-160607| 0:24:03.588843 เวลาที่ใช้ทั้งหมด
+0108-160607| 
+[94mModel [92mCap3[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mCap45[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mc127[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mc3[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mc4[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mc5[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mc6[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mc8[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mc9[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mc10[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mc11[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mc12[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mc13[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mc14[0m MODEL_SET=1 | img_height_width=180, 180
+0108-160607| 
+[94mModel [92mc15[0m MODEL_SET=1 | img_height_width=180, 180
+0110-150117| model_list (ที่มี) 20 ['c10', 'c11', 'c12', 'c127', 'c13', 'c14', 'c15', 'c3', 'c4', 'c5', 'c6', 'c8', 'c9', 'Cap2', 'Cap3', 'Cap45', 'crys', 'L', 'RJ45', 'usb']
+0110-150117| 
+[94mModel [92musb[0m MODEL_SET=1 | img_height_width=180, 180
+0110-150117| 
+[94mModel [92mRJ45[0m MODEL_SET=1 | img_height_width=180, 180
+0110-150117| 
+[94mModel [92mcrys[0m MODEL_SET=1 | img_height_width=180, 180
+0110-150117| 
+[94mModel [92mL[0m MODEL_SET=1 | img_height_width=180, 180
+0110-150117| 
+[94mModel [92mCap1[0m MODEL_SET=1 | img_height_width=180, 180
+0110-150117| --------  >>> corp_img <<<  ---------
+0110-150234| 0:01:17.366041 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+0110-150234| ------- >>> training... <<< ---------
+0110-150235| image_count = 81000
+0110-152402| 0:01:17.366041 เวลาที่ใช้ในการเปลียน img_full เป็น shift_img 
+0110-152402| 0:21:27.542098 เวลาที่ใช้ในการ training 
+0110-152402| 0:22:44.908139 เวลาที่ใช้ทั้งหมด
+0110-152402| 
+[94mModel [92mCap2[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mCap3[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mCap45[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc127[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc3[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc4[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc5[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc6[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc8[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc9[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc10[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc11[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc12[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc13[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc14[0m MODEL_SET=1 | img_height_width=180, 180
+0110-152402| 
+[94mModel [92mc15[0m MODEL_SET=1 | img_height_width=180, 180

@@ -1,324 +1,884 @@
 {
   "frames": {
     "c0_1": {
-        "x": 0.100390625,
-        "y": 0.34045833333333336,
-        "dx": 0.05278125,
-        "dy": 0.03116666666666667,
-        "model_used": "con0_1",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J100_1",
+      "x": 0.100390625,
+      "y": 0.34045833333333336,
+      "dx": 0.05278125,
+      "dy": 0.03116666666666667,
+      "model_used": "con0_1",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c0_2": {
-        "x": 0.237328125,
-        "y": 0.33589583333333334,
-        "dx": 0.05290625,
-        "dy": 0.031375,
-        "model_used": "con0_2",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J100_2",
+      "x": 0.237328125,
+      "y": 0.33589583333333334,
+      "dx": 0.05290625,
+      "dy": 0.031375,
+      "model_used": "con0_2",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c0_3": {
-        "x": 0.37990625,
-        "y": 0.3316875,
-        "dx": 0.05337499999999999,
-        "dy": 0.031375,
-        "model_used": "con0_3",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J100_3",
+      "x": 0.37990625,
+      "y": 0.3316875,
+      "dx": 0.05337499999999999,
+      "dy": 0.031375,
+      "model_used": "con0_3",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c0_4": {
-        "x": 0.524953125,
-        "y": 0.3306875,
-        "dx": 0.052593749999999995,
-        "dy": 0.03054166666666666,
-        "model_used": "con0_4",
-        "res_ok": ["ok"]
-    },
-    "b_1": {
-        "x": 0.09440625,
-        "y": 0.44166666666666665,
-        "dx": 0.0699375,
-        "dy": 0.0925,
-        "model_used": "bat_1",
-        "res_ok": ["ok"]
-    },
-    "b_2": {
-        "x": 0.23090625,
-        "y": 0.44054166666666666,
-        "dx": 0.07037500000000001,
-        "dy": 0.09166666666666666,
-        "model_used": "bat_2",
-        "res_ok": ["ok"]
-    },
-    "b_3": {
-        "x": 0.373703125,
-        "y": 0.43985416666666666,
-        "dx": 0.06959375000000001,
-        "dy": 0.09237500000000001,
-        "model_used": "bat_3",
-        "res_ok": ["ok"]
-    },
-    "b_4": {
-        "x": 0.5191875,
-        "y": 0.4384166666666667,
-        "dx": 0.07037500000000001,
-        "dy": 0.09158333333333334,
-        "model_used": "bat_4",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J100_4",
+      "x": 0.524953125,
+      "y": 0.3306875,
+      "dx": 0.052593749999999995,
+      "dy": 0.03054166666666666,
+      "model_used": "con0_4",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c1_1": {
-        "x": 0.091234375,
-        "y": 0.5463541666666667,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "w_1",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J181_1",
+      "x": 0.091234375,
+      "y": 0.5463541666666667,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "w_1",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c1_2": {
-        "x": 0.227953125,
-        "y": 0.546875,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "w_2",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J181_2",
+      "x": 0.227953125,
+      "y": 0.546875,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "w_2",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c1_3": {
-        "x": 0.371359375,
-        "y": 0.546875,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "w_3",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J181_3",
+      "x": 0.371359375,
+      "y": 0.546875,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "w_3",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c1_4": {
-        "x": 0.51640625,
-        "y": 0.5458333333333333,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "w_4",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J181_4",
+      "x": 0.51640625,
+      "y": 0.5458333333333333,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "w_4",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c2_1": {
-        "x": 0.147484375,
-        "y": 0.5327291666666667,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "w_1",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J144_1",
+      "x": 0.147484375,
+      "y": 0.5327291666666667,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "w_1",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c2_2": {
-        "x": 0.288765625,
-        "y": 0.5306458333333334,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "w_2",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J144_2",
+      "x": 0.288765625,
+      "y": 0.5306458333333334,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "w_2",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c2_3": {
-        "x": 0.432640625,
-        "y": 0.5307291666666667,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "w_3",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J144_3",
+      "x": 0.432640625,
+      "y": 0.5307291666666667,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "w_3",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c2_4": {
-        "x": 0.580296875,
-        "y": 0.5286458333333334,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "w_4",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J144_4",
+      "x": 0.580296875,
+      "y": 0.5286458333333334,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "w_4",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c3_1": {
-        "x": 0.092625,
-        "y": 0.6640208333333333,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "w_1",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J185_1",
+      "x": 0.092625,
+      "y": 0.6640208333333333,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "w_1",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c3_2": {
-        "x": 0.2275625,
-        "y": 0.666625,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "w_2",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J185_2",
+      "x": 0.2275625,
+      "y": 0.666625,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "w_2",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c3_3": {
-        "x": 0.370921875,
-        "y": 0.6692708333333334,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "w_3",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J185_3",
+      "x": 0.370921875,
+      "y": 0.6692708333333334,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "w_3",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c3_4": {
-        "x": 0.516625,
-        "y": 0.6667083333333333,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "w_4",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J185_4",
+      "x": 0.516625,
+      "y": 0.6667083333333333,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "w_4",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c4_1": {
-        "x": 0.09184375,
-        "y": 0.5843333333333334,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "y_1",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "182_1",
+      "x": 0.09184375,
+      "y": 0.5843333333333334,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "y_1",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c4_2": {
-        "x": 0.2285625,
-        "y": 0.5838958333333333,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "y_2",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "182_2",
+      "x": 0.2285625,
+      "y": 0.5838958333333333,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "y_2",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c4_3": {
-        "x": 0.371140625,
-        "y": 0.5862916666666667,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "y_3",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "182_3",
+      "x": 0.371140625,
+      "y": 0.5862916666666667,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "y_3",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c4_4": {
-        "x": 0.517625,
-        "y": 0.5828541666666667,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "y_4",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "182_4",
+      "x": 0.517625,
+      "y": 0.5828541666666667,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "y_4",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c5_1": {
-        "x": 0.147703125,
-        "y": 0.5786458333333333,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "y_1",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J111_1",
+      "x": 0.147703125,
+      "y": 0.5786458333333333,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "y_1",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c5_2": {
-        "x": 0.2888125,
-        "y": 0.5796458333333333,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "y_2",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J111_2",
+      "x": 0.2888125,
+      "y": 0.5796458333333333,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "y_2",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c5_3": {
-        "x": 0.43315625,
-        "y": 0.58025,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "y_3",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J111_3",
+      "x": 0.43315625,
+      "y": 0.58025,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "y_3",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c5_4": {
-        "x": 0.578953125,
-        "y": 0.5790416666666667,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "y_4",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J111_4",
+      "x": 0.578953125,
+      "y": 0.5790416666666667,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "y_4",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c6_1": {
-        "x": 0.092796875,
-        "y": 0.7010416666666667,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "y_1",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J186_1",
+      "x": 0.092796875,
+      "y": 0.7010416666666667,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "y_1",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c6_2": {
-        "x": 0.228734375,
-        "y": 0.7046875,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "y_2",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J186_2",
+      "x": 0.228734375,
+      "y": 0.7046875,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "y_2",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c6_3": {
-        "x": 0.37196875,
-        "y": 0.7062083333333333,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "y_3",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J186_3",
+      "x": 0.37196875,
+      "y": 0.7062083333333333,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "y_3",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c6_4": {
-        "x": 0.51740625,
-        "y": 0.7057708333333333,
-        "dx": 0.026,
-        "dy": 0.036,
-        "model_used": "y_4",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J186_4",
+      "x": 0.51740625,
+      "y": 0.7057708333333333,
+      "dx": 0.026,
+      "dy": 0.036,
+      "model_used": "y_4",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c7_1": {
-        "x": 0.144921875,
-        "y": 0.6264791666666667,
-        "dx": 0.026,
-        "dy": 0.04,
-        "model_used": "b_1",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J112_1",
+      "x": 0.144921875,
+      "y": 0.6264791666666667,
+      "dx": 0.026,
+      "dy": 0.04,
+      "model_used": "b_1",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c7_2": {
-        "x": 0.28359375,
-        "y": 0.6286041666666666,
-        "dx": 0.026,
-        "dy": 0.04,
-        "model_used": "b_2",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J112_2",
+      "x": 0.28359375,
+      "y": 0.6286041666666666,
+      "dx": 0.026,
+      "dy": 0.04,
+      "model_used": "b_2",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c7_3": {
-        "x": 0.4306875,
-        "y": 0.6285625,
-        "dx": 0.026,
-        "dy": 0.04,
-        "model_used": "b_3",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J112_3",
+      "x": 0.4306875,
+      "y": 0.6285625,
+      "dx": 0.026,
+      "dy": 0.04,
+      "model_used": "b_3",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c7_4": {
-        "x": 0.57678125,
-        "y": 0.6286458333333333,
-        "dx": 0.026,
-        "dy": 0.04,
-        "model_used": "b_4",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J112_4",
+      "x": 0.57678125,
+      "y": 0.6286458333333333,
+      "dx": 0.026,
+      "dy": 0.04,
+      "model_used": "b_4",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c8_1": {
-        "x": 0.145140625,
-        "y": 0.6812083333333333,
-        "dx": 0.026,
-        "dy": 0.05000000000000001,
-        "model_used": "w4_1",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J110_1",
+      "x": 0.145140625,
+      "y": 0.6812083333333333,
+      "dx": 0.026,
+      "dy": 0.05000000000000001,
+      "model_used": "w4_1",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c8_2": {
-        "x": 0.285375,
-        "y": 0.6827708333333333,
-        "dx": 0.026,
-        "dy": 0.05000000000000001,
-        "model_used": "w4_2",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J110_2",
+      "x": 0.285375,
+      "y": 0.6827708333333333,
+      "dx": 0.026,
+      "dy": 0.05000000000000001,
+      "model_used": "w4_2",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c8_3": {
-        "x": 0.427953125,
-        "y": 0.6831666666666667,
-        "dx": 0.026,
-        "dy": 0.05000000000000001,
-        "model_used": "w4_3",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J110_3",
+      "x": 0.427953125,
+      "y": 0.6831666666666667,
+      "dx": 0.026,
+      "dy": 0.05000000000000001,
+      "model_used": "w4_3",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     },
     "c8_4": {
-        "x": 0.576171875,
-        "y": 0.6806458333333333,
-        "dx": 0.026,
-        "dy": 0.05000000000000001,
-        "model_used": "w4_4",
-        "res_ok": ["ok"]
+      "pcb_frame_name": "J110_4",
+      "x": 0.576171875,
+      "y": 0.6806458333333333,
+      "dx": 0.026,
+      "dy": 0.05000000000000001,
+      "model_used": "w4_4",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
+    },
+    "b_1": {
+      "pcb_frame_name": "J118_1",
+      "x": 0.09440625,
+      "y": 0.44166666666666665,
+      "dx": 0.0699375,
+      "dy": 0.0925,
+      "model_used": "bat_1",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
+    },
+    "b_2": {
+      "pcb_frame_name": "J118_2",
+      "x": 0.23090625,
+      "y": 0.44054166666666666,
+      "dx": 0.07037500000000001,
+      "dy": 0.09166666666666666,
+      "model_used": "bat_2",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
+    },
+    "b_3": {
+      "pcb_frame_name": "J118_3",
+      "x": 0.373703125,
+      "y": 0.43985416666666666,
+      "dx": 0.06959375000000001,
+      "dy": 0.09237500000000001,
+      "model_used": "bat_3",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
+    },
+    "b_4": {
+      "pcb_frame_name": "J118_4",
+      "x": 0.5191875,
+      "y": 0.4384166666666667,
+      "dx": 0.07037500000000001,
+      "dy": 0.09158333333333334,
+      "model_used": "bat_4",
+      "res_show": {
+        "OK": [
+          "ok"
+        ],
+        "No part": [
+          "nopart"
+        ],
+        "Wrong part": [
+          "wrongpart"
+        ],
+        "Wrong polarity": [
+          "wrongpolarity"
+        ]
+      }
     }
   },
   "models": {
@@ -334,7 +894,6 @@
         "nopart",
         "ok",
         "wrongpolarity"
-
       ]
     },
     "w_1": {
@@ -381,7 +940,6 @@
         "nopart",
         "ok",
         "wrongpolarity"
-
       ]
     },
     "w_2": {
@@ -428,7 +986,6 @@
         "nopart",
         "ok",
         "wrongpolarity"
-
       ]
     },
     "w_3": {
@@ -475,7 +1032,6 @@
         "nopart",
         "ok",
         "wrongpolarity"
-
       ]
     },
     "w_4": {
@@ -513,11 +1069,11 @@
   },
   "marks": {
     "m1": {
-        "k": 2.5,
-        "x": 0.5885,
-        "y": 0.30833333333333335,
-        "dx": 0.016,
-        "dy": 0.023
+      "k": 2.5,
+      "x": 0.5885,
+      "y": 0.30833333333333335,
+      "dx": 0.016,
+      "dy": 0.023
     },
     "m2": {
       "k": 2.5,

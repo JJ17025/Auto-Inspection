@@ -6,9 +6,8 @@ import math
 from scipy import ndimage
 
 
-def putTextRect(img, text, pos, scale=3, thickness=3, colorT=(255, 255, 255),
-                colorR=(127, 127, 127), font=cv2.FONT_HERSHEY_PLAIN,
-                offset=10, border=None, colorB=(0, 255, 0), cen=False):
+def putTextRect(img, text, pos, scale=3, thickness=3, colorT=(255, 255, 255), colorR=(127, 127, 127),
+                font=cv2.FONT_HERSHEY_PLAIN, offset=10, border=None, colorB=(0, 255, 0), cen=False):
     """
     Creates Text with Rectangle Background
     :param img: Image to put text rect on
@@ -39,75 +38,43 @@ def putTextRect(img, text, pos, scale=3, thickness=3, colorT=(255, 255, 255),
     return img
 
 
-def putTextRectlist(img, texts, step, pos, scale=3, thickness=3, colorT=(255, 255, 255),
-                    colorR=(34, 31, 30), font=cv2.FONT_HERSHEY_PLAIN,
+def putTextRectlist(img, texts, step, pos, scale=3, thickness=3, colorR=(34, 31, 30), font=cv2.FONT_HERSHEY_PLAIN,
                     offset=10, border=None, colorB=(0, 255, 0), cen=False):
     # พื้นหลัง
     for i, text in enumerate(texts):
-        if type(text) is tuple:
-            txt = text[0]
-        else:
-            txt = text
+        if text not in ['None']:
+            if type(text) is tuple:
+                txt = text[0]
+            else:
+                txt = text
 
-        ox, oy = pos
-        oy = int(oy + i * step)
-        (w, h), _ = cv2.getTextSize(txt, font, scale, thickness)
-        if cen:
-            ox -= w // 2
-            oy -= h // 2
-        x1, y1, x2, y2 = ox - offset, oy + offset, ox + w + offset, oy - h - offset
-        if offset:
-            cv2.rectangle(img, (x1, y1), (x2, y2), colorR, cv2.FILLED)
-        if border is not None:
-            cv2.rectangle(img, (x1, y1), (x2, y2), colorB, border)
+            ox, oy = pos
+            oy = int(oy + i * step)
+            (w, h), _ = cv2.getTextSize(txt, font, scale, thickness)
+            if cen:
+                ox -= w // 2
+                oy -= h // 2
+            x1, y1, x2, y2 = ox - offset, oy + offset, ox + w + offset, oy - h - offset
+            if offset:
+                cv2.rectangle(img, (x1, y1), (x2, y2), colorR, cv2.FILLED)
+            if border is not None:
+                cv2.rectangle(img, (x1, y1), (x2, y2), colorB, border)
 
     # ตัวอักษร
     for i, text in enumerate(texts):
-        if type(text) is tuple:
-            txt = text[0]
-            colorT = text[1]
-        else:
-            txt = text
-            colorT = (255, 255, 255)
+        if text not in ['None']:
+            if type(text) is tuple:
+                txt = text[0]
+                colorT = text[1]
+            else:
+                txt = text
+                colorT = (255, 255, 255)
 
-        ox, oy = pos
-        oy = int(oy + i * step)
-        cv2.putText(img, txt, (ox, oy), font, scale, colorT, thickness)
+            ox, oy = pos
+            oy = int(oy + i * step)
+            cv2.putText(img, txt, (ox, oy), font, scale, colorT, thickness)
 
     return img
-
-
-def putTextRect_center(img, text, pos, scale=3, thickness=3, colorT=(255, 255, 255),
-                       colorR=(127, 127, 127), font=cv2.FONT_HERSHEY_PLAIN,
-                       offset=10, border=None, colorB=(0, 255, 0), cen=False):
-    """
-    Creates Text with Rectangle Background
-    :param img: Image to put text rect on
-    :param text: Text inside the rect
-    :param pos: Starting position of the rect x1,y1
-    :param scale: Scale of the text
-    :param thickness: Thickness of the text
-    :param colorT: Color of the Text
-    :param colorR: Color of the Rectangle
-    :param font: Font used. Must be cv2.FONT....
-    :param offset: Clearance around the text
-    :param border: Outline around the rect
-    :param colorB: Color of the outline
-    :return: image, rect (x1,y1,x2,y2)
-    """
-    ox, oy = pos
-    (w, h), _ = cv2.getTextSize(text, font, scale, thickness)
-    if cen:
-        ox -= w // 2
-        oy -= h // 2
-    x1, y1, x2, y2 = ox - offset, oy + offset, ox + w + offset, oy - h - offset
-    if offset:
-        cv2.rectangle(img, (x1, y1), (x2, y2), colorR, cv2.FILLED)
-    if border is not None:
-        cv2.rectangle(img, (x1, y1), (x2, y2), colorB, border)
-    cv2.putText(img, text, (ox, oy), font, scale, colorT, thickness)
-
-    return img, [x1, y2, x2, y1]
 
 
 def overlay(img_maino, img_overlay, pos: tuple = (0, 0)):
@@ -168,7 +135,13 @@ def rotate(image, fee):
         print(f"func rotate, fee={fee}, don't rotate, fee<0.01")
     else:
         print(f'func rotate, fee={fee}')
-        image = ndimage.rotate(image, fee)
+        image = ndimage.rotate(image, fee, reshape=False)
+      
+        # h, w = image.shape[:2]
+        # center = image.shape[0]//2, image.shape[1]//2
+        # scale = 1
+        # rotate_matrix = cv2.getRotationMatrix2D(center=center, angle=angle, scale=scale)
+        # image = cv2.warpAffine(src=image, M=rotate_matrix, dsize=(w, h))
     return image
 
 
@@ -244,8 +217,8 @@ if __name__ == '__main__':
     import cv2
 
     x = np.full((3000, 4000, 3), (0, 0, 100), dtype='uint8')
-    cv2.imshow('nx', cv2.resize(x,(0,0),fx=0.2,fy=0.2))
+    cv2.imshow('nx', cv2.resize(x, (0, 0), fx=0.2, fy=0.2))
     cv2.waitKey(1)
     x = rotate(x, 10)
-    cv2.imshow('nx', cv2.resize(x,(0,0),fx=0.2,fy=0.2))
+    cv2.imshow('nx', cv2.resize(x, (0, 0), fx=0.2, fy=0.2))
     cv2.waitKey(0)

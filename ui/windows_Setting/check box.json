@@ -1,11 +1,11 @@
 {
-    "Show name": false,
+    "Show name": true,
     "Show results from predictions": true,
-    "Show %results from predictions": false,
+    "Show %results from predictions": true,
     "Show list class name": false,
-    "Change color frame": true,
+    "Change color frame": false,
     "Change color name": false,
-    "Change color results from predictions": false,
+    "Change color results from predictions": true,
     "Change color %results from predictions": false,
     "Change color list class name": false
 }

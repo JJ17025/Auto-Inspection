@@ -2,7 +2,6 @@ from datetime import datetime
 import time
 
 print(datetime.now())
-
 x = datetime(2023, 11, 7, 3, 0, 0)
 print(x)
 
@@ -22,23 +21,23 @@ import os
 from datetime import datetime
 import shutil
 import cv2
-import numpy as np
 import tensorflow as tf
-import keras
-from keras import layers, optimizers, models
-from keras.models import Sequential, load_model
-from CV_UI import mkdir ,remove
+from keras import layers, models
+from keras.models import Sequential
+from func.CV_UI import mkdir
 import pathlib
 import matplotlib.pyplot as plt
 from Frames import Frames
-from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
+from Frames import WARNING, PINK, ENDC
 from keras.applications import VGG16
 
 PCB_name = 'QM7-3473'
-PCB_name = 'QM7-3472'
+# PCB_name = 'QM7-3472'
+PCB_name = 'D07 QM7-3238'
 
 IMG_FULL_PATH = f'data/{PCB_name}/img_full'
 IMG_FRAME_PATH = f'data/{PCB_name}/img_frame'
+IMG_FRAME_PATH = fr'C:\Python_Project\training keras\img_frame'
 IMG_FRAME_LOG_PATH = f'data/{PCB_name}/img_frame_log'
 MODEL_PATH = f'data/{PCB_name}/model'
 frames = Frames(PCB_name)
@@ -151,8 +150,20 @@ def corp_img(model_name, frames):
 
 
 def create_model(model_name):
-    data_dir = pathlib.Path(rf'{IMG_FRAME_PATH}/{model_name}')
+    # data_dir = pathlib.Path(rf'{IMG_FRAME_PATH}/{model_name}')
+    # type_data_list = os.listdir(data_dir)
+    # for type_data in type_data_list:
+    #     path = pathlib.Path(data_dir, type_data)
+    #     l = os.listdir(path)
+    #     n = len(l) - 40000
+    #     if n > 0:
+    #         selected_files = random.sample(l, n)
+    #         for file in selected_files:
+    #             os.remove(pathlib.Path(path, file))
+    #     l = os.listdir(path)
+    #     print(len(l))
 
+    data_dir = pathlib.Path(rf'{IMG_FRAME_PATH}/{model_name}')
     image_count = len(list(data_dir.glob('*/*.png')))
     plog(f'image_count = {image_count}')
 
@@ -205,7 +216,7 @@ def create_model(model_name):
     if MODEL_SET == 1:
         model = Sequential([
             layers.Rescaling(1. / 255, input_shape=(img_height, img_width, 3)),
-            layers.Conv2D(16, (3,3), padding='same', activation='relu'),
+            layers.Conv2D(16, (3, 3), padding='same', activation='relu'),
             layers.MaxPooling2D(),
             layers.Conv2D(32, 3, padding='same', activation='relu'),
             layers.MaxPooling2D(),
@@ -325,8 +336,8 @@ def plog(string):
 
 
 def f(model_name, model, frames):
-    try:
-        # if True:
+    # try:
+    if True:
         t1 = datetime.now()
         plog('--------  >>> corp_img <<<  ---------')
         corp_img(model_name, frames)
@@ -339,8 +350,8 @@ def f(model_name, model, frames):
         plog(f'{t2 - t1} เวลาที่ใช้ในการเปลียน img_full เป็น shift_img ')
         plog(f'{t3 - t2} เวลาที่ใช้ในการ training ')
         plog(f'{t3 - t1} เวลาที่ใช้ทั้งหมด')
-    except:
-        print(f'{WARNING}model_name error{ENDC}')
+    # except:
+    #     print(f'{WARNING}model_name error{ENDC}')
 
 
 print(frames)

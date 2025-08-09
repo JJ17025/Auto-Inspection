@@ -1,57 +1,84 @@
-def capture(img, stop_event, reconnect_cam):
+def capture(data, stop_event):
     import cv2
-
     cap = cv2.VideoCapture(0)
     cap.set(3, 3264)
     cap.set(4, 2448)
     while not stop_event.is_set():
-        s, frame = cap.read()
-        if s:
-            img[:] = [frame]
-        if reconnect_cam.is_set():
+        data['cap.read'] = cap.read()
+        if data['reconnect_cam']:
+            data['reconnect_cam'] = False
             cap = cv2.VideoCapture(0)
             cap.set(3, 3264)
             cap.set(4, 2448)
-            reconnect_cam.clear()
 
 
-def main(img, stop_event, reconnect_cam):
+def req_io_box(data, stop_event):
+    import requests
+    import time
+    from Frames import FAIL, ENDC, WARNING, UNDERLINE,PINK
+    time.sleep(5)
+
+    while not stop_event.is_set():
+        read = data['read data']
+        try:
+            res = requests.get(read['url'], timeout=0.5)
+            read['status code'] = res.status_code
+            read['res_text'] = res.text
+        except requests.exceptions.Timeout:
+            read['status code'] = 0
+            read['res_text'] = 'Timeout. The request took longer than 0.5 second to complete.'
+        except requests.exceptions.RequestException as e:
+            read['status code'] = 0
+            read['res_text'] = f'{e}'
+        data['read data'] = read
+        time.sleep(0.8)
+
+        write = data['write data']
+        if write['input data'] != write['res_text'].split('write>')[-1] or write['status code'] != 200:
+            try:
+                res = requests.get(write['url'].replace('<data>', write['input data']), timeout=0.5)
+                write['status code'] = res.status_code
+                write['res_text'] = res.text
+            except requests.exceptions.Timeout:
+                write['status code'] = 0
+                write['res_text'] = 'Timeout. The request took longer than 0.5 second to complete.'
+            except requests.exceptions.RequestException as e:
+                write['status code'] = 0
+                write['res_text'] = f'{e}'
+            data['write data'] = write
+        time.sleep(0.8)
+
+
+def printdata(data, stop_event):
+    import time
+    from pprint import pprint
+    from Frames import PINK, ENDC, UNDERLINE
+    while not stop_event.is_set():
+        print(PINK, UNDERLINE)
+        pprint(data['requests']['read data'])
+        pprint(data['requests']['write data'])
+        print(ENDC)
+        time.sleep(1)
+
+
+def main(data, stop_event):
     import cv2
     import numpy as np
-    def show(text=None):
-        if text:
-            cv2.putText(loading_windows, text, (240, 160), 1, 3, (255, 255, 255), 3, -1)
-        cv2.imshow('auto inspection', loading_windows)
-        cv2.waitKey(1)
-
-    loading_windows = np.full((200, 700, 3), (150, 140, 150), np.uint8)
-    cv2.putText(loading_windows, 'Auto Inspection', (20, 90), 1, 5, (255, 255, 255), 5, -1)
-    show()
-    import shutil
     import os
     import sys
-    show('Loading.')
     import pygame
     import statistics
     import json
-    show('Loading..')
     from datetime import datetime
     import requests
+    from bs4 import BeautifulSoup
     import time
-    from CV_UI import mkdir ,remove
-    from CV_UI import Button, Display, Exit, TextInput, Select, Setting, Wait, Confirm
-    show('Loading...')
-    from func.about_image import putTextRect, putTextRect_center, overlay, adj_image, rotate
-    from Frames import Frame, Frames, predict
-    from Frames import BLACK, FAIL, GREEN, WARNING, BLUE, PINK, CYAN, ENDC, BOLD, ITALICIZED, UNDERLINE
-    cv2.destroyWindow('auto inspection')
-    url_list = [
-        "http://192.168.1.11:8080",
-        "http://192.168.225.10:8080", 
-        "http://192.168.225.90:8080",
-        "http://192.168.225.92:8080"
-    ]
-    url = None
+    from func.CV_UI import mkdir, remove
+    from func.CV_UI import Display, Exit, TextInput, Select, Setting, Wait, Confirm
+    from func.Config import config
+    from func.about_image import overlay, adj_image
+    from Frames import Frames, predict
+    from Frames import FAIL, ENDC, WARNING
 
     def cvimage_to_pygame(image):
         """Convert cvimage into a pygame image"""
@@ -90,7 +117,7 @@ def main(img, stop_event, reconnect_cam):
         clock.tick(60)
 
     pygame.init()
-    display = pygame.display.set_mode((1920, 1080))
+    display = pygame.display.set_mode((1920, 1080),pygame.NOFRAME)
     pygame.display.set_caption('Auto Inspection')
     clock = pygame.time.Clock()
 
@@ -101,6 +128,9 @@ def main(img, stop_event, reconnect_cam):
     pcb_model_name = ''
     autocap = False
     save_img = False
+    time_req = True
+    PASS_FAIL = [0, 0]
+    NG_list = []
     update_dis_res = []
     while not stop_event.is_set():
         t1 = datetime.now()
@@ -168,71 +198,86 @@ def main(img, stop_event, reconnect_cam):
 
                                 break
                         break
-        if dis.mode == 'run':
+        if dis.mode == 'run' and pcb_model_name:
             if save_img:
                 namefile = datetime.now().strftime('%y%m%d %H%M%S.png')
                 mkdir(f'data/{pcb_model_name}/log_img')
                 mkdir(f'data/{pcb_model_name}/log_img/{save_img}')
                 log_img_list = os.listdir(f'data/{pcb_model_name}/log_img/{save_img}')
-                if len(log_img_list) > 100:
+                if len(log_img_list) > 10000:
                     # del file log_img_list[0]
                     remove(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[0]}')
                     remove(f'data/{pcb_model_name}/log_img/{save_img}/{log_img_list[1]}')
                 cv2.imwrite(f'data/{pcb_model_name}/log_img/{save_img}/{namefile}', img_form_cam_and_frame)
+                mkdir(f'data/{pcb_model_name}/log_img_original')
+                mkdir(f'data/{pcb_model_name}/log_img_original/{save_img}')
+                log_img_original_list = os.listdir(f'data/{pcb_model_name}/log_img/{save_img}')
+                if len(log_img_original_list) > 10000:
+                    remove(f'data/{pcb_model_name}/log_img_original/{save_img}/{log_img_list[0]}')
+                    remove(f'data/{pcb_model_name}/log_img_original/{save_img}/{log_img_list[1]}')
+                cv2.imwrite(f'data/{pcb_model_name}/log_img_original/{save_img}/{namefile}', img_form_cam)
                 save_img = False
-        # if dis.mode == 'run' and pcb_model_name:
+            # if dis.mode == 'run' and pcb_model_name:
             if 'mode_menu-run' in dis.update_dis_res:
                 dis.update_dis_res -= {'mode_menu-run'}
-                for u in url_list:
-                    try:
-                        res = requests.get(f'{u}', timeout=0.2)
-                        if res.status_code == 200:
-                            url = u
-                            break
-                    except requests.exceptions.Timeout:
-                        print(f'{FAIL}Request timed out. The request took longer than 0.1 second to complete.{ENDC}')
-                    except requests.exceptions.RequestException as e:
-                        print(f'{FAIL}An error occurred: {e}{ENDC}')
+                requests_get(f'{config.ip_address()}/run/0', timeout=0.2)
+                requests_get(f'{config.ip_address()}/run/1', timeout=0.2)
 
-                if url:
-                    requests_get(f'{url}/run/0', timeout=0.2)
-                    requests_get(f'{url}/run/1', timeout=0.2)
-                    print(f'{GREEN}ping to {url} OK{ENDC}')
-                else:
-                    print(f"{FAIL} can't connect to raspberrypi{ENDC}")
+            read = data['read data']
+            write = data['write data']
 
-            ''' read data "ให้ ถ่ายภาพ --> predict "'''
-
-            error_text = ''
-            res_text = requests_get(f'{url}/data/read', timeout=0.2)
-            print(res_text)
-            cv2.putText(surfacenp, f'rasppi data: {res_text[0]} {res_text[1]}',
+            cv2.putText(surfacenp, f"{data['step']} {read['status code']}: {read['res_text']}",
                         (430, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
-            if res_text[0] == 'error':
-                putTextRect(surfacenp, f'{error_text}', (80, 160), 1.05, 2, (0, 0, 255), 5, cv2.LINE_AA)
-            if res_text[0] == 'requests OK':
-                if res_text[1] == 'capture and predict':
-                    dis.update_dis_res = dis.update_dis_res.union({'Take a photo', 'adj image', 'predict'})
-                    # dis.update_dis_res = dis.update_dis_res.union({'adj image', 'predict'})
-                    dis.predict_res = None
-                    requests_get(f'{url}/data/write/AI is predicting', timeout=0.2)
-                elif res_text[1] == 'AI is predicting' and dis.predict_res == 'ok':
-                    requests_get(f'{url}/data/write/ok', timeout=0.2)
-                    dis.predict_res = 'ok already_read'
-                elif res_text[1] == 'AI is predicting' and dis.predict_res == 'ng':
-                    requests_get(f'{url}/data/write/ng', timeout=0.2)
-                    dis.predict_res = 'ng already_read'
-                elif res_text[1] == 'pro=[1, 1, 1, 0]':
-                    dis.select_model = 'QM7-3472'
-                    dis.update_dis_res.add('select model')
-                    requests_get(f'{url}/data/write/None', timeout=0.2)
-                elif res_text[1] == 'pro=[1, 1, 0, 1]':
-                    dis.select_model = 'QM7-3473_v2'
-                    dis.update_dis_res.add('select model')
-                    requests_get(f'{url}/data/write/None', timeout=0.2)
 
-        if dis.update_dis_res or autocap:
-            print(dis.update_dis_res)
+            if data['step'] == 0:
+                data['step'] = 1
+            elif data['step'] == 1 and read['res_text'] == 'capture and predict':
+                print(WARNING, 'step1', ENDC)
+                data['step'] = 2
+                dis.update_dis_res = dis.update_dis_res.union({'Take a photo','adj image', 'predict'})
+                dis.predict_res = None
+            elif data['step'] == 2 and dis.predict_res:
+                print(WARNING, 'step2', ENDC)
+                if dis.predict_res == 'ok':
+                    write['input data'] = 'ok'
+                    write['res_text'] = ''
+                    write['status code'] = 1
+                    dis.predict_res = 'ok already_read'
+                    data['step'] = 3
+                elif dis.predict_res == 'ng':
+                    write['input data'] = 'ng'
+                    write['res_text'] = ''
+                    write['status code'] = 1
+                    dis.predict_res = 'ng already_read'
+                    data['step'] = 3
+            elif data['step'] == 3 and write['res_text'] in ['write>ok', 'write>ng']:
+                print(WARNING, 'step3', ENDC)
+                data['step'] = 4
+            elif data['step'] == 4 and read['res_text'] in ['ok', 'ng']:
+                print(WARNING, 'step4', ENDC)
+                data['step'] = 0
+
+            if read['res_text'] == 'pro=[1, 1, 1, 0]':
+                dis.select_model = 'QM7-3472'
+                dis.update_dis_res.add('select model')
+                write['input data'] = 'None'
+                write['res_text'] = ''
+                write['status code'] = 1
+            elif read['res_text'] == 'pro=[1, 1, 0, 1]':
+                dis.select_model = 'QM7-3473_v2'
+                dis.update_dis_res.add('select model')
+                write['input data'] = 'None'
+                write['res_text'] = ''
+                write['status code'] = 1
+
+            data['read data'] = read
+            data['write data'] = write
+
+        if autocap:
+            dis.update_dis_res.add('Take a photo')
+        if dis.update_dis_res:
+            # if dis.update_dis_res:
+            #     print(dis.update_dis_res)
             if 'autocap' in dis.update_dis_res:
                 dis.update_dis_res -= {'autocap'}
                 if autocap:
@@ -265,6 +310,7 @@ def main(img, stop_event, reconnect_cam):
 
             elif 'select model' in dis.update_dis_res:
                 dis.update_dis_res -= {'select model'}
+                PASS_FAIL = [0, 0]
                 e = Select(surfacenp.copy())
                 e.add_data(*os.listdir('data'))
                 e.x_shift = 43
@@ -336,25 +382,30 @@ def main(img, stop_event, reconnect_cam):
             elif 'm3:mode_menu-run' in dis.update_dis_res:
                 dis.update_dis_res -= {'m3:mode_menu-run'}
                 e = Select(surfacenp.copy())
-                e.add_data('predict')
+                e.add_data('send capture and predict', 'send AI is predicting', 'send ok', 'send ng')
                 e.x_shift, e.y_shift = mouse_pos
                 while True:
                     mouse_pos = pygame.mouse.get_pos()
                     res = e.update(mouse_pos, pygame.event.get())
                     show(e.img_BG)
                     if res:
-                        if 'predict' in res:
-                            requests_get(f'{url}/data/write/AI is predicting', timeout=0.2)
-                            break
+                        if 'send AI is predicting' in res:
+                            requests_get(f'{config.ip_address()}/data/write/AI is predicting', timeout=0.2)
+                        if 'send capture and predict' in res:
+                            requests_get(f'{config.ip_address()}/data/write/capture and predict', timeout=0.2)
+                        if 'send ok' in res:
+                            requests_get(f'{config.ip_address()}/data/write/ok', timeout=0.2)
+                        if 'send ng' in res:
+                            requests_get(f'{config.ip_address()}/data/write/ng', timeout=0.2)
                         break
-            elif 'Take a photo' in dis.update_dis_res or autocap:
+            elif 'Take a photo' in dis.update_dis_res:
                 dis.update_dis_res -= {'Take a photo'}
-                if len(img) == 0:
+                if len(data) == 0:
                     e = Wait(surfacenp.copy())
                     e.set_val('Wait', '')
                     e.x_shift = 700
                     e.y_shift = 300
-                    while len(img) == 0:
+                    while data['cap.read'][0] == False:
                         mouse_pos = pygame.mouse.get_pos()
                         res = e.update(mouse_pos, pygame.event.get())
                         show(e.img_BG)
@@ -362,69 +413,38 @@ def main(img, stop_event, reconnect_cam):
                             print(res)
                         if res in ['OK', 'Cancel', 'x']:
                             break
-                if len(img) == 1:
-                    img_form_cam = img[0].copy()
-
-                    img_form_cam = cv2.imread(r"C:\Python_Project\Auto Inspection\Save Image\231003 193441.png")
+                img_form_cam = data['cap.read'][1].copy()
+                # img_form_cam = cv2.imread(r"C:\Python_Project\Auto Inspection\Save Image\231003 193441.png")
 
             elif 'adj image' in dis.update_dis_res:
                 dis.update_dis_res -= {'adj image'}
-                # img_for_ref = cv2.imread('m.png')
-                e = Wait(surfacenp.copy())
-                e.set_val('Wait', 'Adjusting image')
-                e.x_shift = 700
-                e.y_shift = 300
-                mouse_pos = pygame.mouse.get_pos()
-                res = e.update(mouse_pos, pygame.event.get(), count_time=False)
-                show(e.img_BG)
-
-                res = adj_image(img_form_cam, framesmodel)
-                if res is not None:
-                    img_form_cam = res
-                else:
-                    if dis.mode != 'run':
-                        e = Confirm(surfacenp.copy())
-                        e.set_val('Error', "don't have mark")
-                        e.x_shift = 700
-                        e.y_shift = 300
-                        while True:
-                            mouse_pos = pygame.mouse.get_pos()
-                            res = e.update(mouse_pos, pygame.event.get())
-                            show(e.img_BG)
-                            if res:
-                                print(res)
-                            if res in ['OK', 'Cancel', 'x']:
-                                break
-
-            elif 'predict' in dis.update_dis_res:
-                dis.update_dis_res -= {'predict'}
-                dis.predict_auto = False
-                img_form_cam_bgr = cv2.cvtColor(img_form_cam, cv2.COLOR_RGB2BGR)
+                NG_list = []
                 if pcb_model_name:
-                    framesmodel.crop_img(img_form_cam_bgr)
                     e = Wait(surfacenp.copy())
-                    e.set_val('Wait', '')
+                    e.set_val('Wait', 'Adjusting image')
                     e.x_shift = 700
                     e.y_shift = 300
-                    for name, frame in framesmodel.frames.items():
-                        predict(frame, framesmodel)
-                        mouse_pos = pygame.mouse.get_pos()
-                        res = e.update(mouse_pos, pygame.event.get())
-                        show(e.img_BG)
+                    mouse_pos = pygame.mouse.get_pos()
+                    res = e.update(mouse_pos, pygame.event.get(), count_time=False)
+                    show(e.img_BG)
 
-                    dis.predict_res = 'ok'
-                    dis.old_res = 'ok'
-                    for name, frame in framesmodel.frames.items():
-                        if frame.highest_score_name not in frame.res_ok:
-                            print(frame.res_ok, frame.highest_score_name)
-                            # if name in ['RJ45.1', 'RJ45.2', 'c2.1', 'c2.2']:
-                            #     continue
-                            dis.predict_res = 'ng'
-                            dis.old_res = 'ng'
-
-                    print()
-                    print('dis.predict_res =', dis.predict_res)
-
+                    res = adj_image(img_form_cam, framesmodel)
+                    if res is not None:
+                        img_form_cam = res
+                    else:
+                        if dis.mode != 'run':
+                            e = Confirm(surfacenp.copy())
+                            e.set_val('Error', "don't have mark")
+                            e.x_shift = 700
+                            e.y_shift = 300
+                            while True:
+                                mouse_pos = pygame.mouse.get_pos()
+                                res = e.update(mouse_pos, pygame.event.get())
+                                show(e.img_BG)
+                                if res:
+                                    print(res)
+                                if res in ['OK', 'Cancel', 'x']:
+                                    break
                 else:
                     e = Confirm(surfacenp.copy())
                     e.set_val('Error', "don't have modelname", f"pcb model name is {pcb_model_name}")
@@ -438,6 +458,51 @@ def main(img, stop_event, reconnect_cam):
                             print(res)
                         if res in ['OK', 'Cancel', 'x']:
                             break
+
+            elif 'predict' in dis.update_dis_res:
+                dis.update_dis_res -= {'predict'}
+                if pcb_model_name:
+                    img_form_cam_bgr = cv2.cvtColor(img_form_cam, cv2.COLOR_RGB2BGR)
+                    framesmodel.crop_img(img_form_cam_bgr)
+                    e = Wait(surfacenp.copy())
+                    e.set_val('Wait', '')
+                    e.x_shift = 700
+                    e.y_shift = 300
+                    for name, frame in framesmodel.frames.items():
+                        predict(frame, framesmodel)
+                        mouse_pos = pygame.mouse.get_pos()
+                        res = e.update(mouse_pos, pygame.event.get())
+                        show(e.img_BG)
+                    dis.predict_time = datetime.now()
+                    dis.predict_res = 'ok'
+                    dis.old_res = 'ok'
+                    for name, frame in framesmodel.frames.items():
+                        if frame.highest_score_name not in frame.res_show['OK']:
+                            NG_list.append([frame.pcb_frame_name, frame.resShow()])
+                            # if name in ['RJ45.1', 'RJ45.2', 'c2.1', 'c2.2']:
+                            #     continue
+                            dis.predict_res = 'ng'
+                            dis.old_res = 'ng'
+                    if dis.old_res == 'ok':
+                        PASS_FAIL[0] += 1
+                    if dis.old_res == 'ng':
+                        PASS_FAIL[1] += 1
+                    print()
+                    print('dis.predict_res =', dis.predict_res)
+
+                # else:
+                #     e = Confirm(surfacenp.copy())
+                #     e.set_val('Error', "don't have modelname", f"pcb model name is {pcb_model_name}")
+                #     e.x_shift = 700
+                #     e.y_shift = 300
+                #     while True:
+                #         mouse_pos = pygame.mouse.get_pos()
+                #         res = e.update(mouse_pos, pygame.event.get())
+                #         show(e.img_BG)
+                #         if res:
+                #             print(res)
+                #         if res in ['OK', 'Cancel', 'x']:
+                #             break
                 save_img = dis.predict_res
                 surface_img = cv2.resize(img_form_cam_and_frame, (1344, 1008))
                 surfacenp = overlay(surfacenp, surface_img, (41, 41))
@@ -561,7 +626,7 @@ def main(img, stop_event, reconnect_cam):
                             file.write(json.dumps(esetting.check_box, indent=4))
                         break
                     elif res == 'Reconnect Camera':
-                        reconnect_cam.set()
+                        data['reconnect_cam'] = True
                         e = Wait(surfacenp.copy())
                         e.set_val('Wait', '')
                         e.x_shift = 700
@@ -572,7 +637,7 @@ def main(img, stop_event, reconnect_cam):
                             show(e.img_BG)
                             if res == 'x':
                                 break
-                            if reconnect_cam.is_set() == False:
+                            if data['reconnect_cam'] == False:
                                 break
                         break
 
@@ -582,62 +647,38 @@ def main(img, stop_event, reconnect_cam):
         if len(fps) > 20:
             fps = fps[1:]
 
-        if 'run' in dis.update_dis_res:
-            dis.update_dis_res -= {'run'}
+        if dis.old_res == 'ok':
+            color = (0, 255, 0)
+            if (datetime.now() - dis.predict_time).total_seconds() < 3:
+                cv2.rectangle(surfacenp, (1540, 140), (1780, 280), (75, 76, 79), -1)
+                cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1550, 260), 2, 5, color, 8, cv2.LINE_AA)
 
-            class txt:
-                def __init__(self):
-                    self.txt_list = []
-                    self.row = 0
+        if dis.old_res == 'ng':
+            color = (0, 0, 255)
+            cv2.rectangle(surfacenp, (1540, 140), (1780, 280), (75, 76, 79), -1)
+            cv2.putText(surfacenp, f'{dis.old_res}'.upper(), (1550, 260), 2, 5, color, 8, cv2.LINE_AA)
 
-                def add(self, txt, command=None, image=None):
-                    self.txt_list.append([txt, command, image])
+        if dis.mode in ['manual', 'run']:
+            cv2.putText(surfacenp, f'Pass', (1450, 920), 2, 1.2, (0, 255, 0), 2, cv2.LINE_AA)
+            cv2.putText(surfacenp, f'Fail', (1450, 970), 2, 1.2, (0, 0, 255), 2, cv2.LINE_AA)
+            cv2.putText(surfacenp, f'Pass rate', (1450, 1020), 2, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
 
-                def show(self, surfacenp):
-                    for txt, command, image in self.txt_list:
-                        print(txt, command)
-                        line = 1
-                        col = 0
-                        color = (255, 255, 255)
-                        if command:
-                            for c in command:
-                                c, v = c.split('=')
-                                if c == 'color':
-                                    if v == 'y':
-                                        color = (0, 255, 255)
-                                if c == 'spacing':
-                                    line = float(v)
-                                if c == 'col':
-                                    line = 0
-                                    col = float(v)
+            cv2.putText(surfacenp, f': {PASS_FAIL[0]}', (1660, 920), 2, 1.2, (0, 255, 0), 2, cv2.LINE_AA)
+            cv2.putText(surfacenp, f': {PASS_FAIL[1]}', (1660, 970), 2, 1.2, (0, 0, 255), 2, cv2.LINE_AA)
+            cv2.putText(surfacenp, f': {round(PASS_FAIL[0] * 100 / (PASS_FAIL[0] + PASS_FAIL[1] + 0.000001), 2)}%',
+                        (1660, 1020), 2, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
 
-                        self.row += line
-                        print('txt', txt)
-                        cv2.putText(surfacenp, txt, (round(1440 + col * 50), round(128 + self.row * 24)),
-                                    16, 0.5, color, 1, cv2.LINE_AA)
+            NG_list_show = NG_list
+            NG_list_len = len(NG_list)
+            if NG_list_len >= 10:
+                NG_list_show = NG_list_show[:10]
+                NG_list_show.append(['Other NG', f'{NG_list_len - 10} position'])
+            line = 0
+            for name, res in NG_list_show:
+                cv2.putText(surfacenp, f'{name}  ' + f'{res}',
+                            (1450, 320 + line), 2, 1, (255, 255, 255), 1, cv2.LINE_AA)
+                line += 40
 
-                        # if image is not None:
-                        #     print('img')
-                        #     surfacenp = overlay(surfacenp.copy(), image, (100, 100))
-
-            t = txt()
-            for k, v in framesmodel.frames.items():
-                if v.highest_score_name and v.highest_score_name in v.res_ok:
-                    continue
-                t.add(k, ['color=y', 'spacing=1.8', ])
-                t.add(v.highest_score_name, ['col=1'], v.img)
-                cv2.imshow(k, v.img)
-                cv2.waitKey(1)
-            t.show(surfacenp)
-
-        if dis.old_res:
-            if dis.old_res == 'ok':
-                color = (0, 255, 0)
-            elif dis.old_res == 'ng':
-                color = (0, 0, 255)
-            else:
-                color = (0, 255, 255)
-            cv2.putText(surfacenp, f'{dis.old_res}', (1500, 900), 2, 8, color, 2, cv2.LINE_AA)
         cv2.putText(surfacenp, f'{pcb_model_name}',
                     (80, 26), 2, 0.6, (255, 255, 255), 1, cv2.LINE_AA)
 
@@ -645,11 +686,13 @@ def main(img, stop_event, reconnect_cam):
                     (10, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
         cv2.putText(surfacenp, f'pos: {mouse_pos}',
                     (90, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
-        cv2.putText(surfacenp, f'auto capture: {autocap}',
+        cv2.putText(surfacenp, f'Auto Capture: {autocap}',
                     (250, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
 
         cv2.putText(surfacenp, f'{datetime.now().strftime("%d/%m/%y %H:%M:%S")}',
                     (1750, 1068), 16, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
+        cv2.putText(surfacenp, f'program version: 1.0',
+                    (1520, 25), 16, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
         show(surfacenp)
     pygame.quit()
     sys.exit()
@@ -659,17 +702,39 @@ if __name__ == '__main__':
     import cv2
     import numpy as np
     import multiprocessing
+    import json
+    import os
+    from func.Config import config
 
     stop_event = multiprocessing.Event()
-    reconnect_cam = multiprocessing.Event()
     manager = multiprocessing.Manager()
-    img = manager.list()
+    data = manager.dict()
+    data['cap.read'] = (False, None)
+    data['reconnect_cam'] = False
+    data['write data'] = {
+        'input data': 'start a program',
+        'url': f'{config.ip_address()}/data/write/<data>',
+        'status code': 0,
+        'res_text': '',
+    }
+    data['read data'] = {
+        'url': f'{config.ip_address()}/static/data.txt',
+        'status code': 0,
+        'res_text': '',
+    }
+    data['step'] = 0
 
-    capture_process = multiprocessing.Process(target=capture, args=(img, stop_event, reconnect_cam))
-    show_process = multiprocessing.Process(target=main, args=(img, stop_event, reconnect_cam))
+    capture_process = multiprocessing.Process(target=capture, args=(data, stop_event))
+    show_process = multiprocessing.Process(target=main, args=(data, stop_event))
+    req_io_box_process = multiprocessing.Process(target=req_io_box, args=(data, stop_event))
+    # printdata_process = multiprocessing.Process(target=printdata, args=(data, stop_event))
 
     capture_process.start()
     show_process.start()
+    req_io_box_process.start()
+    # printdata_process.start()
 
     capture_process.join()
     show_process.join()
+    req_io_box_process.join()
+    # printdata_process.join()
